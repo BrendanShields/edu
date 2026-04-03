@@ -1,0 +1,27 @@
+---
+interface Props {
+  title?: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaHref?: string;
+}
+
+const {
+  title = 'Welcome to the Workshop.',
+  subtitle = 'Master the art of AI-assisted coding with Claude Code, OpenCode, and GitHub Copilot. Three tools. One workshop. Everything you need to know.',
+  ctaText = 'Start Learning',
+  ctaHref = '/concepts/context-window',
+} = Astro.props;
+---
+
+<section class="py-20 border-b border-border">
+  <div class="w-4 h-4 rounded-full bg-accent mb-8"></div>
+  <h1 class="text-5xl font-bold tracking-tight mb-6">{title}</h1>
+  <p class="text-xl text-text-secondary leading-relaxed max-w-2xl mb-10">{subtitle}</p>
+  <a
+    href={ctaHref}
+    class="inline-block px-8 py-4 bg-accent text-white font-semibold rounded-full text-lg hover:bg-accent-hover transition-colors"
+  >
+    {ctaText}
+  </a>
+</section>

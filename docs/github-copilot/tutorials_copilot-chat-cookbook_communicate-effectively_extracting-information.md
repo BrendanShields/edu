@@ -1,0 +1,102 @@
+Extracting information - GitHub Docs
+
+[Skip to main content](#main-content)
+
+[GitHub Docs](/en)
+
+Version: Free, Pro, & Team
+
+Search or ask Copilot
+
+Search or askCopilot
+
+Select language: current language is English
+
+Search or ask Copilot
+
+Search or askCopilot
+
+Open menu
+
+Open Sidebar
+
+# Extracting information
+
+Copilot Chat in GitHub can help you extract key information from issues and discussions.
+
+Copy as Markdown
+
+## In this article
+
+GitHub Copilot Chat can help you extract key information from issues and discussions, making it easier to summarize and understand the content. You can ask Copilot Chat to identify important details, such as action items, deadlines, or specific requests.
+
+## [Example scenario 1](#example-scenario-1)
+
+You are reviewing a long discussion thread about a feature request. You want to quickly identify the main points and any action items that need to be addressed.
+
+## [Example prompt](#example-prompt)
+
+Copilot prompt
+
+Can you summarize the key points and action items from this discussion?
+
+```copilot
+Can you summarize the key points and action items from this discussion?
+```
+
+## [Example response](#example-response)
+
+Note
+
+The following response is an example. Copilot Chat responses are non-deterministic, so you may get a different response from the one shown here.
+
+```text
+Key Points:
+- The feature request aims to improve the user interface for better accessibility.
+- There are concerns about the impact on existing users and workflows.
+- Action items include gathering feedback from users and conducting usability testing.
+Action Items:
+- [ ] Gather feedback from users by the end of the week.
+- [ ] Conduct usability testing with a focus group next month.
+```
+
+## [Example scenario 2](#example-scenario-2)
+
+You have a number of open issues assigned to you, and you want to extract the deadlines and priorities for each issue to help you prioritize your work.
+
+## [Example prompt](#example-prompt-1)
+
+Copilot prompt[](https://github.com/copilot?prompt=Can%20you%20list%20the%20open%20issues%20assigned%20to%20me%2C%20along%20with%20their%20deadlines%20and%20priorities%3F)
+
+Can you list the open issues assigned to me, along with their deadlines and priorities?
+
+Can you list the open issues assigned to me, along with their deadlines and priorities?
+
+```copilot
+Can you list the open issues assigned to me, along with their deadlines and priorities?
+```
+
+## [Example response](#example-response-1)
+
+Note
+
+The following response is an example. Copilot Chat responses are non-deterministic, so you may get a different response from the one shown here.
+
+```text
+Issue 1:
+- Deadline: Next Friday
+- Priority: High
+
+Issue 2:
+- Deadline: End of the month
+- Priority: Medium
+
+Issue 3:
+- Deadline: No specific deadline
+- Priority: Low
+```
+
+## [Further reading](#further-reading)
+
+-   [Prompt engineering for GitHub Copilot Chat](/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot)
+-   [Best practices for using GitHub Copilot](/en/copilot/using-github-copilot/best-practices-for-using-github-copilot)

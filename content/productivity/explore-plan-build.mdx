@@ -1,0 +1,61 @@
+---
+title: "Explore → Plan → Build"
+description: "A structured workflow for tackling complex tasks with AI coding tools"
+order: 2
+tools: ["claude-code", "opencode", "github-copilot"]
+---
+
+# Explore, Plan, Build
+
+### The Most Expensive Mistake
+
+The most expensive mistake is building the wrong thing.
+
+A developer asks the agent to "add Google OAuth." The agent starts writing code immediately. It picks `passport-google-oauth` instead of the `next-auth` library the project already uses. It creates files in `src/services/` when every other auth file lives in `src/auth/`. It builds a session flow that contradicts the existing pattern. Thirty minutes later, all of it gets thrown away.
+
+Two minutes of planning would have caught every one of those mistakes.
+
+### What Planning Would Have Caught
+
+If the agent had read the codebase first, it would have seen `next-auth` in `package.json`. It would have noticed the file structure in `src/auth/`. It would have understood the session pattern before inventing a new one. Planning isn't overhead -- it's a shortcut disguised as a detour.
+
+### The Explore Phase
+
+Before changing anything, the agent reads. In Claude Code, switch to Plan mode with `Shift+Tab`. In OpenCode, press `Tab` for the Plan agent. In Copilot, use Chat with `@workspace`.
+
+```text
+Read src/auth/ and understand how we handle sessions.
+What libraries do we use? Where are secrets configured?
+```
+
+This phase is cheap. The agent reads a few files, builds a mental model, and reports back. Now you share a common understanding.
+
+### The Plan Phase
+
+Next, ask for an approach -- not code.
+
+```text
+Based on what you just read, what files need to change
+to add Google OAuth? Propose a plan before writing any code.
+```
+
+In Claude Code, press `Ctrl+G` to open the plan in your editor so you can mark it up directly. This is where you catch the big mistakes before they become big refactors.
+
+### The Build Phase
+
+Now implement against the reviewed plan. The agent already knows which patterns to follow and where files belong.
+
+```text
+Implement the OAuth flow from your plan.
+Write tests for the callback handler. Run the suite.
+```
+
+Have you ever jumped straight to code and regretted it? I've found that skipping the plan feels faster in the moment, but the rework always costs more than the planning would have. The rhythm -- explore, plan, build, commit -- becomes automatic with practice.
+
+### Notes
+
+- Building without exploring leads to wrong libraries, wrong directories, and wrong patterns
+- Two minutes of planning saves thirty minutes of rework
+- Use Plan mode (`Shift+Tab` in Claude Code, `Tab` in OpenCode) to let the agent read without editing
+- Scale the process: skip planning for obvious fixes, use it for anything spanning multiple files
+- The four phases are **explore** (read the codebase), **plan** (propose an approach), **build** (implement), and **commit** (ship it)

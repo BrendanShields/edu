@@ -1,0 +1,60 @@
+---
+title: "Managing Context"
+description: "Keep your AI sessions fast and focused by managing the context window"
+order: 3
+tools: ["claude-code", "opencode", "github-copilot"]
+---
+
+# Managing Context
+
+### The Agent Is Forgetting
+
+You've been working with the agent for forty minutes. You ask it to update the handler in `src/api/users.ts`. It re-reads the file -- even though it read it ten minutes ago. It suggests an approach you already rejected. It stops following the naming convention you established at the start of the session.
+
+You're not imagining it. The agent is forgetting.
+
+### Fresh vs. Exhausted
+
+Here's what the same question looks like in a fresh session versus an exhausted one.
+
+**Fresh session:** "Based on the pattern in `orders.ts`, I'll add the validation middleware before the handler, use the `ApiResponse` type for the return, and follow your `camelCase` naming convention."
+
+**Exhausted session:** "Here's a handler for the users endpoint. I've added some basic validation." No pattern matching. No type references. No awareness of your conventions. The context window is full, and the agent is working with fragments.
+
+### Clear Between Tasks
+
+Old context from Task A actively hurts Task B. The agent is still holding files, outputs, and decisions from the previous task, leaving less room for the current one.
+
+| Tool | Command | What it does |
+|------|---------|-------------|
+| **Claude Code** | `/clear` | Resets context entirely |
+| **Claude Code** | `/compact` | Summarizes conversation, preserves key decisions |
+| **OpenCode** | `/new` or `/clear` | Starts a fresh session |
+| **GitHub Copilot** | New thread | Each thread is separate context |
+
+When you switch topics, start fresh. Five seconds saves twenty minutes of confused output.
+
+### Offload Research to Subagents
+
+Subagents run in their own context window, do their research, and return just a summary. Your main session stays clean.
+
+```text
+Use subagents to investigate how our auth system handles
+token refresh, and whether we have existing OAuth utilities.
+```
+
+The subagent reads dozens of files. Your main context gets a paragraph. The research doesn't bloat your session.
+
+### Store Conventions, Not Conversation
+
+Don't repeat project rules every session. **Claude Code** reads `CLAUDE.md`. **OpenCode** reads `AGENTS.md`. **Copilot** reads `.github/copilot-instructions.md`. These files load at the start of every session and survive compaction. Keep them lean -- under 200 lines.
+
+When did you last notice the agent losing track? I've found that most people tolerate degraded output for far too long. After two failed corrections on the same issue, stop correcting. Run `/clear` and write a better prompt from scratch.
+
+### Notes
+
+- Context exhaustion shows up as repeated file reads, forgotten conventions, and vague responses
+- Use `/clear` between tasks -- old context from Task A actively hurts Task B
+- Subagents keep your main session clean by running research in a separate context window
+- Store project conventions in `CLAUDE.md` or `AGENTS.md` so you never repeat them
+- After two failed corrections, start fresh instead of arguing with a degraded session

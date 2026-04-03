@@ -1,0 +1,50 @@
+---
+title: "Claude Code Mastery"
+description: "What makes Claude Code different, and how to get the most out of its agentic loop, permissions, memory, and subagents"
+order: 1
+tools: ["claude-code"]
+---
+
+Claude Code lives in your terminal. This matters because the terminal is where your project already lives -- your files, your git history, your test runner, your build system. Claude Code doesn't need an adapter layer. It just sits down at your workstation.
+
+But the real difference isn't the interface. It's the loop.
+
+### The agentic loop
+
+When you ask Claude Code to fix a failing test, it doesn't just suggest a patch. It reads the test file, searches for related code, edits the source, runs the tests, reads the output, and tries again if something breaks.
+
+This read-think-act-verify cycle repeats until the task is done. You can interrupt any time with `Esc`. Press it twice to rewind to a checkpoint.
+
+What makes this powerful is that Claude verifies its own work. Give it a way to check -- a test suite, a linter, a type checker -- and the quality of its output jumps dramatically.
+
+### Permission modes
+
+You wouldn't give a contractor unlimited keys on day one. Claude Code works the same way.
+
+Cycle through modes with **Shift+Tab**: **Default** asks before edits and commands. **Accept Edits** auto-approves file changes but still asks before shell commands. **Plan** is read-only -- great for exploration. **Auto** lets a background classifier handle approvals for long-running tasks.
+
+Start in Default. Move to Accept Edits once you trust the direction. Use Plan when you're not sure what to build yet.
+
+### CLAUDE.md -- your project memory
+
+Without a `CLAUDE.md`, Claude re-learns your preferences every session. With one, it knows your package manager, your test command, your file conventions, and your architecture from the moment it starts.
+
+Run `/init` to generate one automatically. Claude analyzes your project and drafts a starting point. Refine it with the things Claude can't discover on its own -- why you chose that ORM, which directories are off-limits, what your team's PR conventions look like.
+
+### Subagents
+
+Sometimes you need research without cluttering your main conversation. Subagents handle that.
+
+Ask Claude to investigate how a module works, and it can spin up a read-only Explore subagent. That subagent searches freely in its own context, then reports back a summary. Your main conversation stays clean.
+
+You can also create custom subagents in `.claude/agents/` -- a security reviewer, a documentation writer, whatever your workflow needs. Each gets its own tools, model, and system prompt.
+
+### Git integration
+
+Claude Code understands git natively. Ask it to commit your changes with a descriptive message, create a branch, or open a PR -- it handles the whole flow. This isn't a wrapper around shell commands. Claude reads your diff, understands what changed, and writes a meaningful commit message.
+
+For batch work, the `/batch` skill splits a large change across parallel worktrees, with one agent per unit of work. Each opens its own PR.
+
+### When to reach for non-interactive mode
+
+Claude Code also runs headless with `claude -p`. This unlocks CI pipelines, scripted migrations, and fan-out patterns where you process dozens of files in parallel. Pair it with `--allowedTools` to pre-approve specific tools so no human is needed in the loop.

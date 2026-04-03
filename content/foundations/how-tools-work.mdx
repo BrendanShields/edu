@@ -1,0 +1,83 @@
+---
+title: "How AI Coding Tools Work"
+description: "Understand the agentic loop, built-in tools, and what makes AI coding assistants different from chatbots"
+order: 1
+tools: ["claude-code", "opencode", "github-copilot"]
+---
+
+{/* Sections: intro(copyPaste), revelation(oneShotFix), loop(agenticLoop), tools(builtInTools), threeTools(implementations), notes(whyMatters) */}
+
+### THE COPY-PASTE PROBLEM
+
+Here's what happens when you ask ChatGPT to fix a bug in your codebase.
+
+You paste the error message into the chat. It gives you a suggestion. You copy the suggestion, paste it into your editor, save the file, run the test. It fails -- different error now. You copy *that* error, paste it back into the chat. New suggestion. Paste, save, run. Still broken. You're on round five and you've stopped debugging your code. You're debugging the AI's suggestion.
+
+Each round trip takes about a minute. You're reading the file, copying to the chat, pasting the response, testing, copying the error, pasting again. Five minutes gone. Maybe ten. And the bug is still there.
+
+Sound familiar?
+
+Here's the thing nobody tells you: **you** are the bottleneck. Not the AI. You're the slow, error-prone bridge between a model that can't see your code and an editor that can't think. Every copy, every paste, every context switch -- that's you doing the work the tool should be doing.
+
+### WHAT IF IT COULD JUST... DO IT?
+
+Same bug. Same codebase. But this time, one prompt.
+
+The agent reads the failing test file itself. It finds the function under test, opens the source code, spots the off-by-one error. It edits the file. Runs the test. Sees it fail -- wrong fix. It reads the new error, rethinks, tries a different approach. Edits again. Runs the test. Green.
+
+You get a diff showing exactly what changed. You approve it. Two minutes, start to finish.
+
+Can you spot the difference? It's not that the AI got smarter between scenario one and scenario two. It's that in the second scenario, the AI could **see your code and take action on it** without you shuttling text back and forth.
+
+I've found that once people experience this shift, they never go back to the copy-paste dance. It feels like the difference between giving someone directions over the phone versus handing them the steering wheel.
+
+### THE LOOP
+
+That second scenario isn't magic. It's a pattern. Every AI coding tool follows it, and once you see it, you'll recognize it everywhere.
+
+**Read** -- The agent gathers context. It reads files, searches your codebase, looks at error messages, checks git history.
+
+**Think** -- It analyzes what it found and plans an approach. What needs to change? What's the safest path?
+
+**Act** -- It makes changes. Edits a file, runs a command, creates a branch.
+
+**Verify** -- It checks its work. Runs tests, reads the output, compares against expectations.
+
+Then it loops back. If tests fail, it reads the error, rethinks, tries again, verifies again. This cycle -- Read, Think, Act, Verify -- is the **agentic loop**. It's what separates a coding agent from a chatbot. A chatbot gives you text. An agent gives you working code.
+
+You might notice this is exactly what *you* do when you debug something. Read the error, think about the cause, make a change, test it. The agent just does it faster and without losing context between steps.
+
+### WHAT IT CAN SEE AND TOUCH
+
+An agent is only as useful as the tools it can reach. Each AI coding tool gives the agent a set of **built-in tools** -- specific capabilities it can use during the loop:
+
+- **Read files** -- Open and read any file in your project
+- **Edit code** -- Make targeted changes to specific files
+- **Run commands** -- Execute shell commands in your terminal
+- **Search code** -- Find patterns, definitions, and usages across files
+- **Fetch web content** -- Look up documentation or API references
+- **Git operations** -- Create branches, make commits, push changes
+
+The agent decides which tools to use based on your request. You don't tell it "read file X, then edit line 42." You say "fix the failing test in auth.test.ts" and it figures out the rest -- maybe it reads the test first, greps for the function definition, edits the source, and runs the suite again. All in one loop.
+
+Think of it like a new hire on your team. You don't micromanage every keystroke. You describe the problem, and they use whatever tools they need -- their editor, the terminal, the docs -- to solve it.
+
+### THREE TOOLS, ONE PATTERN
+
+All three tools in this workshop follow the same agentic loop. The difference is where they live.
+
+**Claude Code** runs in your terminal. You type natural language, and the agent reads, edits, and runs commands directly in your project directory. Full access to your filesystem and shell. If you live in the terminal, this feels natural.
+
+**OpenCode** gives you a polished TUI (terminal UI) with the same agentic capabilities. It's open source and works with any LLM provider -- not just Anthropic. Same loop, more freedom in which model drives it.
+
+**GitHub Copilot** lives inside your IDE. It starts with inline code suggestions as you type, but its Chat and Agent modes give it the same agentic loop -- reading files, running commands, and verifying changes. It meets you where you already are.
+
+Same pattern. Different interfaces. The skills you build with one transfer directly to the others.
+
+### NOTES
+
+- **The copy-paste workflow makes you the bottleneck.** AI coding tools remove you from the loop -- they read, edit, run, and verify on their own.
+- **Every tool follows the same pattern:** Read, Think, Act, Verify, Repeat. This is the agentic loop.
+- **Built-in tools give the agent hands.** File reading, code editing, shell commands, search, web access, and git are the standard set.
+- **Three tools, one loop.** Claude Code (terminal), OpenCode (TUI, any model), Copilot (IDE). Pick by where you work, not by feature lists.
+- **Better prompts come from understanding the loop.** Instead of "write me a function," say "fix the failing test in auth.test.ts" -- and let the agent figure out the how.

@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/navigation/Sidebar.astro';
+import Hero from '../components/sections/Hero.astro';
+import Card from '../components/ui/Card.astro';
+import CardGrid from '../components/ui/CardGrid.astro';
+import { getNavigation } from '../lib/navigation';
+
+const navigation = await getNavigation();
+
+const moduleDescriptions: Record<string, { subtitle: string; badge: string }> = {
+  foundations: { subtitle: 'Understand the mental model before touching the tools.', badge: 'Block 1 · Morning' },
+  productivity: { subtitle: 'The daily practices that make you fast.', badge: 'Block 2 · Late Morning' },
+  mastery: { subtitle: 'Master the unique strengths of each tool.', badge: 'Block 3 · Afternoon' },
+  advanced: { subtitle: 'Make the tools work for your team and your projects.', badge: 'Block 4 · Late Afternoon' },
+  reference: { subtitle: 'Quick lookup during and after the workshop.', badge: 'Always Available' },
+};
+---
+
+<BaseLayout title="AI Coding Tools Workshop">
+  <Sidebar />
+
+  <div id="main-content" class="transition-[margin-left] duration-200 ease-in-out" style="margin-left: var(--sidebar-width)">
+    <main class="max-w-[var(--content-max-width)] mx-auto px-8 py-12">
+      <Hero
+        title="Welcome to the Workshop."
+        subtitle="A full-day deep dive into AI-assisted coding. Learn Claude Code, OpenCode, and GitHub Copilot — from foundations to advanced customization."
+        ctaText="Start with Foundations"
+        ctaHref="/foundations"
+      />
+
+      {navigation.map((section) => {
+        const meta = moduleDescriptions[section.slug];
+        const isReference = section.slug === 'reference';
+        return (
+          <section class="py-10">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-accent"></div>
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-text-muted">{section.title}</h2>
+            </div>
+            <div class="flex items-center gap-3 mb-6">
+              <span class:list={[
+                'text-[10px] font-medium px-2 py-0.5 rounded-full',
+                isReference ? 'bg-surface text-text-muted border border-border' : 'bg-accent/15 text-accent',
+              ]}>
+                {meta?.badge}
+              </span>
+              <span class="text-sm text-text-muted">{meta?.subtitle}</span>
+            </div>
+            <CardGrid>
+              {section.items.map((item) => (
+                <Card title={item.title} description="" href={item.href} tools={item.tools} />
+              ))}
+            </CardGrid>
+          </section>
+        );
+      })}
+
+      <!-- Keyboard Shortcuts -->
+      <section class="py-10 border-t border-border">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-2.5 h-2.5 rounded-full bg-accent"></div>
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-text-muted">Keyboard Shortcuts</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-4 max-w-md">
+          {[
+            { key: 'S', action: 'Toggle sidebar' },
+            { key: '← →', action: 'Navigate pages' },
+          ].map(({ key, action }) => (
+            <div class="flex items-center gap-3">
+              <kbd class="px-2.5 py-1 bg-surface border border-border rounded text-sm font-mono text-text-secondary">{key}</kbd>
+              <span class="text-sm text-text-muted">{action}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>

@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from 'astro:content';
+import TwoColumnLayout from '../../layouts/TwoColumnLayout.astro';
+import AgenticLoop from '../../components/visuals/AgenticLoop.astro';
+import ToolLandscape from '../../components/visuals/ToolLandscape.astro';
+import DefaultVisual from '../../components/visuals/DefaultVisual.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('foundations');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const visualMap: Record<string, string> = {
+  'how-tools-work': 'agentic-loop',
+  'tool-landscape': 'tool-landscape',
+};
+const visual = visualMap[entry.id] || 'default';
+---
+
+<TwoColumnLayout title={entry.data.title} description={entry.data.description} section="Foundations" sectionSlug="foundations" tools={entry.data.tools} currentHref={`/foundations/${entry.id}`}>
+  <Content />
+
+  <Fragment slot="visual">
+    {visual === 'agentic-loop' && <AgenticLoop />}
+    {visual === 'tool-landscape' && <ToolLandscape />}
+    {visual === 'default' && <DefaultVisual title={entry.data.title} tools={entry.data.tools} />}
+  </Fragment>
+</TwoColumnLayout>

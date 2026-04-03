@@ -1,0 +1,361 @@
+---
+title: "OpenCode Cheat Sheet"
+description: "Complete quick reference for OpenCode -- CLI commands, keybinds, configuration, tools, permissions, and agents"
+order: 2
+tools: ["opencode"]
+---
+
+## CLI Commands
+
+### Starting OpenCode
+
+| Command | Description |
+|---------|-------------|
+| `opencode` | Start the TUI (terminal UI) |
+| `opencode [project]` | Start TUI in a specific project directory |
+| `opencode -c` | Continue the last session |
+| `opencode -s <id>` | Continue a specific session |
+| `opencode -m provider/model` | Start with a specific model |
+| `opencode --agent <name>` | Start with a specific agent |
+| `opencode --prompt "text"` | Start with a pre-filled prompt |
+
+### Non-Interactive Mode
+
+| Command | Description |
+|---------|-------------|
+| `opencode run "message"` | Run a prompt and exit |
+| `opencode run -c "message"` | Continue last session non-interactively |
+| `opencode run -m provider/model "message"` | Run with a specific model |
+| `opencode run -f file.ts "review this"` | Attach file(s) to the message |
+| `opencode run --format json "message"` | Output raw JSON events |
+| `opencode run --share "message"` | Share the session after completion |
+| `opencode run --attach http://host:port "msg"` | Attach to a running server |
+
+### Server and Web
+
+| Command | Description |
+|---------|-------------|
+| `opencode serve` | Start a headless HTTP server |
+| `opencode web` | Start server with web interface |
+| `opencode attach <url>` | Attach TUI to a running backend |
+| `opencode acp` | Start an ACP (Agent Client Protocol) server |
+
+### Management Commands
+
+| Command | Description |
+|---------|-------------|
+| `opencode auth login` | Configure API keys for providers |
+| `opencode auth list` / `auth ls` | List authenticated providers |
+| `opencode auth logout` | Remove provider credentials |
+| `opencode models [provider]` | List available models |
+| `opencode models --refresh` | Refresh model cache from models.dev |
+| `opencode session list` | List all sessions |
+| `opencode stats` | Show token usage and cost statistics |
+| `opencode export [sessionID]` | Export session as JSON |
+| `opencode import <file>` | Import session from JSON or share URL |
+| `opencode mcp add` | Add an MCP server |
+| `opencode mcp list` / `mcp ls` | List configured MCP servers |
+| `opencode mcp auth [name]` | Authenticate with OAuth MCP server |
+| `opencode agent create` | Create a new custom agent |
+| `opencode agent list` | List all available agents |
+| `opencode github install` | Install GitHub Actions agent |
+| `opencode upgrade [version]` | Update to latest or specific version |
+| `opencode uninstall` | Remove OpenCode and all files |
+
+### Global Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` / `-h` | Display help |
+| `--version` / `-v` | Print version number |
+| `--print-logs` | Print logs to stderr |
+| `--log-level <level>` | Set log level (DEBUG, INFO, WARN, ERROR) |
+
+## TUI Commands
+
+Type `/` in the TUI to access commands. Type any letters after `/` to filter.
+
+| Command | Description |
+|---------|-------------|
+| `/init` | Initialize project (creates AGENTS.md) |
+| `/undo` | Undo last agent changes |
+| `/redo` | Redo undone changes |
+| `/share` | Share the current conversation |
+| `/help` | Show available commands |
+| `/connect` | Configure provider API keys |
+| Custom commands | Defined in `.opencode/commands/` or config |
+
+## Keybinds
+
+OpenCode uses a **leader key** (default: `Ctrl+X`) for most actions. Press the leader key first, then the shortcut.
+
+### Session and Navigation
+
+| Keybind | Action |
+|---------|--------|
+| `<Leader> N` | New session |
+| `<Leader> L` | List sessions |
+| `<Leader> G` | Session timeline |
+| `<Leader> X` | Export session |
+| `<Leader> C` | Compact current session |
+| `Escape` | Interrupt running response |
+| `<Leader> B` | Toggle sidebar |
+| `<Leader> S` | Status view |
+
+### Subagent Navigation
+
+| Keybind | Action |
+|---------|--------|
+| `<Leader> Down` | Enter first child (subagent) session |
+| `Right` | Cycle to next child session |
+| `Left` | Cycle to previous child session |
+| `Up` | Return to parent session |
+
+### Model and Agent Switching
+
+| Keybind | Action |
+|---------|--------|
+| `<Leader> M` | Model list |
+| `F2` | Cycle recent models |
+| `Shift+F2` | Cycle recent models (reverse) |
+| `<Leader> A` | Agent list |
+| `Tab` | Cycle agents (Build -> Plan) |
+| `Shift+Tab` | Cycle agents (reverse) |
+| `Ctrl+T` | Cycle variant |
+
+### Input Editing
+
+| Keybind | Action |
+|---------|--------|
+| `Enter` | Submit message |
+| `Shift+Enter` / `Ctrl+Enter` / `Ctrl+J` | New line |
+| `Ctrl+C` | Clear input |
+| `Ctrl+V` | Paste |
+| `Ctrl+K` | Delete to end of line |
+| `Ctrl+U` | Delete to start of line |
+| `Ctrl+W` | Delete previous word |
+| `Alt+D` | Delete next word |
+| `Ctrl+A` | Move to start of line |
+| `Ctrl+E` | Move to end of line |
+| `Alt+B` | Move back one word |
+| `Alt+F` | Move forward one word |
+| `Up` / `Down` | Navigate history |
+
+### Messages
+
+| Keybind | Action |
+|---------|--------|
+| `PageUp` / `Ctrl+Alt+B` | Page up in messages |
+| `PageDown` / `Ctrl+Alt+F` | Page down in messages |
+| `<Leader> Y` | Copy message |
+| `<Leader> U` | Undo (revert changes) |
+| `<Leader> R` | Redo |
+| `<Leader> H` | Toggle conceal / tips |
+
+### Other
+
+| Keybind | Action |
+|---------|--------|
+| `Ctrl+P` | Command list |
+| `<Leader> E` | Open in external editor |
+| `<Leader> T` | Theme list |
+| `<Leader> Q` | Quit (alternative: Ctrl+C, Ctrl+D) |
+| `Ctrl+Z` | Suspend terminal |
+
+## Configuration
+
+Configuration uses `opencode.json` (or `opencode.jsonc`) with JSON Schema at `https://opencode.ai/config.json`. TUI-specific settings go in `tui.json`.
+
+### Config Locations (Precedence Order)
+
+1. **Remote config** (`.well-known/opencode`) -- organizational defaults
+2. **Global** (`~/.config/opencode/opencode.json`) -- user preferences
+3. **Custom** (`OPENCODE_CONFIG` env var) -- overrides
+4. **Project** (`opencode.json` in project root) -- project-specific
+5. **`.opencode` directories** -- agents, commands, plugins
+6. **Inline** (`OPENCODE_CONFIG_CONTENT` env var) -- runtime overrides
+
+### Key Configuration Options
+
+```jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-sonnet-4-5",
+  "small_model": "anthropic/claude-haiku-4-5",
+  "default_agent": "build",
+  "autoupdate": true,
+  "snapshot": true,
+  "share": "manual",
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 10000
+  },
+  "instructions": ["CONTRIBUTING.md", "docs/guidelines.md"],
+  "permission": { /* see Permissions below */ },
+  "agent": { /* see Agents below */ },
+  "command": { /* see Custom Commands below */ },
+  "mcp": { /* MCP server configs */ },
+  "formatter": { /* code formatter configs */ },
+  "tools": { /* enable/disable built-in tools */ },
+  "plugin": ["opencode-helicone-session"]
+}
+```
+
+## Permissions
+
+Permissions control tool behavior: `"allow"`, `"ask"`, or `"deny"`.
+
+### Quick Setup
+
+```jsonc
+// Allow everything (default)
+{ "permission": "allow" }
+
+// Ask for everything
+{ "permission": "ask" }
+
+// Per-tool configuration
+{
+  "permission": {
+    "*": "ask",
+    "read": "allow",
+    "grep": "allow",
+    "glob": "allow",
+    "edit": "ask",
+    "bash": "ask"
+  }
+}
+```
+
+### Granular Bash Rules
+
+```jsonc
+{
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "git *": "allow",
+      "npm test*": "allow",
+      "rm *": "deny"
+    }
+  }
+}
+```
+
+### Defaults
+
+- Most permissions: `"allow"`
+- `doom_loop`: `"ask"`
+- `external_directory`: `"ask"`
+- `read` on `.env` files: `"deny"`
+
+### Available Permission Keys
+
+`read`, `edit`, `glob`, `grep`, `list`, `bash`, `task`, `skill`, `lsp`, `todoread`, `todowrite`, `webfetch`, `websearch`, `codesearch`, `external_directory`, `doom_loop`
+
+## Agents
+
+### Built-in Agents
+
+| Agent | Mode | Description |
+|-------|------|-------------|
+| **Build** | Primary | Default agent with all tools enabled |
+| **Plan** | Primary | Read-only analysis, asks before edits/bash |
+| **General** | Subagent | Full-access agent for parallel subtasks |
+| **Explore** | Subagent | Read-only agent for fast codebase exploration |
+
+Switch primary agents with `Tab`. Invoke subagents with `@general` or `@explore`.
+
+### Custom Agent via Markdown
+
+Place in `.opencode/agents/` or `~/.config/opencode/agents/`:
+
+```markdown
+---
+description: Reviews code for best practices
+mode: subagent
+model: anthropic/claude-sonnet-4-5
+temperature: 0.1
+permission:
+  edit: deny
+  bash: ask
+---
+You are a code reviewer. Focus on security, performance, and maintainability.
+```
+
+### Agent Configuration Options
+
+| Option | Description |
+|--------|-------------|
+| `description` | What the agent does (required) |
+| `mode` | `primary`, `subagent`, or `all` |
+| `model` | Override model for this agent |
+| `prompt` | Custom system prompt (supports `{file:path}`) |
+| `temperature` | Creativity (0.0-1.0) |
+| `steps` | Max agentic iterations before forced response |
+| `permission` | Agent-specific permission overrides |
+| `hidden` | Hide from `@` autocomplete (subagents only) |
+| `color` | UI color (hex or theme color) |
+| `disable` | Set to true to disable |
+
+## Built-in Tools
+
+| Tool | Description | Permission Key |
+|------|-------------|---------------|
+| `bash` | Execute shell commands | `bash` |
+| `read` | Read file contents | `read` |
+| `edit` | Modify files (string replacement) | `edit` |
+| `write` | Create/overwrite files | `edit` |
+| `patch` | Apply patches to files | `edit` |
+| `multiedit` | Multiple edits in one call | `edit` |
+| `grep` | Search with regex (ripgrep) | `grep` |
+| `glob` | Find files by pattern | `glob` |
+| `list` | List directory contents | `list` |
+| `webfetch` | Fetch web content | `webfetch` |
+| `websearch` | Search the web (Exa AI) | `websearch` |
+| `skill` | Load a SKILL.md file | `skill` |
+| `todowrite` | Manage todo lists | `todowrite` |
+| `todoread` | Read todo lists | `todoread` |
+| `question` | Ask user questions | `question` |
+| `lsp` | Code intelligence (experimental) | `lsp` |
+
+## Custom Commands
+
+Define in `.opencode/commands/` as markdown files or in `opencode.json`:
+
+```markdown
+---
+description: Run tests with coverage
+agent: build
+model: anthropic/claude-sonnet-4-5
+---
+Run the full test suite with coverage. Focus on failing tests and suggest fixes.
+```
+
+### Template Variables
+
+| Variable | Description |
+|----------|-------------|
+| `$ARGUMENTS` | All arguments passed to the command |
+| `$1`, `$2`, `$3`... | Positional arguments |
+| `` !`command` `` | Inject shell command output |
+| `@filename` | Include file content |
+
+## Key Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `OPENCODE_CONFIG` | Path to custom config file |
+| `OPENCODE_CONFIG_DIR` | Path to custom config directory |
+| `OPENCODE_CONFIG_CONTENT` | Inline JSON config content |
+| `OPENCODE_PERMISSION` | Inline JSON permissions config |
+| `OPENCODE_DISABLE_AUTOCOMPACT` | Disable automatic compaction |
+| `OPENCODE_DISABLE_AUTOUPDATE` | Disable update checks |
+| `OPENCODE_EXPERIMENTAL` | Enable all experimental features |
+| `OPENCODE_ENABLE_EXA` | Enable web search tools |
+| `OPENCODE_SERVER_PASSWORD` | Enable basic auth for serve/web |
+| `OPENCODE_EXPERIMENTAL_LSP_TOOL` | Enable experimental LSP tool |
+| `OPENCODE_EXPERIMENTAL_PLAN_MODE` | Enable plan mode features |
+| `OPENCODE_TUI_CONFIG` | Path to custom TUI config file |
+| `OPENCODE_DISABLE_CLAUDE_CODE` | Disable reading .claude files |

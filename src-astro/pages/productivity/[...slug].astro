@@ -1,0 +1,18 @@
+---
+import { getCollection, render } from 'astro:content';
+import TwoColumnLayout from '../../layouts/TwoColumnLayout.astro';
+import DefaultVisual from '../../components/visuals/DefaultVisual.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('productivity');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<TwoColumnLayout title={entry.data.title} description={entry.data.description} section="Getting Productive" sectionSlug="productivity" tools={entry.data.tools} currentHref={`/productivity/${entry.id}`}>
+  <Content />
+  <DefaultVisual slot="visual" title={entry.data.title} tools={entry.data.tools} />
+</TwoColumnLayout>

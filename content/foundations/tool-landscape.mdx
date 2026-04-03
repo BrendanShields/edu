@@ -1,0 +1,78 @@
+---
+title: "The Tool Landscape"
+description: "Side-by-side comparison of Claude Code, OpenCode, and GitHub Copilot -- where they overlap and where they diverge"
+order: 2
+tools: ["claude-code", "opencode", "github-copilot"]
+---
+
+{/* Sections: intro(toolShape), terminal(terminalBeliever), freedom(freedomBuilder), embedded(embeddedPartner), overlap(sharedDNA), tradeoffs(honestTradeoffs), notes(decisionFramework) */}
+
+### THE RIGHT TOOL FOR THE SHAPE
+
+You wouldn't use a screwdriver to hammer a nail. It might technically work -- but you'd hate every second of it.
+
+Coding tools have shapes too. Some fit the way you work. Others fight it. And the fastest way to waste a week is to pick a tool that doesn't match the place you actually spend your time.
+
+So before we look at any tool, I want you to answer one question honestly: **Where do you spend most of your coding time?** In a terminal? In VS Code? Jumping between both? There's no wrong answer, but your answer matters more than any feature comparison.
+
+### THE TERMINAL BELIEVER
+
+**Claude Code** comes from a simple conviction: the terminal is where real work happens.
+
+You type `claude` in a project directory and start talking. That's it. No GUI to configure, no extension to install. The agent reads your files, edits your code, runs your tests, manages git -- all without leaving the terminal. It has full access to your filesystem and shell, which means it can do anything you can do from the command line.
+
+I've found that terminal-native developers pick this up in about thirty seconds. You describe what you want in plain English, and the agent does it. Fix a bug, refactor a module, write tests for untested code, set up CI. It just works.
+
+The model behind it is Claude -- exclusively. No GPT, no Gemini, no local models. Anthropic built the tool specifically around Claude's reasoning, including extended thinking for hard problems and deep understanding of large codebases.
+
+If you live in the terminal, this is home.
+
+### THE FREEDOM BUILDER
+
+**OpenCode** starts from a different belief entirely: you should never be locked into someone else's choices.
+
+It connects to over 75 providers via the AI SDK. Anthropic, OpenAI, Google, local models running on your machine -- whatever you prefer. Want to test a new model that dropped this morning? Change one line in your config.
+
+The interface is a beautiful terminal UI with panels, syntax highlighting, and session management. It feels polished in a way that surprises people for an open-source project. You can create custom agents via JSON or markdown. You can define custom commands with template variables. You can share sessions via opncd.ai links.
+
+If you've ever felt locked into someone else's choices -- their model, their pricing, their roadmap -- OpenCode is the antidote. It's fully open source, so you can inspect how it works, modify it, or contribute.
+
+### THE EMBEDDED PARTNER
+
+**GitHub Copilot** takes yet another stance: AI should meet you where you already work.
+
+It lives inside your IDE. VS Code, JetBrains, Xcode, Visual Studio -- wherever you write code. And it starts with something the other two tools don't offer at all: **inline code completions as you type**. No prompt needed. Just keep coding and Copilot suggests the next line, the next function, the next block.
+
+That inline experience is the fastest feedback loop in AI coding. But Copilot is more than autocomplete. Chat mode for conversations. Agent mode for autonomous multi-step tasks. A coding agent that can work on GitHub issues asynchronously -- creating branches and pull requests while you sleep.
+
+It meets you where you already work. If your life revolves around VS Code and GitHub, Copilot feels less like a tool you adopted and more like one that was already there.
+
+### WHERE THEY OVERLAP
+
+You might assume these tools are wildly different under the hood. They're not.
+
+All three support MCP servers for extending capabilities. All three have agentic modes that follow the Read-Think-Act-Verify loop. All three accept custom instructions to shape behavior. All three can review code, manage context windows, and persist sessions.
+
+The core agentic capabilities are converging fast. What differs is the surface -- where the tool lives, how you interact with it, and what ecosystem surrounds it.
+
+### THE HONEST TRADEOFFS
+
+This is the part most comparisons skip. Every tool has a cost, and pretending otherwise wastes your time.
+
+**If you live in the terminal but pick Copilot,** you'll miss deep CLI integration. Copilot's strength is the IDE -- its terminal story is secondary. You'll find yourself switching contexts more than you want.
+
+**If you want model flexibility but pick Claude Code,** you're locked to Anthropic. Claude is excellent, but you can't swap in GPT or Gemini or a local model when the situation calls for it.
+
+**If you need tight GitHub integration but pick OpenCode,** you'll build it yourself. OpenCode is standalone and portable, which is a strength -- until you need issue tracking, PR workflows, or Actions built in.
+
+**If you want inline completions but pick Claude Code or OpenCode,** you won't get them. Inline suggestions while you type are uniquely Copilot's. The other two are conversation-first.
+
+No tool is perfect for everyone. The best developers I know pick based on where they work, not which one won a benchmark.
+
+### NOTES
+
+- **Start with where you code.** Terminal-first? Claude Code. IDE-first? Copilot. Model-flexible? OpenCode.
+- **The overlap is larger than the difference.** All three do agentic coding, MCP, custom instructions, and code review.
+- **Tradeoffs are real.** Model lock-in, ecosystem lock-in, missing features -- every choice costs something.
+- **Combining tools works.** Many developers use Copilot for inline completions and a terminal agent for bigger tasks.
+- **Features change weekly. Philosophy doesn't.** Pick for philosophy, adapt to features.

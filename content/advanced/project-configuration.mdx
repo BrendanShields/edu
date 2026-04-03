@@ -1,0 +1,43 @@
+---
+title: "Project Configuration"
+description: "Give your AI tools persistent context with memory files, rules, and project-level instructions"
+order: 1
+tools: ["claude-code", "opencode", "github-copilot"]
+---
+
+Without configuration, the agent re-learns your preferences every single session. Imagine explaining your code style to a new contractor every morning. "We use pnpm. Tests go here. Don't touch that folder." Every morning. From scratch.
+
+One configuration file ends that cycle permanently.
+
+### What Changes With a Memory File
+
+A `CLAUDE.md`, `AGENTS.md`, or `copilot-instructions.md` is the briefing document you hand to that contractor on day one. Build commands, code style, architecture decisions, naming conventions -- all loaded before the first prompt. The agent stops guessing and starts working within your constraints.
+
+But here's what a bloated config looks like versus a lean one. The bloated version dumps every possible instruction into one file -- formatting rules, deployment steps, database schemas, team philosophy. The lean version has five to ten crisp rules the agent actually needs for day-to-day work. Everything else lives in scoped rules or skills.
+
+### CLAUDE.md
+
+Claude Code's memory file loads at session start and walks up the directory tree. A `CLAUDE.md` in `packages/api/` adds to the one at the project root -- it doesn't replace it.
+
+Run `/init` to generate a starting point. Then add what Claude can't discover: why you chose Prisma over Drizzle, which directories are sensitive, what your team expects in a PR. For larger projects, break rules into `.claude/rules/` files scoped to file patterns -- `api-design.md` with `paths: ["src/api/**/*.ts"]` only loads when Claude works on API files.
+
+### AGENTS.md and copilot-instructions.md
+
+OpenCode reads `AGENTS.md` from the project root. It also falls back to `CLAUDE.md` if no `AGENTS.md` exists, so one file can serve both tools. List additional instruction sources in `opencode.json` under `"instructions"`.
+
+Copilot uses `.github/copilot-instructions.md` for project-level context. **Copilot Memory** (preview) goes further -- it learns details about a repo over time and applies them automatically. What conventions would you put in your config file right now if you had to pick just five?
+
+### Cross-Tool Compatibility
+
+If your team uses multiple tools, start with a `CLAUDE.md` at the project root. OpenCode reads it as a fallback. For Copilot, maintain a separate `.github/copilot-instructions.md` -- the format expectations differ enough that a shared file gets awkward.
+
+The goal isn't one file to rule them all. It's making sure every tool knows your project's conventions from the first prompt.
+
+### Notes
+
+- Memory files eliminate the "re-explain everything" problem -- configure once, persist forever
+- Keep configs lean: 5-10 key rules, scope the rest to specific file patterns
+- `CLAUDE.md` walks the directory tree; nested files add context, they don't replace root
+- OpenCode falls back to `CLAUDE.md` if no `AGENTS.md` exists
+- Copilot uses `.github/copilot-instructions.md` with a separate format
+- Run `/init` to generate a starting point, then add human context the agent can't discover

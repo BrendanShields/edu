@@ -1,0 +1,56 @@
+---
+title: "MCP & External Tools"
+description: "Connect your AI coding tools to databases, APIs, and external services using the Model Context Protocol"
+order: 2
+tools: ["claude-code", "opencode", "github-copilot"]
+---
+
+Your agent can read your code but can't see your database, your error logs, or your design files. It's like a mechanic who can look under the hood but isn't allowed to check the dashboard lights.
+
+MCP changes that. It's a universal protocol that connects AI tools to external capabilities -- databases, APIs, monitoring, design tools. One server, any client.
+
+### Without MCP vs. With MCP
+
+Without MCP, the workflow looks like this: you open Sentry, copy the stack trace, paste it into the agent, then open your database client, run a query, copy the results, paste those too. You're the human clipboard between your tools and your agent.
+
+With MCP, you say: "Check the last five errors in Sentry and cross-reference them with the user_sessions table." The agent queries both directly. No copy-paste. No context switching. The agent already knows how to read, think, and act. MCP just gives it more to work with.
+
+### Setup in Claude Code
+
+A remote HTTP server is the simplest setup:
+
+```bash
+claude mcp add --transport http notion https://mcp.notion.com/mcp
+```
+
+For local servers that need environment variables:
+
+```bash
+claude mcp add --transport stdio --env SENTRY_TOKEN=xxx sentry \
+  -- npx -y @sentry/mcp-server
+```
+
+Manage servers with `claude mcp list` and `claude mcp remove`. To share servers with your team, commit a `.mcp.json` at the project root. Environment variables expand with `${VAR}` syntax. Every teammate who clones the repo gets the same tools automatically.
+
+### Setup in OpenCode and Copilot
+
+OpenCode configures MCP in `opencode.json` under the `"mcp"` key. Remote servers, local stdio servers -- both work. Copilot supports MCP in VS Code and JetBrains through editor settings, plus a first-party GitHub MCP Server that works remotely.
+
+### Popular Servers
+
+Context7 for library documentation. Sentry for error monitoring. PostgreSQL for direct database queries. GitHub for issues and PRs. Figma for design files. The ecosystem is growing fast. Which external data source would save you the most copy-pasting right now?
+
+### Scoping and Security
+
+Should you give the AI access to your production database? Probably not.
+
+Claude Code supports three scopes: **local** (personal, not shared), **project** (committed to the repo), and **user** (global across all projects). Put sensitive servers in local scope. Put team-shared servers in project scope. Scope carefully -- the convenience of MCP is real, but so is the risk of overpermissioning.
+
+### Notes
+
+- MCP is a universal protocol connecting AI tools to external services -- "USB for AI"
+- Eliminates the copy-paste workflow between external tools and your agent
+- Claude Code: `claude mcp add` for setup, `.mcp.json` for team sharing
+- OpenCode: configure in `opencode.json`; Copilot: configure in editor settings
+- Three scopes in Claude Code: local, project, user -- scope sensitive servers carefully
+- Popular servers: Context7, Sentry, PostgreSQL, GitHub, Figma

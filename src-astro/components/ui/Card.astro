@@ -1,0 +1,46 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  tools: string[];
+}
+
+const { title, description, href, tools } = Astro.props;
+
+const toolLabels: Record<string, string> = {
+  'claude-code': 'Claude Code',
+  'opencode': 'OpenCode',
+  'github-copilot': 'GitHub Copilot',
+};
+
+const toolDotColors: Record<string, string> = {
+  'claude-code': 'bg-tool-claude',
+  'opencode': 'bg-tool-opencode',
+  'github-copilot': 'bg-tool-copilot',
+};
+
+const isAllTools = tools.length === 3;
+const label = isAllTools ? 'All Tools' : tools.map((t) => toolLabels[t] || t).join(' · ');
+---
+
+<a
+  href={href}
+  class="group block bg-surface border border-border rounded-xl p-6 hover:border-border-hover hover:bg-surface-hover transition-all duration-200"
+>
+  <div class="flex items-center gap-2 mb-3">
+    <span class="flex gap-1">
+      {isAllTools ? (
+        <span class="w-2 h-2 rounded-full bg-text-muted"></span>
+      ) : (
+        tools.map((t) => (
+          <span class:list={['w-2 h-2 rounded-full', toolDotColors[t] || 'bg-text-muted']}></span>
+        ))
+      )}
+    </span>
+    <span class="text-xs text-text-muted uppercase tracking-wider">{label}</span>
+  </div>
+  <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">{title}</h3>
+  <p class="text-sm text-text-secondary leading-relaxed mb-4">{description}</p>
+  <span class="text-xs text-text-muted uppercase tracking-wider group-hover:text-accent transition-colors">[OPEN]</span>
+</a>

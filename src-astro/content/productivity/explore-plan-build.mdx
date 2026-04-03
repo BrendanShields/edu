@@ -1,0 +1,65 @@
+---
+title: "Explore → Plan → Build"
+description: "A structured workflow for tackling complex tasks with AI coding tools"
+order: 2
+tools: ["claude-code", "opencode", "github-copilot"]
+---
+
+# Explore, Plan, Build
+
+The most common mistake is jumping straight to implementation.
+
+You ask the agent to "add Google OAuth" and it starts writing code immediately. It picks a library you don't use. It creates files in the wrong directory. It builds a session flow that contradicts your existing auth pattern. Twenty minutes later, you throw it all away.
+
+The fix is embarrassingly simple: make the agent look before it leaps.
+
+### Phase one: explore
+
+Before changing anything, the agent should read the codebase and understand what exists. What patterns are already in place? What conventions does the project follow? What would break if you changed the wrong thing?
+
+In Claude Code, switch to Plan mode with `Shift+Tab`. The agent can read files and run exploratory commands, but can't edit anything. In OpenCode, press `Tab` to switch to the Plan agent. In Copilot, use Chat with `@workspace` to ask questions without making changes.
+
+```text
+Read src/auth/ and understand how we handle sessions.
+What libraries do we use? Where are secrets configured?
+```
+
+This phase is cheap. The agent reads a few files, builds a mental model, and reports back. You now share an understanding of the codebase.
+
+### Phase two: plan
+
+Now ask the agent to propose an approach. Not code -- an approach.
+
+```text
+I want to add Google OAuth. Based on what you just read,
+what files need to change? What's the session flow?
+Propose a plan before writing any code.
+```
+
+In Claude Code, press `Ctrl+G` to open the plan in your text editor so you can mark it up directly. Review the plan. Does it match your expectations? Does it account for edge cases? Is it touching the right files?
+
+This is where you catch the big mistakes. A wrong plan caught now saves thirty minutes of wrong implementation later.
+
+### Phase three: build
+
+Switch to build mode and implement against the plan.
+
+```text
+Implement the OAuth flow from your plan.
+Write tests for the callback handler.
+Run the test suite and fix any failures.
+```
+
+Because the agent already explored the codebase and has a reviewed plan, it makes fewer wrong turns. It knows which patterns to follow. It knows where files should go.
+
+### When to skip the plan
+
+Planning adds overhead. Skip it when the fix is obvious -- a typo, a rename, adding a log line. If you can describe the diff in one sentence, just build.
+
+Use planning when the change spans multiple files, when you're unfamiliar with the code, or when you're uncertain about the approach. The more complex the task, the more the upfront investment pays off.
+
+### The commit
+
+Once the build phase passes your tests, commit. Ask the agent to write a descriptive message and open a PR if appropriate.
+
+This four-phase rhythm -- explore, plan, build, commit -- becomes automatic with practice. It feels slower at first. But it's dramatically faster than the alternative: building the wrong thing, throwing it away, and starting over.

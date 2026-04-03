@@ -1,0 +1,224 @@
+---
+title: "Claude Code Cheat Sheet"
+description: "Complete quick reference for Claude Code -- slash commands, CLI flags, keyboard shortcuts, permission modes, and common patterns"
+order: 1
+tools: ["claude-code"]
+---
+
+## Slash Commands
+
+Type `/` in Claude Code to see all available commands. Type `/` followed by letters to filter.
+
+| Command | Purpose |
+|---------|---------|
+| `/add-dir <path>` | Add a working directory to the session |
+| `/agents` | Manage subagent configurations |
+| `/btw <question>` | Ask a side question without adding to conversation |
+| `/clear` | Clear conversation history and free context (aliases: `/reset`, `/new`) |
+| `/compact [instructions]` | Compact conversation with optional focus instructions |
+| `/config` | Open settings interface (alias: `/settings`) |
+| `/context` | Visualize current context usage as a colored grid |
+| `/copy [N]` | Copy last assistant response to clipboard |
+| `/cost` | Show token usage statistics |
+| `/diff` | Open interactive diff viewer for uncommitted changes |
+| `/doctor` | Diagnose installation and settings issues |
+| `/effort [low\|medium\|high\|max\|auto]` | Set model effort level |
+| `/exit` | Exit the CLI (alias: `/quit`) |
+| `/export [filename]` | Export conversation as plain text |
+| `/fast [on\|off]` | Toggle fast mode |
+| `/feedback` | Submit feedback (alias: `/bug`) |
+| `/branch [name]` | Fork the conversation at this point (alias: `/fork`) |
+| `/help` | Show help and available commands |
+| `/hooks` | View hook configurations |
+| `/init` | Initialize project with CLAUDE.md |
+| `/keybindings` | Open keybindings configuration file |
+| `/login` | Sign in to Anthropic account |
+| `/mcp` | Manage MCP server connections |
+| `/memory` | Edit CLAUDE.md memory files and auto-memory |
+| `/model [model]` | Select or change the AI model |
+| `/permissions` | View or update permissions (alias: `/allowed-tools`) |
+| `/plan [description]` | Enter plan mode, optionally with a task |
+| `/plugin` | Manage Claude Code plugins |
+| `/pr-comments [PR]` | Fetch comments from a GitHub PR |
+| `/release-notes` | View the full changelog |
+| `/remote-control` | Make session available for remote control (alias: `/rc`) |
+| `/rename [name]` | Rename the current session |
+| `/resume [session]` | Resume a conversation (alias: `/continue`) |
+| `/rewind` | Rewind conversation/code to a previous point (alias: `/checkpoint`) |
+| `/sandbox` | Toggle sandbox mode |
+| `/schedule` | Create, update, list, or run scheduled tasks |
+| `/security-review` | Analyze pending changes for security vulnerabilities |
+| `/skills` | List available skills |
+| `/stats` | Visualize daily usage, sessions, and streaks |
+| `/status` | Show version, model, account, and connectivity |
+| `/stickers` | Order Claude Code stickers |
+| `/terminal-setup` | Configure terminal keybindings |
+| `/theme` | Change the color theme |
+| `/usage` | Show plan usage limits and rate limits |
+| `/vim` | Toggle Vim editing mode |
+| `/voice` | Toggle push-to-talk voice dictation |
+
+## CLI Flags
+
+| Flag | Description |
+|------|-------------|
+| `claude` | Start interactive session |
+| `claude "query"` | Start session with initial prompt |
+| `claude -p "query"` | Print mode: query and exit |
+| `claude -c` | Continue most recent conversation |
+| `claude -r "session"` | Resume session by ID or name |
+| `claude update` | Update to latest version |
+| `--model <name>` | Set model (`sonnet`, `opus`, or full name) |
+| `--permission-mode <mode>` | Start in a permission mode (`plan`, `acceptEdits`, etc.) |
+| `--enable-auto-mode` | Unlock auto mode in Shift+Tab cycle |
+| `--dangerously-skip-permissions` | Skip all permission checks (use with caution) |
+| `--add-dir <path>` | Add additional working directories |
+| `--allowedTools <tools>` | Tools that run without prompting |
+| `--disallowedTools <tools>` | Tools that are removed entirely |
+| `--append-system-prompt "text"` | Append custom text to system prompt |
+| `--system-prompt "text"` | Replace entire system prompt |
+| `--max-turns N` | Limit agentic turns (print mode only) |
+| `--max-budget-usd N` | Maximum dollar spend (print mode only) |
+| `--output-format <fmt>` | Output format: `text`, `json`, `stream-json` |
+| `--effort <level>` | Set effort: `low`, `medium`, `high`, `max` |
+| `--mcp-config <file>` | Load MCP servers from JSON file |
+| `--worktree [name]` / `-w` | Start in an isolated git worktree |
+| `--name "name"` / `-n` | Name the session |
+| `--bare` | Minimal mode: skip auto-discovery for faster startup |
+| `--remote` | Create a web session on claude.ai |
+| `--remote-control` / `--rc` | Start with remote control enabled |
+| `--chrome` | Enable Chrome browser integration |
+| `--verbose` | Enable verbose logging |
+| `--version` / `-v` | Show version number |
+| `--fork-session` | Fork session when resuming |
+| `--from-pr <number>` | Resume sessions linked to a PR |
+| `--agent <name>` | Specify a custom subagent |
+| `--fallback-model <model>` | Fallback model when overloaded (print mode) |
+| `--json-schema '...'` | Get validated JSON output (print mode) |
+
+## Keyboard Shortcuts
+
+### General Controls
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+C` | Cancel current input or generation |
+| `Ctrl+D` | Exit session |
+| `Ctrl+G` | Open prompt in external text editor |
+| `Ctrl+L` | Clear terminal screen (keeps history) |
+| `Ctrl+O` | Toggle verbose output |
+| `Ctrl+R` | Reverse search command history |
+| `Ctrl+V` | Paste image from clipboard |
+| `Ctrl+B` | Background running tasks |
+| `Ctrl+T` | Toggle task list |
+| `Shift+Tab` | Cycle permission modes |
+| `Esc Esc` | Rewind or summarize |
+| `Option+P` / `Alt+P` | Switch model |
+| `Option+T` / `Alt+T` | Toggle extended thinking |
+| `Option+O` / `Alt+O` | Toggle fast mode |
+
+### Text Editing
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+K` | Delete to end of line |
+| `Ctrl+U` | Delete entire line |
+| `Ctrl+Y` | Paste deleted text |
+| `Alt+B` | Move cursor back one word |
+| `Alt+F` | Move cursor forward one word |
+
+### Multiline Input
+
+| Method | Shortcut |
+|--------|----------|
+| Quick escape | `\` + `Enter` |
+| macOS | `Option+Enter` |
+| Shift+Enter | Works in iTerm2, WezTerm, Ghostty, Kitty |
+| Line feed | `Ctrl+J` |
+
+### Quick Prefixes
+
+| Prefix | Action |
+|--------|--------|
+| `/` | Slash command or skill |
+| `!` | Run bash command directly |
+| `@` | File path autocomplete |
+
+## Permission Modes
+
+| Mode | What Runs Freely | Best For |
+|------|-----------------|----------|
+| **default** | File reads | Getting started, sensitive work |
+| **acceptEdits** | Reads + edits | Iterating on code you are reviewing |
+| **plan** | Reads only (no edits) | Exploring, planning refactors |
+| **auto** | All (with classifier) | Long tasks, reducing prompt fatigue |
+| **bypassPermissions** | Everything | Isolated containers only |
+| **dontAsk** | Pre-approved tools only | CI/CD pipelines |
+
+Switch with `Shift+Tab` or `--permission-mode <mode>`.
+
+## Useful Environment Variables
+
+| Variable | Purpose |
+|----------|---------|
+| `ANTHROPIC_API_KEY` | Use API key instead of subscription |
+| `ANTHROPIC_BASE_URL` | Route through proxy or gateway |
+| `ANTHROPIC_MODEL` | Override default model |
+| `CLAUDE_CODE_EFFORT_LEVEL` | Set effort: low/medium/high/max/auto |
+| `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | Change compaction trigger (default ~95%) |
+| `CLAUDE_CODE_DISABLE_AUTO_MEMORY` | Disable auto memory (set to 1) |
+| `CLAUDE_CODE_SHELL` | Override shell detection |
+| `BASH_DEFAULT_TIMEOUT_MS` | Default timeout for bash commands |
+| `DISABLE_AUTOUPDATER` | Disable automatic updates |
+| `MAX_THINKING_TOKENS` | Limit thinking token budget |
+| `CLAUDE_CODE_SIMPLE` | Minimal mode (set to 1) |
+| `CLAUDE_CODE_USE_BEDROCK` | Use AWS Bedrock provider |
+| `CLAUDE_CODE_USE_VERTEX` | Use Google Vertex AI provider |
+
+## Common Prompt Patterns
+
+```text
+# Explore a codebase
+give me an overview of this project
+
+# Fix a bug
+I'm seeing this error when I run npm test: [paste error]
+Fix it.
+
+# Refactor with verification
+refactor src/utils.js to use ES2024 features.
+Run the tests after to make sure nothing broke.
+
+# Plan before implementing
+/plan Add OAuth2 support to the authentication system
+
+# Create a PR
+commit my changes and create a PR with a good description
+
+# Use subagents for parallel work
+run tests and fix failures. Use subagents for parallel investigation.
+
+# Pipe content in
+cat error.log | claude -p "explain the root cause"
+```
+
+## Tools Available to Claude
+
+| Tool | Permission Required | Description |
+|------|-------------------|-------------|
+| `Read` | No | Read file contents |
+| `Edit` | Yes | Make targeted edits |
+| `Write` | Yes | Create or overwrite files |
+| `Bash` | Yes | Execute shell commands |
+| `Glob` | No | Find files by pattern |
+| `Grep` | No | Search file contents |
+| `WebFetch` | Yes | Fetch content from a URL |
+| `WebSearch` | Yes | Perform web searches |
+| `Agent` | No | Spawn a subagent |
+| `AskUserQuestion` | No | Ask multiple-choice questions |
+| `LSP` | No | Code intelligence via language servers |
+| `NotebookEdit` | Yes | Modify Jupyter notebook cells |
+| `Skill` | Yes | Execute a skill |
+| `TaskCreate/Update/List/Get` | No | Manage task tracking |
+| `EnterWorktree/ExitWorktree` | No | Manage git worktrees |
+| `ToolSearch` | No | Search and load deferred MCP tools |
