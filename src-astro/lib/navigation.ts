@@ -19,9 +19,9 @@ export type Navigation = NavSection[];
 
 const MODULES: { key: string; title: string; label: string }[] = [
   { key: 'foundations', title: 'Foundations', label: 'Block 1' },
-  { key: 'productivity', title: 'Getting Productive', label: 'Block 2' },
+  { key: 'productivity', title: 'Productivity', label: 'Block 2' },
   { key: 'mastery', title: 'Tool Deep Dives', label: 'Block 3' },
-  { key: 'advanced', title: 'Customization & Scale', label: 'Block 4' },
+  { key: 'advanced', title: 'Advanced', label: 'Block 4' },
   { key: 'reference', title: 'Reference', label: 'Reference' },
 ];
 

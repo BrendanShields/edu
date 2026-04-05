@@ -4,6 +4,7 @@ import { StepFlow } from '@/components/visuals/templates/StepFlow';
 import { BeforeAfter } from '@/components/visuals/templates/BeforeAfter';
 import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { InlineCompletion } from '@/components/visuals/lesson/InlineCompletion';
+import { CopilotDeepDive } from '@/components/visuals/lesson/CopilotDeepDive';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -11,6 +12,7 @@ const lesson: LessonDef = {
   module: 'mastery',
   title: 'GitHub Copilot Mastery',
   visuals: {
+    deepDive: <CopilotDeepDive />,
     copilotIntro: (
       <TitleCard
         icon="🤖"
@@ -75,7 +77,7 @@ const lesson: LessonDef = {
   sections: [
     {
       id: 'intro',
-      visual: 'copilotIntro',
+      visual: 'deepDive',
       content: (
         <>
           <h1>GitHub Copilot Mastery</h1>

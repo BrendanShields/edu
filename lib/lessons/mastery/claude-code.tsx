@@ -3,6 +3,7 @@ import { StepFlow } from '@/components/visuals/templates/StepFlow';
 import { CodeExample } from '@/components/visuals/templates/CodeExample';
 import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { ToolComparison } from '@/components/visuals/templates/ToolComparison';
+import { ClaudeCodeDeepDive } from '@/components/visuals/lesson/ClaudeCodeDeepDive';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -70,6 +71,7 @@ Next.js 14 app with Prisma ORM
         ]}
       />
     ),
+    deepDive: <ClaudeCodeDeepDive />,
     gitIntegration: (
       <ToolComparison
         tools={[
@@ -87,7 +89,7 @@ Next.js 14 app with Prisma ORM
   sections: [
     {
       id: 'intro',
-      visual: 'claudeIntro',
+      visual: 'deepDive',
       content: (
         <>
           <h1>Claude Code Mastery</h1>

@@ -100,13 +100,15 @@ const lesson: LessonDef = {
         <>
           <h1>Permissions &amp; Safety</h1>
           <p>
-            AI coding tools can read files, write code, and run shell commands. That&apos;s what
-            makes them powerful — and what makes permissions essential.
+            <strong>An AI coding tool can run any shell command on your machine. That sentence should make you pay attention.</strong>
           </p>
           <p>
-            Every tool gives you a way to control <strong>what the AI can do without asking</strong>.
-            Learning to set these correctly is the difference between a productive assistant and a
-            liability.
+            Look at the canvas — &quot;controlling what the AI can do without asking.&quot; Every tool
+            gives you a permission dial. Learning to set it correctly is the difference between a
+            productive assistant and an incident report.
+          </p>
+          <p>
+            This lesson teaches you to turn that dial with confidence.
           </p>
         </>
       ),
@@ -116,19 +118,20 @@ const lesson: LessonDef = {
       visual: 'stories',
       content: (
         <>
-          <h3>Why this matters</h3>
+          <h3>Real damage, real fast</h3>
           <p>
-            Real stories from early adopters: an agent ran <code>rm -rf</code> in the wrong
-            directory. Another force-pushed to main without review. A third dropped a database
-            table while &quot;cleaning up.&quot;
+            Look at the left side of the canvas. <code>rm -rf</code> in the wrong directory.
+            Silent <code>git push --force</code> to main. A dropped production table during
+            &quot;cleanup.&quot;
           </p>
           <p>
-            None of these developers were careless. They just hadn&apos;t set up guardrails yet.
-            The tool did exactly what it was allowed to do.
+            Now look at the right side. Same tool, same power — but with checkpoints before
+            destructive actions, review gates on shell commands, scoped permissions per tool.
+            Every mistake becomes recoverable.
           </p>
           <p>
-            <strong>Permissions aren&apos;t about limiting the AI.</strong> They&apos;re about
-            making mistakes recoverable.
+            None of those developers were careless. They just hadn&apos;t configured guardrails.
+            The tool did exactly what it was <em>allowed</em> to do.
           </p>
         </>
       ),
@@ -140,20 +143,17 @@ const lesson: LessonDef = {
         <>
           <h3>The permission spectrum</h3>
           <p>
-            Every tool offers a range from fully supervised to fully autonomous. The spectrum
-            isn&apos;t good-to-bad — it&apos;s a trust dial you turn up over time.
+            <strong>Click each permission level on the canvas. Watch what happens to the same command.</strong>
           </p>
           <p>
-            <strong>Plan Mode</strong> is read-only. The AI explains what it would do but
-            touches nothing. Perfect for understanding a new codebase.
+            The spectrum isn&apos;t good-to-bad — it&apos;s a trust dial. Plan Mode is read-only:
+            the AI explains what it <em>would</em> do but touches nothing. Default Mode asks
+            before every edit and every command. Auto modes let the AI decide what needs
+            approval — risky actions still get flagged.
           </p>
           <p>
-            <strong>Default Mode</strong> asks before every change. You approve each edit and
-            each command. This is where most people should start.
-          </p>
-          <p>
-            <strong>Auto modes</strong> let the AI decide what needs approval. Risky actions
-            still get flagged. This is the productivity sweet spot once you trust the tool.
+            Notice how the same <code>npm run build</code> behaves differently at each level.
+            That&apos;s the control surface you&apos;re learning to operate.
           </p>
         </>
       ),
@@ -165,20 +165,17 @@ const lesson: LessonDef = {
         <>
           <h3>Building trust gradually</h3>
           <p>
-            Don&apos;t jump to auto mode on day one. Build trust the same way you would with a
-            new team member.
+            Would you give a new hire <code>sudo</code> access on day one? Apply the same logic here.
           </p>
           <p>
-            <strong>Day 1:</strong> Use plan mode. Watch what the AI would do. Learn its
-            patterns and blind spots.
+            Follow the three steps on the canvas. Day 1: Plan Mode — watch what the AI would do,
+            learn its patterns and blind spots. Day 3: Default Mode — approve each action, but
+            notice how rarely you reject. Week 3: Auto Mode — the classifier handles routine
+            actions, you review only what gets flagged.
           </p>
           <p>
-            <strong>Day 3:</strong> Switch to default. Approve each action but notice how rarely
-            you reject. That&apos;s your trust building.
-          </p>
-          <p>
-            <strong>Week 3:</strong> Move to auto. Let the classifier handle routine actions.
-            You only review what gets flagged. Your velocity jumps.
+            The permission level you land on isn&apos;t permanent. Ratchet up as trust builds,
+            dial back for unfamiliar codebases.
           </p>
         </>
       ),
@@ -190,17 +187,17 @@ const lesson: LessonDef = {
         <>
           <h3>How each tool handles it</h3>
           <p>
-            <strong>Claude Code</strong> has six permission modes you cycle through with
-            Shift+Tab. Each mode changes what gets auto-approved vs. what requires confirmation.
+            <strong>Look at the three panels on the canvas. Same concept, very different controls.</strong>
           </p>
           <p>
-            <strong>OpenCode</strong> uses per-tool rules: allow, ask, or deny. You declare
-            exactly which capabilities run freely and which need a gate.
+            Claude Code: press <kbd>Shift+Tab</kbd> to cycle through six modes — Plan, Default,
+            Accept Edits, Auto, Full Auto, and custom profiles. OpenCode: per-tool rules
+            declared in config — allow file reads, ask before edits, deny dangerous commands.
+            Copilot: IDE acceptance model — Tab for inline suggestions, explicit Apply for chat
+            changes, PR review as a second gate.
           </p>
           <p>
-            <strong>Copilot</strong> works through the IDE&apos;s acceptance model. Inline
-            suggestions need Tab to accept. Chat changes need explicit apply. PR reviews add
-            another layer.
+            Different surfaces, same underlying principle: you decide the trust boundary, the tool enforces it.
           </p>
         </>
       ),
@@ -212,20 +209,17 @@ const lesson: LessonDef = {
         <>
           <h3>Rules to code by</h3>
           <p>
-            <strong>Start restrictive, open up later.</strong> It&apos;s easy to grant more
-            permission. It&apos;s hard to undo damage.
+            <strong>Look at the four safety rules on the canvas. These are non-negotiable.</strong>
           </p>
           <p>
-            <strong>Always commit before starting a task.</strong> If something goes wrong, you
-            have a clean state to return to. This is your safety net.
+            Start restrictive and open up — it&apos;s easy to grant permission, hard to undo
+            damage. Always run <code>git commit</code> before starting a task so you have a
+            clean state to return to. Remember: file edits are reversible, but shell commands
+            often aren&apos;t — that&apos;s why every tool gates commands more strictly.
           </p>
           <p>
-            <strong>File edits are reversible.</strong> Shell commands often aren&apos;t. That&apos;s
-            why every tool gates commands more strictly than file changes.
-          </p>
-          <p>
-            <strong>Never bypass permissions in production.</strong> Full auto is for local
-            development only. Period.
+            Never bypass permissions in production. Full Auto is for local development only.
+            Period. No exceptions. Not even &quot;just this once.&quot;
           </p>
         </>
       ),

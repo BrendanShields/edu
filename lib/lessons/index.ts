@@ -34,7 +34,7 @@ export const COURSE_ORDER: ModuleDef[] = [
   {
     slug: 'foundations',
     title: 'Foundations',
-    lessons: ['how-tools-work', 'tool-landscape', 'permissions-and-safety', 'understanding-context'],
+    lessons: ['tool-landscape', 'how-tools-work', 'understanding-context', 'permissions-and-safety'],
   },
   {
     slug: 'productivity',
@@ -43,13 +43,13 @@ export const COURSE_ORDER: ModuleDef[] = [
   },
   {
     slug: 'mastery',
-    title: 'Tool Mastery',
+    title: 'Tool Deep Dives',
     lessons: ['claude-code', 'opencode', 'github-copilot'],
   },
   {
     slug: 'advanced',
     title: 'Advanced',
-    lessons: ['project-configuration', 'mcp-external-tools', 'skills-and-workflows', 'subagents-and-parallelization', 'hooks-and-automation'],
+    lessons: ['hooks-and-automation', 'project-configuration', 'mcp-external-tools', 'skills-and-workflows', 'subagents-and-parallelization'],
   },
   {
     slug: 'reference',

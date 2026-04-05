@@ -3,6 +3,7 @@ import { CodeExample } from '@/components/visuals/templates/CodeExample';
 import { ToolComparison } from '@/components/visuals/templates/ToolComparison';
 import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { StepFlow } from '@/components/visuals/templates/StepFlow';
+import { ConfigHierarchy } from '@/components/visuals/lesson/ConfigHierarchy';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -81,6 +82,7 @@ const lesson: LessonDef = {
         ]}
       />
     ),
+    hierarchy: <ConfigHierarchy />,
     configStrategy: (
       <StepFlow
         title="Configuration Strategy"
@@ -102,13 +104,20 @@ const lesson: LessonDef = {
         <>
           <h1>Project Configuration</h1>
           <p>
-            Every time you start a new session, the agent knows nothing about
-            your project. Your package manager, test command, style rules,
-            directory structure &mdash; all gone.
+            <strong>Every new session, the agent forgets everything
+            about your project.</strong> Look at the &quot;Before&quot;
+            panel on the canvas &mdash; that is what re-explaining
+            your package manager, test command, and file conventions
+            every single time feels like.
           </p>
           <p>
-            Configuration files fix this permanently. Write your conventions
-            once, and every session starts informed.
+            Now look at the &quot;After&quot; panel. One config file
+            means zero ramp-up. The agent reads your conventions
+            before you type a single prompt.
+          </p>
+          <p>
+            The difference is a file called CLAUDE.md. The next section
+            shows you exactly what goes inside it.
           </p>
         </>
       ),
@@ -120,14 +129,23 @@ const lesson: LessonDef = {
         <>
           <h3>CLAUDE.md: your project&apos;s brain</h3>
           <p>
-            CLAUDE.md is a markdown file at your project root that the agent
-            reads automatically at the start of every session. Think of it as
-            onboarding docs for your AI teammate.
+            <strong>One markdown file replaces every &quot;remember
+            to&hellip;&quot; prompt you&apos;ve ever typed.</strong>{' '}
+            Read the CLAUDE.md example on the canvas. Build commands,
+            test commands, style rules, off-limits directories &mdash;
+            all in under 20 lines.
           </p>
           <p>
-            Keep it lean. Build commands, test commands, style rules, and
-            boundaries. The agent doesn&apos;t need your life story &mdash; it
-            needs the commands and conventions that prevent mistakes.
+            Notice the &quot;Off-limits&quot; section at the bottom.
+            Try imagining what happens when the agent encounters{' '}
+            <code>Never edit migrations/</code> in its first read.
+            It internalizes that boundary before your first prompt.
+          </p>
+          <p>
+            Keep CLAUDE.md lean &mdash; every line competes for context
+            window space. Commands and conventions that prevent mistakes
+            belong here; explanatory prose does not. Other tools read
+            similar files, as the next panel shows.
           </p>
         </>
       ),
@@ -139,34 +157,52 @@ const lesson: LessonDef = {
         <>
           <h3>Configuration across tools</h3>
           <p>
-            Each tool has its own config file, but the idea is identical:
-            persistent project context that loads automatically.
+            <strong>Three tools, three config files &mdash; but the
+            idea is identical.</strong> Compare the three rows on
+            the canvas. Claude Code reads CLAUDE.md, OpenCode reads
+            AGENTS.md (falling back to CLAUDE.md), and Copilot reads{' '}
+            <code>.github/copilot-instructions.md</code>.
           </p>
           <p>
-            OpenCode reads AGENTS.md first, then falls back to CLAUDE.md.
-            Copilot uses its own path under .github/. If your team uses
-            multiple tools, you may want config files for each &mdash; or
-            pick the one your primary tool reads and let others fall back.
+            Notice that OpenCode&apos;s fallback means a single
+            CLAUDE.md can serve two tools with zero extra work. If
+            your team uses Copilot as well, add its config under{' '}
+            <code>.github/</code> &mdash; or skip it until someone
+            actually needs it.
+          </p>
+          <p>
+            The real power move is scoped rules, not root configs.
+            The hierarchy on the next canvas shows how config layers
+            override each other.
           </p>
         </>
       ),
     },
     {
       id: 'crossTool',
-      visual: 'crossToolCompat',
+      visual: 'hierarchy',
       content: (
         <>
-          <h3>Cross-tool compatibility</h3>
+          <h3>The config hierarchy</h3>
           <p>
-            Six files, three tools. It sounds like a lot, but most teams only
-            need one or two. Start with the file your primary tool reads and
-            add others as teammates adopt different tools.
+            <strong>Config is layered, and inner layers win.</strong>{' '}
+            Click the outermost layer on the canvas &mdash; that&apos;s
+            your system config, the broadest defaults. Now click the
+            project layer. See the model setting? It overrides your
+            personal preference.
           </p>
           <p>
-            Scoped rules are the power move. Instead of bloating your root
-            config, put detailed guidance in pattern-matched files:
-            {' '}<code>.claude/rules/tests.md</code> applies only when the
-            agent touches test files.
+            Notice how <code>.claude/rules/tests.md</code> sits
+            inside the project layer. That scoped rule only applies
+            when the agent touches test files &mdash; it never bloats
+            the root config or competes for context window space with
+            unrelated instructions.
+          </p>
+          <p>
+            Most teams need exactly one CLAUDE.md and one or two
+            scoped rules. Start there; add layers only when you feel
+            the root config getting crowded. The next panel walks
+            you through the strategy step by step.
           </p>
         </>
       ),
@@ -178,15 +214,24 @@ const lesson: LessonDef = {
         <>
           <h3>Strategy: less is more</h3>
           <p>
-            Run <code>/init</code> to generate a starting point, then edit it
-            down. The best CLAUDE.md files are under 200 lines. Every line
-            competes for context window space, so make each one count.
+            <strong>The best CLAUDE.md files are under 200
+            lines.</strong> Follow the five steps on the canvas
+            from top to bottom. Step 1: run <code>/init</code> to
+            generate a starting point. Step 2: add the human context
+            the agent cannot infer on its own.
           </p>
           <p>
-            Add <em>human</em> context the agent can&apos;t infer: why you
-            chose that ORM, why migrations are off-limits, why the legacy
-            folder uses a different pattern. Commit the file so the whole
-            team benefits.
+            Notice step 3 &mdash; &quot;keep under 200 lines.&quot;
+            Why? Every line of CLAUDE.md competes for context window
+            space. A bloated config pushes useful conversation history
+            out of the window, making the agent less effective at the
+            task you actually care about.
+          </p>
+          <p>
+            Add <em>why</em> decisions were made &mdash; why you chose
+            that ORM, why migrations are off-limits, why the legacy
+            folder uses a different pattern. Then commit the file so
+            the whole team benefits from day one.
           </p>
         </>
       ),

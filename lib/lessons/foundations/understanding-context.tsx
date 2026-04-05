@@ -94,15 +94,16 @@ const lesson: LessonDef = {
         <>
           <h1>Understanding Context</h1>
           <p>
-            If you learn one thing about AI coding tools, make it this:{' '}
-            <strong>context management is the most important skill you can develop.</strong>
+            <strong>Context management is the single most important skill you can develop with AI coding tools.</strong>
           </p>
           <p>
-            Every AI model has a context window — a fixed amount of information it can hold at
-            once. Everything the AI knows about your project, your conversation, and your
-            instructions has to fit inside it.
+            Look at the canvas. &quot;The most important skill&quot; — not prompt engineering, not
+            tool selection. Context. Everything the AI knows about your project, your conversation,
+            and your instructions has to fit inside a fixed window.
           </p>
-          <p>When you manage context well, the AI is brilliant. When you don&apos;t, it falls apart.</p>
+          <p>
+            When you manage that window well, the AI is brilliant. When you don&apos;t, it falls apart silently.
+          </p>
         </>
       ),
     },
@@ -113,17 +114,17 @@ const lesson: LessonDef = {
         <>
           <h3>The desk metaphor</h3>
           <p>
-            Think of context as a <strong>desk</strong>. Everything the AI is working with sits
-            on this desk — files, your conversation, tool definitions, system instructions.
+            <strong>Click &quot;Add a large file&quot; on the canvas. Watch the percentage climb.</strong>
           </p>
           <p>
-            The desk has a fixed size. When you pile on more, older items get pushed off the
-            edge. The AI doesn&apos;t tell you this is happening. It just quietly loses access
-            to information it had before.
+            That desk is your context window. Files, conversation history, tool definitions,
+            system instructions — all of it sits on the same surface. The desk has a fixed size.
+            When you pile on more, older items get pushed off the edge without warning.
           </p>
           <p>
-            That&apos;s the trap. <strong>Context degradation is silent.</strong> The AI doesn&apos;t
-            say &quot;I forgot your instructions.&quot; It just starts giving worse answers.
+            Now click &quot;Compact.&quot; See the percentage drop? That&apos;s <code>/compact</code>{' '}
+            summarizing your conversation to reclaim space. <strong>Context degradation is silent</strong> —
+            the AI never says &quot;I forgot.&quot; It just gives worse answers.
           </p>
         </>
       ),
@@ -135,17 +136,17 @@ const lesson: LessonDef = {
         <>
           <h3>What fills the desk</h3>
           <p>
-            Not everything costs the same. A short prompt or small config file barely registers.
-            A 2,000-line source file takes up serious space.
+            Not everything costs the same. Look at the cards on the canvas — small configs and
+            short prompts are cheap. A 2,000-line source file is expensive.
           </p>
           <p>
-            The sneaky cost is <strong>conversation length</strong>. Each exchange adds both your
-            message and the AI&apos;s response. Twenty back-and-forth exchanges can consume more
-            context than the actual code you&apos;re working on.
+            The sneaky cost is <strong>conversation length</strong>. Each exchange adds your
+            message <em>and</em> the AI&apos;s response. Twenty back-and-forth exchanges can
+            consume more context than the code you&apos;re working on.
           </p>
           <p>
-            Full test output is the biggest surprise. A failing test suite can dump thousands of
-            lines into context, crowding out everything else.
+            Notice the &quot;Full Test Output&quot; card — a failing test suite can dump thousands
+            of lines into context, crowding out everything else. That&apos;s your biggest surprise cost.
           </p>
         </>
       ),
@@ -157,19 +158,18 @@ const lesson: LessonDef = {
         <>
           <h3>When context breaks</h3>
           <p>
-            You&apos;ll know context is exhausted when the AI starts <strong>forgetting
-            instructions</strong> you gave earlier, <strong>repeating work</strong> it already
-            did, or giving <strong>generic responses</strong> that ignore your project&apos;s
-            conventions.
+            Compare the two sides on the canvas. The left is an exhausted session. The right is
+            a fresh one.
           </p>
           <p>
-            The fix is almost always the same: <strong>start a new session.</strong> A fresh
-            context window with clear instructions outperforms a long, cluttered conversation
-            every time.
+            You&apos;ll recognize the left: the AI forgets instructions you gave three messages
+            ago, repeats work it already did, gives generic responses that ignore your project&apos;s
+            conventions in <code>.eslintrc</code> or <code>CLAUDE.md</code>.
           </p>
           <p>
-            This feels wasteful. It isn&apos;t. It&apos;s the single most effective thing you
-            can do.
+            The fix is almost always the same: <strong>start a new session.</strong> A fresh window
+            with clear instructions outperforms a long, cluttered conversation every time. It feels
+            wasteful. It isn&apos;t.
           </p>
         </>
       ),
@@ -179,24 +179,20 @@ const lesson: LessonDef = {
       visual: 'manage',
       content: (
         <>
-          <h3>Managing context like a pro</h3>
+          <h3>Four strategies</h3>
           <p>
-            <strong>Start fresh between tasks.</strong> Don&apos;t reuse a session from a
-            previous task. The leftover context will pollute your new work.
+            Follow the four steps on the canvas — this is the playbook that separates
+            productive users from frustrated ones.
           </p>
           <p>
-            <strong>Compact when you notice degradation.</strong> The <code>/compact</code>{' '}
-            command summarizes the conversation, freeing up space while preserving key decisions.
+            New task? New session — don&apos;t carry baggage. Quality degrading mid-task?
+            Run <code>/compact</code> to summarize and reclaim space. Need to explore a
+            large codebase? Spawn a subagent — it gets its own desk and reports back a summary.
           </p>
           <p>
-            <strong>Use subagents for research.</strong> Need to explore a large codebase?
-            Spawn a subagent. It gets its own context window — a separate desk — and reports
-            back a summary.
-          </p>
-          <p>
-            <strong>Put rules in instruction files.</strong> CLAUDE.md, .github/copilot-instructions.md,
-            and similar files get loaded fresh every session. They&apos;re context that never
-            degrades.
+            The fourth step is the most underused: put rules in <code>CLAUDE.md</code> or{' '}
+            <code>.github/copilot-instructions.md</code>. These files load fresh every
+            session — context that never degrades.
           </p>
         </>
       ),
@@ -208,21 +204,18 @@ const lesson: LessonDef = {
         <>
           <h3>The rules</h3>
           <p>
-            <strong>Context management is the #1 skill.</strong> Prompt engineering matters, but
-            context management matters more. A great prompt in an exhausted session loses to a
-            mediocre prompt in a fresh one.
+            <strong>Look at the four cards on the canvas. Memorize them.</strong>
           </p>
           <p>
-            <strong>Treat context like money.</strong> Every file read, every tool call, every
-            exchange has a cost. Spend deliberately.
+            Context is the #1 skill — a great prompt in an exhausted session loses to a
+            mediocre prompt in a fresh one. Treat context like money: every file read, every
+            tool call, every exchange has a cost. Subagents give you parallel desks at no
+            cost to your main session.
           </p>
           <p>
-            <strong>Subagents give you free desks.</strong> The main session stays focused while
-            subagents do the exploration.
-          </p>
-          <p>
-            <strong>Instruction files survive everything.</strong> When context resets, your
-            rules don&apos;t. This is the most underused feature in every tool.
+            Instruction files survive everything. When context resets, your rules don&apos;t.
+            Start building your <code>CLAUDE.md</code> today — it&apos;s the highest-leverage
+            file in your project.
           </p>
         </>
       ),

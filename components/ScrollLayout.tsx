@@ -47,9 +47,14 @@ export function ScrollLayout({ children, visuals, title, prevHref, prevTitle, ne
   }, [menuOpen]);
 
   const VisualContent = ({ maxW }: { maxW: number }) => (
-    <div style={{ width: '100%', maxWidth: maxW }}>
+    <div style={{ width: '100%', maxWidth: maxW, display: 'grid' }}>
       {Object.entries(visuals).map(([key, visual]) => (
-        <div key={key} style={{ display: activeVisual === key ? 'block' : 'none' }}>{visual}</div>
+        <div key={key} style={{
+          gridArea: '1/1',
+          opacity: activeVisual === key ? 1 : 0,
+          transition: 'opacity 0.5s ease',
+          pointerEvents: activeVisual === key ? 'auto' : 'none',
+        }}>{visual}</div>
       ))}
     </div>
   );

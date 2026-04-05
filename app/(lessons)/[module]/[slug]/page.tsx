@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { ScrollLayout } from '@/components/ScrollLayout';
+import { ReferenceLayout } from '@/components/ReferenceLayout';
 import { Section } from '@/components/Section';
 import { getLesson, getNavigation, getAllParams, getCourseOutline } from '@/lib/lessons';
 
@@ -17,6 +18,27 @@ export default async function LessonPage({ params }: { params: Promise<{ module:
 
   const nav = getNavigation(module, slug);
   const outline = getCourseOutline(module, slug);
+
+  // Reference pages use single-column centered layout (no canvas)
+  if (module === 'reference') {
+    return (
+      <ReferenceLayout
+        key={`${module}/${slug}`}
+        title={lesson.title}
+        prevHref={nav.prev?.href}
+        prevTitle={nav.prev?.title}
+        nextHref={nav.next?.href}
+        nextTitle={nav.next?.title}
+        courseOutline={outline}
+      >
+        {lesson.sections.map((section) => (
+          <div key={section.id}>
+            {section.content}
+          </div>
+        ))}
+      </ReferenceLayout>
+    );
+  }
 
   return (
     <ScrollLayout

@@ -61,14 +61,18 @@ const lesson: LessonDef = {
         <>
           <h1>Effective Prompting</h1>
           <p>
-            A vague prompt forces the agent to guess. It picks the wrong file,
-            misunderstands the bug, and burns through context fixing the wrong
-            thing.
+            <strong>The difference between a 30-second fix and a 30-minute
+            rabbit hole is one sentence of context.</strong>
           </p>
           <p>
-            A specific prompt gives the agent everything it needs to succeed on
-            the first try. The difference is a framework you can learn in five
-            minutes.
+            Look at the canvas. The gray prompt and the specific prompt describe
+            the same task. Notice how &quot;fix the login bug&quot; gives the agent
+            nothing to work with — no file, no symptom, no success criteria.
+          </p>
+          <p>
+            Specificity isn&apos;t extra work. It&apos;s the work that prevents
+            all the other work. Four elements turn a guess into a guaranteed
+            first-pass hit.
           </p>
         </>
       ),
@@ -78,17 +82,21 @@ const lesson: LessonDef = {
       visual: 'promptFramework',
       content: (
         <>
-          <h3>The 4-element framework</h3>
+          <h3>Four colors, four jobs</h3>
           <p>
-            Every great prompt has four parts: <strong>Context</strong> (where to
-            look), <strong>Intent</strong> (what you want), <strong>Constraints</strong>{' '}
-            (what to avoid), and <strong>Verification</strong> (how to prove it
-            worked).
+            Look at the prompt on the canvas. Four colors, four jobs. Hover over
+            the blue underline — that&apos;s <strong>Context</strong>, telling
+            the agent exactly where to look.
           </p>
           <p>
-            You don&apos;t need all four for every prompt. A one-line fix might
-            only need intent. But the bigger the task, the more elements you
-            should include.
+            Now hover over green, orange, and purple in turn. Each color maps to
+            one element: Intent, Constraints, Verification. Below the prompt, the
+            gray dashed box shows the same task with zero signal.
+          </p>
+          <p>
+            Click a legend pill to isolate one element and dim the rest. The
+            bigger the task, the more colors your prompt should carry. A one-line
+            fix might only need green.
           </p>
         </>
       ),
@@ -98,16 +106,21 @@ const lesson: LessonDef = {
       visual: 'contextElement',
       content: (
         <>
-          <h3>Context: where to look</h3>
+          <h3>Point the flashlight, don&apos;t hand over the map</h3>
           <p>
-            The agent has access to your entire codebase, but it doesn&apos;t
-            know where to start. Pointing it to specific files or directories
-            saves time and prevents it from reading unrelated code.
+            Read the prompt on the canvas. It names <code>src/auth/</code> and
+            specifically calls out token refresh — two lines that save the agent
+            from reading your entire codebase.
           </p>
           <p>
-            Use <code>@</code>-mentions in tools that support them, or just name
-            the paths directly. The more precise you are, the less context the
-            agent wastes on exploration.
+            Use <code>@src/auth/refresh.ts</code> in tools that support mentions,
+            or just spell the path out. Every file you name is a file the agent
+            doesn&apos;t waste context discovering on its own.
+          </p>
+          <p>
+            Precise context also prevents a subtle failure: the agent finding a
+            similar-looking function in the wrong module and &quot;fixing&quot;
+            code that was never broken. Next, we add intent and constraints.
           </p>
         </>
       ),
@@ -117,18 +130,22 @@ const lesson: LessonDef = {
       visual: 'intentElement',
       content: (
         <>
-          <h3>Intent and constraints</h3>
+          <h3>A corridor, not a cage</h3>
           <p>
-            Intent tells the agent <em>what</em> to do. Constraints tell it what{' '}
-            <em>not</em> to do. Together they form a corridor: wide enough for
-            the agent to find creative solutions, narrow enough to prevent bad
-            ones.
+            Look at the canvas. The first two lines are intent — reproduce the
+            timeout failure and fix the root cause. The last three lines are
+            constraints: no new deps, follow <code>orders.ts</code> patterns,
+            keep the public API unchanged.
           </p>
           <p>
-            &quot;Don&apos;t add new dependencies&quot; and &quot;follow the existing
-            pattern&quot; are constraints that prevent the agent from reaching for
-            a shiny new library when your codebase already has an established
-            approach.
+            Together they form a corridor: wide enough for the agent to pick its
+            own approach, narrow enough to stop it from pulling in a new library
+            when your codebase already has bcrypt wired up.
+          </p>
+          <p>
+            Without constraints, the agent optimizes for &quot;working code.&quot;
+            With them, it optimizes for code that belongs in <em>your</em> project.
+            The last element — verification — closes the loop.
           </p>
         </>
       ),
@@ -138,15 +155,21 @@ const lesson: LessonDef = {
       visual: 'verificationElement',
       content: (
         <>
-          <h3>Verification: the multiplier</h3>
+          <h3>Verification turns a hope into a proof</h3>
           <p>
-            Without verification, you are the only feedback loop. You read every
-            line, test manually, and catch edge cases yourself.
+            Look at the two states on the canvas. Without verification, you are
+            the only feedback loop — every line reviewed by eye, every edge case
+            caught by intuition.
           </p>
           <p>
-            With verification, the agent tests its own work. It runs the suite,
-            sees failures, and iterates — all before you review anything. This
-            is the single highest-leverage element you can add to a prompt.
+            With verification, the agent runs <code>npm test</code>, sees
+            failures, and iterates on its own before you ever open the diff.
+            Adding &quot;Run the tests after&quot; to your prompt costs five
+            words and saves entire review cycles.
+          </p>
+          <p>
+            This is the single highest-leverage element in any prompt. The next
+            lesson builds an entire workflow around it: Explore, Plan, Build.
           </p>
         </>
       ),

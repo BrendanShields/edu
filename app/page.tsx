@@ -7,11 +7,10 @@ export default function Home() {
           Welcome to the Workshop.
         </h1>
         <p className="text-xl text-text-secondary leading-relaxed mb-12">
-          A full-day deep dive into AI-assisted coding. Learn Claude Code,
-          OpenCode, and GitHub Copilot — from foundations to advanced customization.
+          Master Claude Code, OpenCode, and GitHub Copilot. From your first prompt to multi-agent orchestration.
         </p>
         <a
-          href="/foundations/how-tools-work"
+          href="/foundations/tool-landscape"
           className="inline-block px-8 py-4 bg-accent text-white font-semibold rounded-full text-lg hover:bg-accent-hover transition-colors"
         >
           Start with Foundations

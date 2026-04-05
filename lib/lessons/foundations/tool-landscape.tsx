@@ -3,6 +3,8 @@ import { ToolComparison } from '@/components/visuals/templates/ToolComparison';
 import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { BeforeAfter } from '@/components/visuals/templates/BeforeAfter';
 import { StepFlow } from '@/components/visuals/templates/StepFlow';
+import { ClaudeCodeCard, OpenCodeCard, CopilotCard } from '@/components/visuals/ToolCards';
+import { ComparisonTable } from '@/components/visuals/lesson/ComparisonTable';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -17,41 +19,21 @@ const lesson: LessonDef = {
         subtitle="Matching tools to how you actually work"
       />
     ),
-    terminal: (
-      <ToolComparison
-        tools={[
-          {
-            tool: 'claude',
-            title: 'Terminal-Native Agent',
-            content:
-              'Lives in your terminal. Claude models only. Deep agentic loop with direct file and shell access. Maximum autonomy for complex tasks.',
-            command: 'claude',
-          },
-        ]}
-      />
-    ),
-    freedom: (
-      <ToolComparison
-        tools={[
-          {
-            tool: 'opencode',
-            title: 'Open Source TUI',
-            content:
-              'Beautiful terminal UI. 75+ providers including local models. Bring your own keys, own your workflow, no vendor lock-in.',
-            command: 'opencode',
-          },
-        ]}
-      />
-    ),
-    embedded: (
-      <ToolComparison
-        tools={[
-          {
-            tool: 'copilot',
-            title: 'IDE-Native Assistant',
-            content:
-              'Lives inside VS Code. Inline completions as you type. Chat panel for bigger tasks. Deep GitHub integration for PRs and issues.',
-          },
+    terminal: <ClaudeCodeCard />,
+    freedom: <OpenCodeCard />,
+    embedded: <CopilotCard />,
+    comparison: (
+      <ComparisonTable
+        title="Side-by-Side"
+        columns={['Claude Code', 'OpenCode', 'Copilot']}
+        rows={[
+          { label: 'Interface', values: ['Terminal / CLI', 'TUI / CLI', 'IDE-native'] },
+          { label: 'Models', values: ['Claude only', '75+ providers', 'Multi-model'] },
+          { label: 'Agentic Mode', values: ['✓', '✓', '✓'] },
+          { label: 'MCP Servers', values: ['✓', '✓', '✓'] },
+          { label: 'Inline Completions', values: ['✗', '✗', '✓'] },
+          { label: 'Open Source', values: ['✗', '✓', '✗'] },
+          { label: 'GitHub Integration', values: ['~', '~', '✓'] },
         ]}
       />
     ),
@@ -114,13 +96,15 @@ const lesson: LessonDef = {
         <>
           <h1>The Tool Landscape</h1>
           <p>
-            Three tools dominate AI-assisted coding right now: <strong>Claude Code</strong>,{' '}
-            <strong>OpenCode</strong>, and <strong>GitHub Copilot</strong>. They share the same
-            agentic loop but make very different tradeoffs.
+            <strong>Three tools own the AI coding space, and they all run the same engine underneath.</strong>
           </p>
           <p>
-            Picking the right tool isn&apos;t about which is &quot;best.&quot; It&apos;s about
-            which one fits the shape of how you already work.
+            Look at the canvas. That tagline — &quot;matching tools to how you actually work&quot; — is the
+            entire lesson. The differences aren&apos;t about capability. They&apos;re about where you
+            already spend your time.
+          </p>
+          <p>
+            Keep that frame as we walk through each one.
           </p>
         </>
       ),
@@ -132,17 +116,17 @@ const lesson: LessonDef = {
         <>
           <h3>Claude Code: The terminal purist</h3>
           <p>
-            Claude Code lives entirely in your terminal. No editor plugins, no GUI — just a
-            prompt and your filesystem.
+            <strong>No GUI. No editor plugin. Just a prompt and your filesystem.</strong>
           </p>
           <p>
-            It uses Claude models exclusively, giving it the deepest integration with
-            Anthropic&apos;s capabilities. The agentic loop is tight: it reads your files,
-            edits them, runs commands, and verifies — all without leaving the shell.
+            Look at the canvas — that&apos;s the entire interface. You type <code>claude</code> in
+            any project directory and start talking. It reads <code>src/auth.ts</code>, edits it,
+            runs <code>npm test</code>, and verifies the output. All without leaving the shell.
           </p>
           <p>
-            <strong>Best for:</strong> Developers who live in the terminal and want maximum
-            autonomy on complex, multi-file tasks.
+            Claude-only models mean the deepest Anthropic integration. If your hands live on the
+            keyboard and your home is the terminal, this is the tool that disappears into your
+            workflow.
           </p>
         </>
       ),
@@ -154,16 +138,17 @@ const lesson: LessonDef = {
         <>
           <h3>OpenCode: The open alternative</h3>
           <p>
-            OpenCode is fully open source with a beautiful terminal UI. The key difference:
-            it works with <strong>75+ model providers</strong>, including local models.
+            What if you want the agentic loop but refuse to be locked to one provider?
           </p>
           <p>
-            Bring your own API keys, pick your model, own your data. Same agentic capabilities —
-            file editing, shell commands, tool use — but with complete provider freedom.
+            Look at the canvas. Same terminal-native approach, but notice the key
+            difference: <strong>75+ model providers</strong>. Bring your own API keys, run local
+            models, own every byte of data. The agentic capabilities — file editing, shell commands,
+            tool use — are identical.
           </p>
           <p>
-            <strong>Best for:</strong> Developers who want control over their stack, need
-            specific models, or care about vendor independence.
+            OpenCode is fully open source. If vendor independence matters to your team, or you
+            need a specific model for compliance reasons, this is your starting point.
           </p>
         </>
       ),
@@ -175,34 +160,38 @@ const lesson: LessonDef = {
         <>
           <h3>GitHub Copilot: The IDE native</h3>
           <p>
-            Copilot lives inside your editor. Inline completions appear as you type. The Chat
-            panel handles bigger requests. Agent mode gives it the full agentic loop.
+            <strong>Copilot doesn&apos;t ask you to leave your editor. It moves in.</strong>
           </p>
           <p>
-            Its deep GitHub integration is the standout feature — it understands your PRs,
-            issues, and repository context natively.
+            Look at the canvas. Inline completions appear as you type. The Chat panel handles
+            bigger requests. Agent mode gives it the same agentic loop — reading files, running
+            commands, verifying changes — right inside VS Code.
           </p>
           <p>
-            <strong>Best for:</strong> Developers who rarely leave their IDE and want AI woven
-            directly into the editing experience.
+            The standout is deep GitHub integration: it reads your PRs, issues, and repo context
+            natively. If you rarely leave your IDE, Copilot is the tool that meets you where you are.
           </p>
         </>
       ),
     },
     {
       id: 'overlap',
-      visual: 'overlap',
+      visual: 'comparison',
       content: (
         <>
           <h3>Where they converge</h3>
           <p>
-            All three tools have converged on the same core capabilities. MCP servers for
-            extensibility. Agentic mode for autonomous work. Custom instructions for
-            project-level rules.
+            <strong>Scan the comparison table on the canvas. The &quot;check&quot; column is nearly identical.</strong>
           </p>
           <p>
-            The overlap is large and growing. The real differences are in <strong>where</strong>{' '}
-            the tool lives and <strong>what ecosystem</strong> it plugs into — not what it can do.
+            Notice the pattern: MCP servers, agentic mode, custom instructions — all three
+            tools have them. The overlap is large and growing every month. What you can{' '}
+            <em>do</em> with each tool is converging fast.
+          </p>
+          <p>
+            The real differences are in two rows: <strong>Interface</strong> and{' '}
+            <strong>Models</strong>. Where the tool lives and what ecosystem it plugs into — that&apos;s
+            what separates them.
           </p>
         </>
       ),
@@ -214,16 +203,16 @@ const lesson: LessonDef = {
         <>
           <h3>The real tradeoff</h3>
           <p>
-            The wrong tool creates friction that compounds over time. If you&apos;re a terminal
-            person forced into an IDE workflow, you&apos;ll fight the tool instead of using it.
+            Look at both sides of the canvas. The left is what happens when you pick against
+            your instincts. The right is what happens when you pick with them.
           </p>
           <p>
-            The right match is the one you forget about. It fits your hands. You think about the
-            problem, not the interface.
+            A terminal developer forced into an IDE fights the tool every session. That friction
+            compounds — not in minutes, but in weeks of slower output and growing frustration.
           </p>
           <p>
-            <strong>There is no single best tool.</strong> There&apos;s only the best tool for
-            your workflow.
+            <strong>The right tool is the one you forget about.</strong> You think about the
+            problem, never the interface. That&apos;s the only metric that matters.
           </p>
         </>
       ),
@@ -235,16 +224,16 @@ const lesson: LessonDef = {
         <>
           <h3>Choosing your stack</h3>
           <p>
-            Start with where you already spend your time. Terminal-first? Start with Claude Code
-            or OpenCode. IDE-first? Start with Copilot.
+            Follow the three steps on the canvas. Start with where you already spend your
+            time — terminal or IDE. That single answer narrows the field to two tools or one.
           </p>
           <p>
             Then layer. Most productive developers use <strong>two or more tools</strong>{' '}
-            together — Copilot for inline completions while coding, Claude Code for complex
-            agentic tasks from the terminal.
+            together: Copilot for inline completions while coding, Claude Code for complex
+            multi-file tasks from the terminal.
           </p>
           <p>
-            You don&apos;t have to choose one. You have to choose where to start.
+            You don&apos;t choose one forever. You choose where to start this week.
           </p>
         </>
       ),

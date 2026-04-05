@@ -2,6 +2,7 @@ import { BeforeAfter } from '@/components/visuals/templates/BeforeAfter';
 import { CodeExample } from '@/components/visuals/templates/CodeExample';
 import { ToolComparison } from '@/components/visuals/templates/ToolComparison';
 import { StepFlow } from '@/components/visuals/templates/StepFlow';
+import { SkillMapping } from '@/components/visuals/lesson/SkillMapping';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -78,6 +79,7 @@ Summarize this pull request concisely.`}
         ]}
       />
     ),
+    mapping: <SkillMapping />,
     whenToCreate: (
       <StepFlow
         title="When to Create a Skill"
@@ -98,38 +100,52 @@ Summarize this pull request concisely.`}
         <>
           <h1>Skills &amp; Workflows</h1>
           <p>
-            You&apos;ve explained the deploy process five times this week.
-            Each time you type it from scratch, adjusting wording, hoping
-            the agent infers the right steps.
+            <strong>You&apos;ve explained the deploy process five
+            times this week.</strong> Look at the &quot;Before&quot;
+            panel on the canvas &mdash; from scratch, every time,
+            hoping the agent infers the right steps.
           </p>
           <p>
-            Skills are reusable recipes. Write the workflow once as a
-            markdown file, invoke it with a slash command, and the agent
-            follows it precisely every time.
+            Now look at the &quot;After&quot; panel. Type{' '}
+            <code>/deploy</code> and the agent follows your recipe.
+            Every step, every time, no reinterpretation. That&apos;s
+            a skill: a reusable workflow written once as a markdown
+            file.
+          </p>
+          <p>
+            The next panel breaks down exactly how a skill maps rules
+            to behavior.
           </p>
         </>
       ),
     },
     {
       id: 'creating',
-      visual: 'skillCreation',
+      visual: 'mapping',
       content: (
         <>
           <h3>Anatomy of a skill</h3>
           <p>
-            A skill is a markdown file in <code>.claude/skills/</code> with
-            YAML frontmatter and a body. The body is the prompt the agent
-            receives when you invoke it.
+            <strong>Watch the arrows pulse on the canvas &mdash; each
+            rule on the left produces the behavior on the
+            right.</strong> See how &quot;Run tests after every
+            edit&quot; maps directly to the npm test output? That
+            one-to-one mapping is what makes skills predictable.
           </p>
           <p>
-            <code>$ARGUMENTS</code> gets replaced with whatever you type
-            after the slash command. <code>/fix-issue 423</code> becomes
-            &quot;Fix GitHub issue 423.&quot;
+            A skill lives in <code>.claude/skills/</code> as a
+            markdown file with YAML frontmatter.{' '}
+            <code>$ARGUMENTS</code> gets replaced with whatever you
+            type after the slash command, so{' '}
+            <code>/fix-issue 423</code> becomes &quot;Fix GitHub
+            issue 423.&quot;
           </p>
           <p>
-            Set <code>disable-model-invocation: true</code> to make the
-            skill deterministic &mdash; no AI improvisation, just your
-            exact steps.
+            Set <code>disable-model-invocation: true</code> in the
+            frontmatter to make the skill fully deterministic &mdash;
+            no AI improvisation, just your exact steps. But some
+            skills need live data, which is where dynamic context
+            injection comes in.
           </p>
         </>
       ),
@@ -141,18 +157,24 @@ Summarize this pull request concisely.`}
         <>
           <h3>Dynamic context injection</h3>
           <p>
-            Skills can run shell commands at invocation time using
-            the <code>!`command`</code> syntax. The output gets injected
-            into the prompt before the agent sees it.
+            <strong>What if your skill needs data that changes every
+            time it runs?</strong> Read the skill file on the canvas.
+            See the <code>!`gh pr diff`</code> syntax? That shell
+            command executes at invocation time, and its output gets
+            injected into the prompt before the agent sees it.
           </p>
           <p>
-            This is powerful: your skill can pull the current PR diff,
-            the latest error from logs, or the output of any CLI tool.
-            The agent gets live data, not stale instructions.
+            Try imagining what the agent receives when you
+            invoke <code>/pr-summary</code>. It gets the current PR
+            diff, the list of changed files, and the instruction to
+            summarize &mdash; all in one prompt, all live data.
           </p>
           <p>
-            Set <code>context: fork</code> to run the skill in an
-            isolated context that won&apos;t pollute your main session.
+            Notice <code>context: fork</code> in the frontmatter.
+            That runs the skill in an isolated context so the
+            injected data doesn&apos;t pollute your main session.
+            The same skill format works across multiple tools, as the
+            next panel compares.
           </p>
         </>
       ),
@@ -164,14 +186,24 @@ Summarize this pull request concisely.`}
         <>
           <h3>Skills across tools</h3>
           <p>
-            Claude Code and OpenCode share the same skill format and
-            directory. Write a skill once, and it works in both tools.
+            <strong>Write a skill once, run it in two tools with zero
+            changes.</strong> Compare the three rows on the canvas.
+            Claude Code and OpenCode share the same directory
+            (<code>.claude/skills/</code>) and the same SKILL.md
+            format.
           </p>
           <p>
-            Copilot uses a different path and invocation style, but the
-            concept is identical. If your team uses multiple tools, you
-            may want skills in both locations &mdash; or pick one and
-            let the other tool&apos;s users adapt.
+            Notice Copilot&apos;s different path:{' '}
+            <code>.github/copilot/prompts/*.md</code>. The concept is
+            identical, but the invocation style differs &mdash; you
+            reference prompts with <code>#prompt-name</code> in chat
+            instead of a slash command.
+          </p>
+          <p>
+            If your team is single-tool, pick one directory and move
+            on. If multiple tools coexist, duplicate only the skills
+            that matter most. The final panel helps you decide which
+            workflows deserve to become skills at all.
           </p>
         </>
       ),
@@ -183,15 +215,23 @@ Summarize this pull request concisely.`}
         <>
           <h3>When to create a skill</h3>
           <p>
-            Not everything needs a skill. If you&apos;ve given the same
-            instructions three or more times, that&apos;s the signal.
-            Multi-step workflows, processes that need live data, and
-            recipes the team should share are all good candidates.
+            <strong>Not everything deserves to be a skill.</strong>{' '}
+            Follow the four steps on the canvas top to bottom. The
+            first signal is repetition: if you&apos;ve given the same
+            instructions three or more times, that&apos;s your cue.
           </p>
           <p>
-            Start small. Your first skill might just be &quot;run tests
-            and fix failures.&quot; As you get comfortable, add dynamic
-            context and more complex workflows.
+            Notice step 3 &mdash; &quot;needs live data.&quot; If
+            the workflow requires pulling fresh context at runtime
+            (a PR diff, a log tail, a deploy status), a skill with
+            shell injection handles it cleanly. A prompt you retype
+            each time cannot.
+          </p>
+          <p>
+            Start with one skill this week. Your first skill might be
+            as simple as &quot;run tests and fix failures.&quot; As
+            you get comfortable, layer in dynamic context, forked
+            sessions, and team-shared recipes committed to the repo.
           </p>
         </>
       ),

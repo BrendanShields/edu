@@ -72,14 +72,22 @@ claude mcp list`}
         <>
           <h1>MCP &amp; External Tools</h1>
           <p>
-            Your agent can read files and run commands, but your work
-            doesn&apos;t live entirely in code. Bugs are in Sentry. Data is
-            in Postgres. Designs are in Figma. Tickets are in Linear.
+            <strong>Your agent can read files and run commands, but
+            your bugs live in Sentry, your data lives in Postgres,
+            and your designs live in Figma.</strong> Look at the
+            title card on the canvas &mdash; &quot;Connect your agent
+            to databases, APIs, and services.&quot;
           </p>
           <p>
-            Model Context Protocol (MCP) bridges the gap. It gives your
-            agent a standardized way to talk to external services &mdash;
-            no copy-paste required.
+            Model Context Protocol (MCP) is the bridge. It gives the
+            agent a standardized way to call external services and get
+            structured data back, no tab-switching or copy-paste
+            required.
+          </p>
+          <p>
+            The next panel shows the before-and-after of working
+            without MCP versus with it &mdash; and the difference is
+            dramatic.
           </p>
         </>
       ),
@@ -91,15 +99,24 @@ claude mcp list`}
         <>
           <h3>The copy-paste tax</h3>
           <p>
-            Without MCP, you are the middleware. You copy a stack trace
-            from Sentry, paste it into the agent, then copy a query result
-            from your database client and paste that too. Every round trip
-            wastes time and pollutes context.
+            <strong>Without MCP, you are the middleware.</strong>{' '}
+            Compare the two panels on the canvas. On the left: open
+            Sentry, copy stack trace, paste into agent, open DB
+            client, copy query results, paste again. On the right:
+            one conversation, zero tab switches.
           </p>
           <p>
-            With MCP, the agent calls Sentry and your database directly.
-            It gets structured data, not screenshots. The entire
-            investigation happens in one unbroken conversation.
+            Notice what changes on the &quot;With MCP&quot; side.
+            The agent calls Sentry and your database directly and
+            gets structured data back &mdash; not screenshots, not
+            truncated pastes. The entire investigation stays in one
+            unbroken conversation thread.
+          </p>
+          <p>
+            That structured data means better answers. The agent
+            parses JSON fields, not OCR artifacts. Setting up that
+            connection takes about three commands, which the next
+            panel walks through.
           </p>
         </>
       ),
@@ -111,19 +128,24 @@ claude mcp list`}
         <>
           <h3>Setting up MCP servers</h3>
           <p>
-            MCP servers come in two flavors: <strong>remote</strong> (HTTP
-            endpoints hosted by the service) and <strong>local</strong>{' '}
-            (processes that run on your machine via stdio).
+            <strong>Two flavors, one command.</strong> Read the bash
+            commands on the canvas top to bottom. The first adds a
+            remote HTTP server (Notion), the second adds a local
+            stdio server (Sentry) with an environment variable for
+            the token.
           </p>
           <p>
-            Add them with <code>claude mcp add</code>. Environment
-            variables keep secrets out of your config. Once added, the
-            agent sees the server&apos;s tools automatically.
+            Notice the <code>--env SENTRY_TOKEN=xxx</code> flag.
+            Secrets stay in your local environment, never in the
+            committed config. Once added, run{' '}
+            <code>claude mcp list</code> to confirm the agent sees
+            the server&apos;s tools.
           </p>
           <p>
-            Commit <code>.mcp.json</code> to share server configs with
-            your team. Secrets stay local in each developer&apos;s
-            environment.
+            Commit <code>.mcp.json</code> to share server configs
+            with your team &mdash; each developer supplies their own
+            tokens locally. The ecosystem of available servers is
+            growing fast, as the next panel shows.
           </p>
         </>
       ),
@@ -135,14 +157,22 @@ claude mcp list`}
         <>
           <h3>Popular servers</h3>
           <p>
-            The MCP ecosystem is growing fast. Context7 gives agents
-            up-to-date library documentation. Sentry lets them
-            investigate errors without leaving the terminal. PostgreSQL
-            servers let them query your data directly.
+            <strong>Which copy-paste pain do you want to kill
+            first?</strong> Scan the six cards on the canvas.
+            Context7 gives the agent up-to-date library docs. Sentry
+            lets it investigate errors without leaving your terminal.
+            PostgreSQL lets it query your data directly.
           </p>
           <p>
-            Start with one server that solves your biggest copy-paste
-            pain. You can always add more later.
+            Pick the one card that matches your biggest friction and
+            add that server first. You can always wire up more
+            later &mdash; each one is a single{' '}
+            <code>claude mcp add</code> command.
+          </p>
+          <p>
+            More power means more risk surface. The final section
+            covers how MCP servers are scoped and secured so you can
+            connect with confidence.
           </p>
         </>
       ),
@@ -154,15 +184,24 @@ claude mcp list`}
         <>
           <h3>Scoping and security</h3>
           <p>
-            MCP servers run at three scope levels: <strong>local</strong>{' '}
-            (your machine only), <strong>project</strong> (shared via
-            .mcp.json), and <strong>user</strong> (your global config).
+            <strong>MCP servers are code running on your machine
+            &mdash; treat them like any dependency.</strong> Watch the
+            terminal on the canvas. The agent asks about production
+            errors and gets structured Sentry data back, but notice
+            the permission prompt before each MCP tool call.
           </p>
           <p>
-            Treat MCP servers like any dependency. Audit what tools they
-            expose, limit permissions where possible, and never hardcode
-            secrets in config files. The agent asks permission before
-            using MCP tools, just like any other action.
+            Servers run at three scope levels: local (your machine
+            only), project (shared via <code>.mcp.json</code>), and
+            user (your global config). Audit what tools each server
+            exposes, limit permissions where possible, and never
+            hardcode secrets in committed config files.
+          </p>
+          <p>
+            The takeaway: connect one server this week. Pick your
+            biggest copy-paste bottleneck, wire it up with{' '}
+            <code>claude mcp add</code>, and see how much faster
+            your investigations become.
           </p>
         </>
       ),

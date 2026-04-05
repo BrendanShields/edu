@@ -3,6 +3,7 @@ import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { StepFlow } from '@/components/visuals/templates/StepFlow';
 import { BeforeAfter } from '@/components/visuals/templates/BeforeAfter';
 import { TUILayout } from '@/components/visuals/lesson/TUILayout';
+import { OpenCodeDeepDive } from '@/components/visuals/lesson/OpenCodeDeepDive';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -10,6 +11,7 @@ const lesson: LessonDef = {
   module: 'mastery',
   title: 'OpenCode Essentials',
   visuals: {
+    deepDive: <OpenCodeDeepDive />,
     opencodeIntro: (
       <TitleCard
         icon="🟢"
@@ -74,7 +76,7 @@ const lesson: LessonDef = {
   sections: [
     {
       id: 'intro',
-      visual: 'opencodeIntro',
+      visual: 'deepDive',
       content: (
         <>
           <h1>OpenCode Essentials</h1>
