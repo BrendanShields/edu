@@ -69,18 +69,21 @@ const lesson: LessonDef = {
         <>
           <h1>Explore, Plan, Build</h1>
           <p>
-            <strong>The most expensive line of AI-generated code is the one that
-            lands in the wrong directory.</strong>
+            You wouldn&apos;t pour concrete before reading the soil report. You
+            wouldn&apos;t frame walls without blueprints. Yet developers hand an
+            AI agent a task and say &quot;build it&quot; — skipping the
+            equivalent of the site survey and the architect.
           </p>
           <p>
-            Look at the canvas. &quot;Build first&quot; means 200 lines written
-            against the wrong library, in the wrong folder, ignoring every
-            convention your team follows. &quot;Plan first&quot; means two minutes
-            of reading before a single character is written.
+            <strong>The most expensive code is code that solves the wrong problem
+            fast.</strong> &quot;Build first&quot; means 200 lines against the
+            wrong library, in the wrong folder, ignoring every convention your
+            team follows. &quot;Plan first&quot; means two minutes of reading
+            before a single character is written.
           </p>
           <p>
-            That two-minute investment is a three-phase workflow you can start
-            using today. Click through it on the next canvas.
+            AI coding is construction, not improvisation. Three phases keep it
+            that way.
           </p>
         </>
       ),
@@ -90,22 +93,22 @@ const lesson: LessonDef = {
       visual: 'workflow',
       content: (
         <>
-          <h3>Read the room before you speak</h3>
+          <h3>Read the soil report</h3>
           <p>
-            Click <strong>Explore</strong> on the canvas. Watch the terminal run{' '}
-            <code>grep -r &quot;authenticate&quot; src/</code> — three hits across
-            three files. Then it reads <code>src/auth/login.ts</code> and
+            Click <strong>Explore</strong>. The terminal runs{' '}
+            <code>grep -r &quot;authenticate&quot; src/</code> — three hits
+            across three files. Then it reads <code>src/auth/login.ts</code> and
             immediately spots the bug: comparing a hash to plaintext.
           </p>
           <p>
-            No edits happened. The agent is in read-only mode, building a mental
-            map of your code. It now knows where the auth logic lives, how tests
-            are structured, and what the bug actually is.
+            No edits happened. This is the site survey. The agent is in read-only
+            mode, building a map of your code — where the auth logic lives, how
+            tests are structured, what the actual problem is. A contractor who
+            skips this step digs the foundation in the wrong place.
           </p>
           <p>
-            This shared understanding is the foundation. Without it, the agent
-            guesses. With it, the agent plans. Click <strong>Plan</strong> to see
-            what happens next.
+            With the survey done, the agent can draw blueprints instead of
+            guessing. Click <strong>Plan</strong> to see them.
           </p>
         </>
       ),
@@ -115,21 +118,21 @@ const lesson: LessonDef = {
       visual: 'planPhase',
       content: (
         <>
-          <h3>Correct a three-line plan, not a 200-line diff</h3>
+          <h3>Blueprints are cheap. Demolition is not.</h3>
           <p>
-            Read the prompt on the canvas. It asks the agent to propose a plan
-            before writing any code — which files change, what the approach is,
-            whether there are dependency implications.
+            The prompt on the right asks the agent to propose a plan before
+            writing code — which files change, what the approach is, whether
+            there are dependency implications. Four numbered steps, each tied
+            to a real file.
           </p>
           <p>
-            Now click <strong>Plan</strong> on the previous canvas to see the
-            output: four numbered steps, each tied to a real file. You can scan
-            this in ten seconds and catch a wrong turn before a single line is
-            written.
+            You can scan this in ten seconds and catch a wrong turn. Crossing
+            out a line on a blueprint costs nothing. Tearing down a half-built
+            wall costs everything.
           </p>
           <p>
-            Reviewing a plan is fast. Undoing an implementation is not.
-            Once the plan looks right, you give the green light to build.
+            Once the blueprint looks right, you give the green light. Now — and
+            only now — the agent has earned the right to pick up a hammer.
           </p>
         </>
       ),
@@ -139,21 +142,21 @@ const lesson: LessonDef = {
       visual: 'buildPhase',
       content: (
         <>
-          <h3>Now the agent has earned the right to edit</h3>
+          <h3>Build to spec, not from scratch</h3>
           <p>
-            Look at the prompt on the canvas: implement, write tests, run the
-            suite. Three instructions, one sentence each. The agent already knows
-            the codebase and has an approved plan — it doesn&apos;t need hand-holding.
+            Three instructions, one sentence each: implement, write tests, run
+            the suite. The agent already surveyed the site and has approved
+            blueprints — it doesn&apos;t need hand-holding.
           </p>
           <p>
-            Click <strong>Build</strong> on the interactive canvas to see the
+            Click <strong>Build</strong> on the interactive panel to see the
             result. Three green checkmarks. <code>npm test</code> passes: 3/3.
             The fix uses <code>bcrypt.compare()</code> because the agent
-            discovered that pattern during Explore.
+            discovered that pattern during Explore — not because you told it to.
           </p>
           <p>
-            No wrong library. No wrong directory. No surprises. The full cycle
-            ties it all together.
+            No wrong library. No wrong directory. No surprises. When the
+            contractor reads the plans, the building passes inspection.
           </p>
         </>
       ),
@@ -163,21 +166,21 @@ const lesson: LessonDef = {
       visual: 'fullCycle',
       content: (
         <>
-          <h3>One rhythm for every non-trivial task</h3>
+          <h3>One rhythm, every project</h3>
           <p>
-            Look at the four steps on the canvas: Explore, Plan, Build, Commit.
-            This is the full cycle. It ends with a commit that is clean, tested,
-            and consistent with the rest of your codebase.
+            Explore, Plan, Build, Commit. The four-step cycle on the right ends
+            with a commit that is clean, tested, and consistent with the rest of
+            your codebase. Use it for anything bigger than a one-line fix.
           </p>
           <p>
-            Use this rhythm for anything bigger than a one-line fix. Over time
-            it becomes automatic — you stop treating the agent as a code
-            generator and start treating it as a collaborator that reads the room
-            before it speaks.
+            Over time this rhythm becomes second nature. You stop treating the
+            agent as an improvising jazz musician and start treating it as a
+            general contractor who reads the soil report before pouring concrete.
           </p>
           <p>
-            But even the best plan burns out if context fills up. The next lesson
-            teaches you how to keep sessions sharp.
+            But even the best blueprints burn out if context fills up. The next
+            lesson teaches you how to keep sessions sharp when the work order
+            gets long.
           </p>
         </>
       ),

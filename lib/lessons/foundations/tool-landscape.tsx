@@ -96,15 +96,17 @@ const lesson: LessonDef = {
         <>
           <h1>The Tool Landscape</h1>
           <p>
-            <strong>Three tools own the AI coding space, and they all run the same engine underneath.</strong>
+            You wouldn&apos;t hire a roofer to fix your plumbing. Both are contractors, both are
+            skilled — but the job demands the right fit, not the &quot;best&quot; one.
           </p>
           <p>
-            Look at the canvas. That tagline — &quot;matching tools to how you actually work&quot; — is the
-            entire lesson. The differences aren&apos;t about capability. They&apos;re about where you
-            already spend your time.
+            <strong>AI coding tools work the same way.</strong> Three dominate the space, and
+            they share an engine under the hood. The difference isn&apos;t capability. It&apos;s where
+            you already spend your time — terminal, IDE, or somewhere in between.
           </p>
           <p>
-            Keep that frame as we walk through each one.
+            Think of this lesson as three paths up the same mountain. Each gets you to the top.
+            Only one matches your boots.
           </p>
         </>
       ),
@@ -116,17 +118,15 @@ const lesson: LessonDef = {
         <>
           <h3>Claude Code: The terminal purist</h3>
           <p>
-            <strong>No GUI. No editor plugin. Just a prompt and your filesystem.</strong>
+            That interface on the right? That&apos;s <em>everything</em>. No GUI. No editor plugin.
+            You type <code>claude</code> in any project directory and start talking. It
+            reads <code>src/auth.ts</code>, edits it, runs <code>npm test</code>, and verifies
+            the output — all without leaving the shell.
           </p>
           <p>
-            Look at the canvas — that&apos;s the entire interface. You type <code>claude</code> in
-            any project directory and start talking. It reads <code>src/auth.ts</code>, edits it,
-            runs <code>npm test</code>, and verifies the output. All without leaving the shell.
-          </p>
-          <p>
-            Claude-only models mean the deepest Anthropic integration. If your hands live on the
-            keyboard and your home is the terminal, this is the tool that disappears into your
-            workflow.
+            Claude-only models mean the deepest Anthropic integration. If your terminal is
+            already open in another pane right now, this is the contractor who shows up speaking
+            your language.
           </p>
         </>
       ),
@@ -141,14 +141,14 @@ const lesson: LessonDef = {
             What if you want the agentic loop but refuse to be locked to one provider?
           </p>
           <p>
-            Look at the canvas. Same terminal-native approach, but notice the key
-            difference: <strong>75+ model providers</strong>. Bring your own API keys, run local
-            models, own every byte of data. The agentic capabilities — file editing, shell commands,
-            tool use — are identical.
+            Same terminal-native approach, but the key
+            difference jumps out: <strong>75+ model providers</strong>. Bring your own API keys,
+            run local models, own every byte of data. The agentic capabilities — file editing,
+            shell commands, tool use — are identical to Claude Code&apos;s.
           </p>
           <p>
-            OpenCode is fully open source. If vendor independence matters to your team, or you
-            need a specific model for compliance reasons, this is your starting point.
+            OpenCode is fully open source. If your team treats vendor independence like a load-bearing
+            wall, this is the contractor who works with whatever materials you supply.
           </p>
         </>
       ),
@@ -163,13 +163,14 @@ const lesson: LessonDef = {
             <strong>Copilot doesn&apos;t ask you to leave your editor. It moves in.</strong>
           </p>
           <p>
-            Look at the canvas. Inline completions appear as you type. The Chat panel handles
-            bigger requests. Agent mode gives it the same agentic loop — reading files, running
-            commands, verifying changes — right inside VS Code.
+            Inline completions appear as you type. The Chat panel handles bigger requests. Agent
+            mode gives it the same agentic loop — reading files, running commands, verifying
+            changes — right inside VS Code. Notice the deep GitHub integration: it reads your
+            PRs, issues, and repo context natively.
           </p>
           <p>
-            The standout is deep GitHub integration: it reads your PRs, issues, and repo context
-            natively. If you rarely leave your IDE, Copilot is the tool that meets you where you are.
+            If you can&apos;t remember the last time you opened a standalone terminal, Copilot is
+            the contractor who already has keys to your building.
           </p>
         </>
       ),
@@ -181,17 +182,18 @@ const lesson: LessonDef = {
         <>
           <h3>Where they converge</h3>
           <p>
-            <strong>Scan the comparison table on the canvas. The &quot;check&quot; column is nearly identical.</strong>
+            Scan the comparison table. The checkmarks are nearly identical — MCP servers, agentic
+            mode, custom instructions. All three tools have them. The overlap is large and growing
+            every month.
           </p>
           <p>
-            Notice the pattern: MCP servers, agentic mode, custom instructions — all three
-            tools have them. The overlap is large and growing every month. What you can{' '}
-            <em>do</em> with each tool is converging fast.
+            So what actually separates them? Two rows: <strong>Interface</strong> and{' '}
+            <strong>Models</strong>. Where the tool lives and what ecosystem it plugs into.
+            Everything else is converging fast.
           </p>
           <p>
-            The real differences are in two rows: <strong>Interface</strong> and{' '}
-            <strong>Models</strong>. Where the tool lives and what ecosystem it plugs into — that&apos;s
-            what separates them.
+            This is why &quot;which tool is best?&quot; is the wrong question. The right question
+            is: where do you already work?
           </p>
         </>
       ),
@@ -203,16 +205,16 @@ const lesson: LessonDef = {
         <>
           <h3>The real tradeoff</h3>
           <p>
-            Look at both sides of the canvas. The left is what happens when you pick against
-            your instincts. The right is what happens when you pick with them.
+            A terminal developer forced into an IDE is a plumber handed a roofing nail gun.
+            They&apos;ll figure it out — but the friction compounds. Not in minutes. In weeks of
+            slower output and quiet frustration.
           </p>
           <p>
-            A terminal developer forced into an IDE fights the tool every session. That friction
-            compounds — not in minutes, but in weeks of slower output and growing frustration.
+            The left side shows that mismatch. The right side shows the alternative: the tool
+            disappears into your flow, and you think about the problem instead of the interface.
           </p>
           <p>
-            <strong>The right tool is the one you forget about.</strong> You think about the
-            problem, never the interface. That&apos;s the only metric that matters.
+            <strong>The right tool is the one you forget you&apos;re using.</strong>
           </p>
         </>
       ),
@@ -224,13 +226,14 @@ const lesson: LessonDef = {
         <>
           <h3>Choosing your stack</h3>
           <p>
-            Follow the three steps on the canvas. Start with where you already spend your
-            time — terminal or IDE. That single answer narrows the field to two tools or one.
+            Start with one question: where do you already spend your time — terminal or IDE?
+            That single answer narrows the field to two tools or one.
           </p>
           <p>
             Then layer. Most productive developers use <strong>two or more tools</strong>{' '}
             together: Copilot for inline completions while coding, Claude Code for complex
-            multi-file tasks from the terminal.
+            multi-file tasks from the terminal. You don&apos;t hire one contractor for an entire
+            renovation. You hire the right ones for each job.
           </p>
           <p>
             You don&apos;t choose one forever. You choose where to start this week.

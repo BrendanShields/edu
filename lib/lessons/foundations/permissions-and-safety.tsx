@@ -100,15 +100,16 @@ const lesson: LessonDef = {
         <>
           <h1>Permissions &amp; Safety</h1>
           <p>
-            <strong>An AI coding tool can run any shell command on your machine. That sentence should make you pay attention.</strong>
+            <strong>An AI coding tool can run any shell command on your machine.</strong>
           </p>
           <p>
-            Look at the canvas — &quot;controlling what the AI can do without asking.&quot; Every tool
-            gives you a permission dial. Learning to set it correctly is the difference between a
-            productive assistant and an incident report.
+            That sentence should sit with you for a moment. Every tool gives you a permission
+            dial. Learning to set it correctly is the difference between a productive assistant
+            and an incident report. Think of it like hiring a contractor: you wouldn&apos;t
+            hand them the master key on day one.
           </p>
           <p>
-            This lesson teaches you to turn that dial with confidence.
+            This lesson teaches you to build trust the same way — gradually, with gates.
           </p>
         </>
       ),
@@ -120,18 +121,18 @@ const lesson: LessonDef = {
         <>
           <h3>Real damage, real fast</h3>
           <p>
-            Look at the left side of the canvas. <code>rm -rf</code> in the wrong directory.
-            Silent <code>git push --force</code> to main. A dropped production table during
-            &quot;cleanup.&quot;
+            A team shipped a fix on Friday. The agent ran <code>git push --force</code> to
+            main because no one had configured permission gates. They spent Saturday restoring
+            from backup.
           </p>
           <p>
-            Now look at the right side. Same tool, same power — but with checkpoints before
-            destructive actions, review gates on shell commands, scoped permissions per tool.
-            Every mistake becomes recoverable.
+            The right side shows the same tool with guardrails: checkpoints before destructive
+            actions, review gates on shell commands, scoped permissions per tool. Same power,
+            every mistake recoverable.
           </p>
           <p>
-            None of those developers were careless. They just hadn&apos;t configured guardrails.
-            The tool did exactly what it was <em>allowed</em> to do.
+            None of those developers were careless. The tool did exactly what it
+            was <em>allowed</em> to do. The default is &quot;yes&quot; unless you say otherwise.
           </p>
         </>
       ),
@@ -143,17 +144,18 @@ const lesson: LessonDef = {
         <>
           <h3>The permission spectrum</h3>
           <p>
-            <strong>Click each permission level on the canvas. Watch what happens to the same command.</strong>
-          </p>
-          <p>
-            The spectrum isn&apos;t good-to-bad — it&apos;s a trust dial. Plan Mode is read-only:
-            the AI explains what it <em>would</em> do but touches nothing. Default Mode asks
-            before every edit and every command. Auto modes let the AI decide what needs
-            approval — risky actions still get flagged.
+            Click each permission level. The spectrum isn&apos;t good-to-bad — it&apos;s a trust
+            dial. Plan Mode is read-only: the AI explains what it <em>would</em> do but touches
+            nothing. Default Mode asks before every edit and command. Auto modes let the AI
+            decide what needs approval — risky actions still get flagged.
           </p>
           <p>
             Notice how the same <code>npm run build</code> behaves differently at each level.
             That&apos;s the control surface you&apos;re learning to operate.
+          </p>
+          <p>
+            Day 1 you watch the contractor work. Week 2 they work independently but check before
+            knocking down walls. Month 3 they have keys — but know which rooms are off-limits.
           </p>
         </>
       ),
@@ -165,16 +167,17 @@ const lesson: LessonDef = {
         <>
           <h3>Building trust gradually</h3>
           <p>
-            Would you give a new hire <code>sudo</code> access on day one? Apply the same logic here.
+            Would you give a new hire <code>sudo</code> access on day one?
           </p>
           <p>
-            Follow the three steps on the canvas. Day 1: Plan Mode — watch what the AI would do,
-            learn its patterns and blind spots. Day 3: Default Mode — approve each action, but
-            notice how rarely you reject. Week 3: Auto Mode — the classifier handles routine
-            actions, you review only what gets flagged.
+            Day 1: Plan Mode — watch what the AI would do, learn its patterns and blind spots.
+            Day 3: Default Mode — approve each action, but notice how rarely you actually reject.
+            Week 3: Auto Mode — the classifier handles routine actions, you review only what
+            gets flagged. You&apos;re not removing guardrails. You&apos;re moving them outward as
+            trust earns it.
           </p>
           <p>
-            The permission level you land on isn&apos;t permanent. Ratchet up as trust builds,
+            The permission level you land on isn&apos;t permanent. Ratchet up for familiar repos,
             dial back for unfamiliar codebases.
           </p>
         </>
@@ -187,7 +190,7 @@ const lesson: LessonDef = {
         <>
           <h3>How each tool handles it</h3>
           <p>
-            <strong>Look at the three panels on the canvas. Same concept, very different controls.</strong>
+            Same concept, very different controls across the three panels.
           </p>
           <p>
             Claude Code: press <kbd>Shift+Tab</kbd> to cycle through six modes — Plan, Default,
@@ -197,7 +200,8 @@ const lesson: LessonDef = {
             changes, PR review as a second gate.
           </p>
           <p>
-            Different surfaces, same underlying principle: you decide the trust boundary, the tool enforces it.
+            Different surfaces, same principle: you set the trust boundary, the tool enforces it.
+            The contractor works in your house, but the alarm system is yours to configure.
           </p>
         </>
       ),
@@ -209,17 +213,17 @@ const lesson: LessonDef = {
         <>
           <h3>Rules to code by</h3>
           <p>
-            <strong>Look at the four safety rules on the canvas. These are non-negotiable.</strong>
+            Four non-negotiables.
           </p>
           <p>
             Start restrictive and open up — it&apos;s easy to grant permission, hard to undo
             damage. Always run <code>git commit</code> before starting a task so you have a
-            clean state to return to. Remember: file edits are reversible, but shell commands
-            often aren&apos;t — that&apos;s why every tool gates commands more strictly.
+            clean state to return to. File edits are reversible, but shell commands often
+            aren&apos;t — that&apos;s why every tool gates commands more strictly than file writes.
           </p>
           <p>
             Never bypass permissions in production. Full Auto is for local development only.
-            Period. No exceptions. Not even &quot;just this once.&quot;
+            Not &quot;just this once.&quot; Not on a Friday afternoon. Not ever.
           </p>
         </>
       ),

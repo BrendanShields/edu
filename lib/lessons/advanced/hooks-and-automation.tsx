@@ -80,21 +80,21 @@ const lesson: LessonDef = {
         <>
           <h1>Hooks &amp; Automation</h1>
           <p>
-            <strong>The agent decides what to do. Hooks guarantee what
-            always happens.</strong> Look at the title card on the
-            canvas &mdash; &quot;deterministic automation at every
-            step.&quot;
+            Picture an assembly line. Parts move down the belt,
+            and at specific stations, a mechanical arm inspects each
+            one &mdash; no matter who&apos;s managing the floor, no
+            matter the time of day.
           </p>
           <p>
-            Notice the word &quot;deterministic.&quot; Hooks don&apos;t
-            ask the AI to remember your formatting rules or security
-            policies. They run your code, every time, unconditionally.
+            <strong>That&apos;s exactly what hooks are.</strong> The
+            agent decides what to build. Hooks are the quality gates
+            bolted to the line itself &mdash; your code, running every
+            time, unconditionally.
           </p>
           <p>
-            That distinction &mdash; AI judgment vs. mechanical guarantee
-            &mdash; is the foundation of everything that follows.
-            The lifecycle on the next panel shows you exactly where
-            hooks fire.
+            AI judgment picks the task. Mechanical certainty enforces
+            the rules. That split is the foundation of everything in
+            this lesson.
           </p>
         </>
       ),
@@ -106,23 +106,21 @@ const lesson: LessonDef = {
         <>
           <h3>The hook lifecycle</h3>
           <p>
-            <strong>Four events give you four injection points into
-            every agent action.</strong> Expand the PreToolUse panel
-            on the canvas &mdash; that one fires before the agent
-            touches anything.
+            Four stations on the assembly line, four moments where
+            your code can intervene. PreToolUse fires before the
+            agent touches anything &mdash; the first inspection gate.
           </p>
           <p>
-            Notice how PreToolUse and PostToolUse bracket every tool
-            call. Exit code 2 on PreToolUse blocks the action entirely;
-            PostToolUse is where you run formatters and linters on
-            whatever just changed.
+            PreToolUse and PostToolUse bracket every single tool call.
+            Exit code 2 on PreToolUse rejects the part off the belt
+            entirely. PostToolUse is where you run formatters and
+            linters on whatever just changed.
           </p>
           <p>
-            Stop and Notification cover the moments between tool calls.
+            Stop and Notification cover the gaps between tool calls.
             Stop fires when the agent finishes responding &mdash;
-            perfect for commits or summaries. Notification fires when
-            it needs you. Next, you&apos;ll see the most common hook
-            in practice.
+            ideal for auto-commits. Notification fires when it needs
+            a human decision.
           </p>
         </>
       ),
@@ -134,23 +132,22 @@ const lesson: LessonDef = {
         <>
           <h3>Auto-formatting: the essential hook</h3>
           <p>
-            <strong>Three lines of JSON, and every file the agent
-            edits gets auto-formatted.</strong> Read the config on
-            the canvas &mdash; the matcher targets Edit and Write,
+            Three lines of JSON. Every file the agent edits gets
+            auto-formatted. The matcher targets Edit and Write;
             the command runs{' '}
             <code>npx prettier --write $FILE_PATH</code>.
           </p>
           <p>
-            Try changing <code>prettier</code> to your own formatter
+            Swap <code>prettier</code> for your own formatter
             mentally. The <code>$FILE_PATH</code> variable resolves
-            to whichever file the agent just touched, so your linter
-            or formatter always runs on exactly the right target.
+            to whichever file the agent just touched, so the right
+            tool always hits the right target.
           </p>
           <p>
-            This is why hooks beat prompting: the agent can&apos;t
-            forget, skip, or reinterpret your formatting rules. The
-            next section shows the same pattern used defensively
-            &mdash; blocking actions instead of running them.
+            Why does this beat a prompt instruction? Because the
+            agent can&apos;t forget, skip, or creatively reinterpret
+            a mechanical gate. The inspection arm doesn&apos;t have
+            opinions &mdash; it just runs.
           </p>
         </>
       ),
@@ -162,24 +159,24 @@ const lesson: LessonDef = {
         <>
           <h3>Blocking dangerous actions</h3>
           <p>
-            <strong>What if the agent tries to edit your{' '}
-            <code>.env</code> file?</strong> Look at the blocking
-            hook on the canvas. The grep pattern
-            matches <code>.env</code>, <code>package-lock.json</code>,
-            and anything inside <code>.git/</code>.
+            What if the agent tries to edit your{' '}
+            <code>.env</code> file? Think of this hook as a bouncer
+            at the door. It checks the ID &mdash; the file path
+            &mdash; and <code>.env</code> gets turned away. So
+            does <code>package-lock.json</code> and anything
+            inside <code>.git/</code>.
           </p>
           <p>
-            Notice the exit codes: <code>exit 2</code> means
-            &quot;block this action,&quot; <code>exit 0</code> means
-            &quot;allow it.&quot; The agent receives a blocked
-            notification and adjusts its plan automatically.
+            The exit codes are simple: <code>exit 2</code> means
+            &quot;blocked,&quot; <code>exit 0</code> means
+            &quot;you&apos;re in.&quot; The agent receives a rejection
+            notice and adjusts its plan automatically.
           </p>
           <p>
-            This is stronger than a CLAUDE.md instruction. A prompt
-            rule can be misinterpreted; an exit code 2 physically
-            prevents the tool call from executing. When you need
-            the agent to run without a human at all, that guarantee
-            matters even more.
+            Three lines of config turned a potential disaster into a
+            non-event. A CLAUDE.md instruction can be misinterpreted.
+            An exit code 2 physically prevents the tool call from
+            executing &mdash; no negotiation, no edge cases.
           </p>
         </>
       ),
@@ -191,24 +188,23 @@ const lesson: LessonDef = {
         <>
           <h3>Headless mode: AI in CI</h3>
           <p>
-            <strong>What happens when no human is watching?</strong>{' '}
-            Read the command on the canvas: <code>claude -p
-            &quot;Run tests and fix failures&quot;
-            --allowedTools &quot;Bash,Read,Edit&quot;</code>. That
-            runs the agent in your CI pipeline with no interactive
-            session.
+            The factory running the night shift. Same quality gates,
+            no foreman on the floor. The command{' '}
+            <code>claude -p &quot;Run tests and fix failures&quot;
+            --allowedTools &quot;Bash,Read,Edit&quot;</code> runs the
+            agent in your CI pipeline with zero human interaction.
           </p>
           <p>
-            Notice the <code>--allowedTools</code> flag &mdash; it
-            restricts which tools the agent can use. Combined with
-            your PreToolUse blocking hooks, you get a tightly scoped
-            agent that can&apos;t wander into dangerous territory.
+            The <code>--allowedTools</code> flag restricts which tools
+            the agent can reach. Combine that with your PreToolUse
+            blocking hooks, and you get a tightly scoped agent that
+            cannot wander into dangerous territory.
           </p>
           <p>
-            Every hook you wrote in this lesson fires identically in
+            Every hook you built in this lesson fires identically in
             headless mode. Formatting, blocking, notifications &mdash;
-            they all work whether a human is present or not. That is
-            how you build reliable AI automation.
+            the mechanical arms don&apos;t care whether a human is
+            watching. That is how you build reliable AI automation.
           </p>
         </>
       ),

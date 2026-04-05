@@ -13,7 +13,7 @@ export function Section({ id, visual, children }: SectionProps) {
     <div
       data-section={id}
       data-visual={visual || ''}
-      className="dd-section py-12 min-h-[40vh]"
+      className="dd-section py-10 min-h-[25vh]"
     >
       {children}
     </div>

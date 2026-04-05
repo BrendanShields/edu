@@ -1,11 +1,8 @@
 import { IntroVisual } from '@/components/visuals/IntroVisual';
 import { AnimatedMentalShift } from '@/components/visuals/remotion/MentalShiftPlayer';
 import { AgentAppears } from '@/components/visuals/agentic-loop/AgentAppears';
-import { PhaseRead } from '@/components/visuals/agentic-loop/PhaseRead';
-import { PhaseThink } from '@/components/visuals/agentic-loop/PhaseThink';
-import { PhaseAct } from '@/components/visuals/agentic-loop/PhaseAct';
-import { PhaseVerify } from '@/components/visuals/agentic-loop/PhaseVerify';
-import { CycleDiagram } from '@/components/visuals/agentic-loop/CycleDiagram';
+import { ScrollSyncedTerminal } from '@/components/visuals/lesson/ScrollSyncedTerminal';
+import { AgenticLoop } from '@/components/visuals/AgenticLoop';
 import { BuiltInTools } from '@/components/visuals/BuiltInTools';
 import { ClaudeCodeCard, OpenCodeCard, CopilotCard } from '@/components/visuals/ToolCards';
 import { WhyMatters } from '@/components/visuals/WhyMatters';
@@ -19,11 +16,8 @@ const lesson: LessonDef = {
     intro: <IntroVisual />,
     mentalShift: <AnimatedMentalShift />,
     agentAppears: <AgentAppears />,
-    phaseRead: <PhaseRead />,
-    phaseThink: <PhaseThink />,
-    phaseAct: <PhaseAct />,
-    phaseVerify: <PhaseVerify />,
-    cycleDiagram: <CycleDiagram />,
+    scrollTerminal: <ScrollSyncedTerminal />,
+    cycleDiagram: <AgenticLoop />,
     builtInTools: <BuiltInTools />,
     implementations: <div className="space-y-3"><ClaudeCodeCard /><OpenCodeCard /><CopilotCard /></div>,
     whyMatters: <WhyMatters />,
@@ -36,15 +30,17 @@ const lesson: LessonDef = {
         <>
           <h1>How AI Coding Tools Work</h1>
           <p>
-            <strong>Watch the terminal on the canvas. That&apos;s an AI coding tool fixing a bug.</strong>
+            The terminal on the right is fixing a bug. No copy-paste, no switching windows.
+            It reads the error, finds the file, edits the code, and runs the tests — all in
+            one sequence. You didn&apos;t touch the keyboard after the first prompt.
           </p>
           <p>
-            No copy-paste. No switching windows. The tool reads the error, finds the file,
-            edits the code, and runs the tests — all in one sequence. You didn&apos;t touch the keyboard
-            after the first prompt.
+            <strong>That&apos;s the shift.</strong> You stop being an operator and start being a
+            delegator. Like handing your laptop to a senior developer and describing the problem
+            instead of dictating keystrokes.
           </p>
           <p>
-            That&apos;s the shift. You stop being an operator and start being a delegator.
+            This lesson shows you what happens inside that handoff.
           </p>
         </>
       ),
@@ -56,15 +52,17 @@ const lesson: LessonDef = {
         <>
           <h3>The mental shift</h3>
           <p>
-            <strong>A chatbot is texting an expert. An AI coding tool is handing them your laptop.</strong>
+            Imagine two ways of getting help. In the first, you text an expert: &quot;How do I
+            fix this auth bug?&quot; They text back advice. You do the typing. In the second, you
+            hand them your laptop. They browse your files, open your terminal, and fix it
+            themselves — checking with you before anything risky.
           </p>
           <p>
-            Watch the animation on the canvas. See the transition from &quot;advice&quot; to
-            &quot;action&quot; — the expert can browse your files, open your terminal, run commands,
-            and make changes. They just check with you before doing anything risky.
+            The animation shows that transition from advice to action. A chatbot is the text
+            message. An AI coding tool is the laptop handoff.
           </p>
           <p>
-            Once you internalize this distinction, you&apos;ll never write a prompt the same way again.
+            Once you internalize this, you&apos;ll never write a prompt the same way again.
           </p>
         </>
       ),
@@ -76,12 +74,14 @@ const lesson: LessonDef = {
         <>
           <h3>The agentic loop</h3>
           <p>
-            Every AI coding tool — Claude Code, OpenCode, Copilot — runs the same pattern under the hood.
+            Every AI coding tool — Claude Code, OpenCode, Copilot — runs the same pattern
+            under the hood. You wouldn&apos;t dictate keystrokes to a senior developer. You&apos;d
+            describe the problem and let them drive.
           </p>
           <p>
-            Look at the canvas. An <strong>agent</strong> appears: software that perceives its
-            environment, makes decisions, and takes action. Not generating text for you to paste.
-            Actually doing things in your codebase.
+            That&apos;s what an <strong>agent</strong> is: software that perceives its environment,
+            makes decisions, and takes action. Not generating text for you to paste. Actually
+            doing things in your codebase, the way a pair programmer would.
           </p>
           <p>
             The next four sections break down exactly what happens inside that loop.
@@ -91,48 +91,51 @@ const lesson: LessonDef = {
     },
     {
       id: 'phase-read',
-      visual: 'phaseRead',
+      visual: 'scrollTerminal',
       content: (
         <>
           <h3>Phase 1: Read</h3>
           <p>
-            <strong>The agent opens its eyes before it touches anything.</strong>
+            Think of this as the agent&apos;s <strong>eyes</strong>. Before touching anything,
+            it reads <code>src/auth.ts</code>, greps for related imports,
+            checks <code>git log</code>, pulls in the error message. It&apos;s building a mental
+            model of what exists before making a single change.
           </p>
           <p>
-            Watch the canvas — the agent reads <code>src/auth.ts</code>, greps for related
-            imports, checks <code>git log</code>, and pulls in the error message. It&apos;s
-            building a mental model of what exists before making a single change.
+            A surgeon doesn&apos;t cut before looking at the scan. Skip this phase and the agent
+            hallucinates — confidently editing files it hasn&apos;t read.
           </p>
           <p>
-            Skip this phase and the agent hallucinates. That&apos;s why context management
-            (the next lesson) matters so much.
+            That&apos;s why context management (the next lesson) matters more than anything else
+            you&apos;ll learn here.
           </p>
         </>
       ),
     },
     {
       id: 'phase-think',
-      visual: 'phaseThink',
+      visual: 'scrollTerminal',
       content: (
         <>
           <h3>Phase 2: Think</h3>
           <p>
-            What needs to change? What&apos;s the safest path? Are there edge cases?
+            What needs to change? What&apos;s the safest path? Are there edge cases the tests
+            don&apos;t cover?
           </p>
           <p>
-            Look at the canvas. The agent connects the dots — error message, source code,
-            expected behavior — and forms a plan. This reasoning step is invisible in the UI
-            but it&apos;s where the model spends most of its tokens.
+            This is the agent&apos;s <strong>memory</strong> at work — connecting dots between the
+            error message, source code, and expected behavior to form a plan. The reasoning step
+            is invisible in the UI, but it&apos;s where the model spends most of its tokens.
           </p>
           <p>
-            Better input context means better reasoning. Garbage in, garbage plan out.
+            Better input context means better reasoning. Feed it noise, get a noise plan back.
           </p>
         </>
       ),
     },
     {
       id: 'phase-act',
-      visual: 'phaseAct',
+      visual: 'scrollTerminal',
       content: (
         <>
           <h3>Phase 3: Act</h3>
@@ -140,20 +143,20 @@ const lesson: LessonDef = {
             <strong>This is the step that separates an agent from a chatbot.</strong>
           </p>
           <p>
-            Watch the canvas. The agent edits <code>src/auth.ts:45</code>, runs{' '}
-            <code>npm test</code>, creates a branch. It has hands now — it modifies your
-            codebase directly instead of suggesting what you should change.
+            The agent has <strong>hands</strong> now. It edits <code>src/auth.ts:45</code>,
+            runs <code>npm test</code>, creates a branch. It modifies your codebase directly
+            instead of suggesting what you should change. Every action gets logged — you&apos;ll
+            learn to control which ones need your approval in the Permissions lesson.
           </p>
           <p>
-            Every action is logged. You&apos;ll learn to control which actions need your
-            approval in the Permissions lesson.
+            A chatbot writes you a letter. An agent picks up the wrench.
           </p>
         </>
       ),
     },
     {
       id: 'phase-verify',
-      visual: 'phaseVerify',
+      visual: 'scrollTerminal',
       content: (
         <>
           <h3>Phase 4: Verify</h3>
@@ -161,13 +164,13 @@ const lesson: LessonDef = {
             Did the fix actually work? The agent doesn&apos;t assume — it checks.
           </p>
           <p>
-            Watch the canvas. It runs the test suite, reads the output, compares against
-            expectations. If tests fail, it loops back to Read with the new error — rethinks,
-            tries a different approach, verifies again.
+            It runs the test suite, reads the output, compares against expectations. If tests
+            fail, it loops back to Read with the new error — rethinks, tries a different
+            approach, verifies again. This is the agent&apos;s <strong>ears</strong>, listening to
+            the outside world for confirmation.
           </p>
           <p>
-            This self-correction loop is what makes agents reliable. A chatbot gives you one
-            shot. An agent iterates until the tests pass.
+            A chatbot gives you one shot. An agent iterates until the tests pass.
           </p>
         </>
       ),
@@ -179,15 +182,16 @@ const lesson: LessonDef = {
         <>
           <h3>The full cycle</h3>
           <p>
-            <strong>Watch the terminal cycle on the canvas: Read, Think, Act, Verify — then repeat.</strong>
+            Read, Think, Act, Verify — then repeat. Sound familiar?
           </p>
           <p>
-            Notice something familiar? This is exactly what <em>you</em> do when you debug:
-            read the error, reason about the cause, make a change, test it. The agent runs
-            the same loop — just faster and without losing context between steps.
+            This is exactly what <em>you</em> do when you debug: read the error, reason about
+            the cause, make a change, test it. The agent runs the same loop — just faster and
+            without losing focus between steps. It doesn&apos;t check Slack mid-debug.
           </p>
           <p>
-            Every AI coding tool is this loop with different packaging around it.
+            Every AI coding tool is this loop with different packaging around it. Once you see
+            the pattern, you see it everywhere.
           </p>
         </>
       ),
@@ -197,18 +201,21 @@ const lesson: LessonDef = {
       visual: 'builtInTools',
       content: (
         <>
-          <h3>Built-in tools</h3>
+          <h3>Built-in tools: the five senses</h3>
           <p>
-            <strong>Five tools — watch them cycle on the canvas.</strong>
+            An agent without tools is a brain in a jar. These five built-in tools are its
+            senses: <strong>Read</strong> (eyes on your files), <strong>Search</strong>{' '}
+            (memory across the codebase), <strong>Edit</strong> (hands to change
+            code), <strong>Bash</strong> (voice to run commands), and{' '}
+            <strong>Web</strong> (ears to the outside world).
           </p>
           <p>
-            Read files, search code, edit files, run shell commands, manage browser sessions.
-            The agent picks which tools to chain based on your request. Ask it to &quot;fix the
+            The agent picks which senses to chain based on your request. Ask it to &quot;fix the
             failing test in <code>auth.test.ts</code>&quot; and it might use all five in a single loop.
           </p>
           <p>
-            These built-in tools are just the starting set. MCP servers let you add
-            databases, APIs, and custom tooling — but that&apos;s a later lesson.
+            These are just the starting set. MCP servers let you add databases, APIs, and
+            custom tooling — but that&apos;s a later lesson.
           </p>
         </>
       ),
@@ -220,15 +227,18 @@ const lesson: LessonDef = {
         <>
           <h3>Same loop, three interfaces</h3>
           <p>
-            Look at the three cards on the canvas. Same agentic loop. Different homes.
+            Three cards, three homes, one engine.
           </p>
           <p>
-            <strong>Claude Code</strong> — your terminal. Type natural language, agent acts in
-            your project directory. <strong>OpenCode</strong> — beautiful TUI, open source, any
-            LLM provider. <strong>Copilot</strong> — lives inside VS Code with Chat and Agent modes.
+            <strong>Claude Code</strong> — your terminal. Type natural language, the agent acts
+            in your project directory. <strong>OpenCode</strong> — beautiful TUI, open source,
+            any LLM provider. <strong>Copilot</strong> — lives inside VS Code with Chat and
+            Agent modes. The interface changes. The Read-Think-Act-Verify engine underneath
+            does not.
           </p>
           <p>
-            The interface changes. The Read-Think-Act-Verify engine underneath does not.
+            Choosing between them is a topic for the Tool Landscape lesson. Here, just notice
+            the shared skeleton.
           </p>
         </>
       ),
@@ -240,17 +250,18 @@ const lesson: LessonDef = {
         <>
           <h3>Why this changes your prompts</h3>
           <p>
-            <strong>Stop asking &quot;write me a function.&quot; Start asking &quot;fix the failing
-            test in <code>auth.test.ts</code>.&quot;</strong>
+            Here&apos;s the payoff. Stop asking &quot;write me a function.&quot; Start
+            asking &quot;fix the failing test in <code>auth.test.ts</code>.&quot;
           </p>
           <p>
-            Look at the canvas. When you understand the loop, you give the agent a goal
-            instead of a script. It figures out which files to read, what to change, and how
-            to verify — because that&apos;s what the loop is built to do.
+            When you understand the loop, you give the agent a <em>goal</em> instead of a
+            script. It figures out which files to read, what to change, and how to verify —
+            because that&apos;s what the loop is built to do. You describe the destination; the
+            senior dev picks the route.
           </p>
           <p>
             The rest of this workshop teaches you to feed the loop better context, set the
-            right permissions, and structure prompts that let the agent do its best work.
+            right permissions, and write prompts that let the agent do its best work.
           </p>
         </>
       ),

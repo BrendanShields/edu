@@ -98,22 +98,21 @@ Rate each finding by severity.`}
         <>
           <h1>Subagents &amp; Parallelization</h1>
           <p>
-            <strong>Every file the agent reads stays in its context
-            window &mdash; and that window has a ceiling.</strong>{' '}
-            Look at the &quot;Before&quot; panel on the canvas: 50
-            files of research context, main session polluted, every
-            response degrading.
+            You&apos;re a tech lead. A massive refactor lands on your
+            desk. Do you read every file yourself, slowly drowning
+            in context &mdash; or do you break it into three tasks
+            and hand each to a different engineer?
           </p>
           <p>
-            Now look at the &quot;After&quot; panel. The subagent
-            runs in isolated context, does the heavy lifting, and
-            returns a clean summary. Your main session never sees
-            the noise.
+            <strong>Subagents are those engineers.</strong> The
+            &quot;Before&quot; panel shows what happens when one agent
+            does everything: 50 files of context, responses degrading
+            with every page. The &quot;After&quot; panel shows
+            delegation: isolated context, clean summary returned.
           </p>
           <p>
-            The tools already ship with built-in subagents, and you
-            can create your own. The next panel shows what comes
-            out of the box.
+            Your main session never sees the noise. The engineers
+            report back when the work is done.
           </p>
         </>
       ),
@@ -125,24 +124,23 @@ Rate each finding by severity.`}
         <>
           <h3>Built-in subagents</h3>
           <p>
-            <strong>Three subagent types ship out of the box.</strong>{' '}
-            Compare the rows on the canvas. Explore uses a fast,
-            cheap model for read-only search. Plan does structured
+            Three engineer types ship out of the box. Explore uses a
+            fast, cheap model for read-only search &mdash; the intern
+            who can research but not commit. Plan does structured
             thinking without taking action. General gets full tool
             access for any task.
           </p>
           <p>
-            Notice OpenCode mirrors the same concept with{' '}
-            <code>@general</code> and <code>@explore</code>. Copilot
-            delegates internally and lets you define custom agents
-            under <code>.github/agents/</code>.
+            OpenCode mirrors the pattern with <code>@general</code>{' '}
+            and <code>@explore</code>. Copilot delegates internally
+            and lets you define custom agents under{' '}
+            <code>.github/agents/</code>.
           </p>
           <p>
-            The agent decides when to spawn these automatically, but
-            you can nudge it: &quot;use a subagent to research the
-            auth patterns in this codebase, then come back with a
-            summary.&quot; For even tighter control, build a custom
-            subagent.
+            The agent spawns these automatically, but you can nudge
+            it: &quot;use a subagent to research the auth patterns,
+            then come back with a summary.&quot; For tighter control,
+            build a custom subagent with explicit constraints.
           </p>
         </>
       ),
@@ -154,23 +152,21 @@ Rate each finding by severity.`}
         <>
           <h3>Custom subagents</h3>
           <p>
-            <strong>Constraints make subagents safer and more
-            focused.</strong> Read the skill file on the canvas. This
-            security reviewer only gets Read, Grep, and Glob &mdash;
-            it literally cannot edit your code or run shell commands.
+            Constraints are what make delegation safe. This security
+            reviewer only gets Read, Grep, and Glob &mdash; it
+            literally cannot edit code or run shell commands. Separate
+            desks, separate permissions.
           </p>
           <p>
-            Notice the <code>model: sonnet</code> field. You can
-            assign a faster, cheaper model to subagents that
-            don&apos;t need full reasoning power. A documentation
-            writer that only gets Read and Write costs a fraction
-            of what a general agent would.
+            The <code>model: sonnet</code> field assigns a faster,
+            cheaper model. A documentation writer that only needs Read
+            and Write costs a fraction of a general agent. Match the
+            capability to the task.
           </p>
           <p>
             Custom subagents really shine when you run several in
-            parallel. The next panel shows the fan-out pattern where
-            multiple subagents work simultaneously on isolated
-            branches.
+            parallel &mdash; three engineers, three tasks, three
+            branches, no conflicts.
           </p>
         </>
       ),
@@ -182,22 +178,21 @@ Rate each finding by severity.`}
         <>
           <h3>Parallel work with worktrees</h3>
           <p>
-            <strong>Watch the three subagents on the canvas.</strong>{' '}
-            They cycle through reading, editing, done &mdash; each
-            in its own isolated context. Notice the merge step at the
-            bottom where results converge back to the main agent.
+            Each engineer gets their own desk. They can&apos;t rifle
+            through each other&apos;s papers. In practice, that means
+            each subagent works in its own git worktree &mdash; a
+            separate directory, a separate branch, zero file conflicts.
           </p>
           <p>
-            Each subagent works in its own git worktree: a separate
-            directory, a separate branch, zero file conflicts. When
-            it finishes, it opens its own PR. Three features progress
-            simultaneously without stepping on each other.
+            Three subagents cycle through reading, editing, done. When
+            each finishes, it opens its own PR. Three features
+            progress simultaneously without stepping on each other.
           </p>
           <p>
-            This is the payoff of context isolation. The main agent
-            stays lean, the subagents handle the heavy lifting, and
-            each PR gets an independent review cycle. The last section
-            helps you decide when delegation is worth the overhead.
+            The merge step at the bottom is where you, the tech lead,
+            review and integrate. The main agent stays lean. Each PR
+            gets an independent review cycle. Context isolation is the
+            reason it all works.
           </p>
         </>
       ),
@@ -209,24 +204,23 @@ Rate each finding by severity.`}
         <>
           <h3>When to delegate</h3>
           <p>
-            <strong>Delegation has overhead &mdash; use it when
-            context isolation is worth the cost.</strong> Scan the
-            six cards on the canvas. The green checkmarks are
-            delegate signals: exploratory research, independent
-            tasks, parallelizable work.
+            You wouldn&apos;t delegate a two-minute task to someone
+            who needs a five-minute briefing. Delegation has real
+            overhead &mdash; context setup, result merging, no shared
+            memory.
           </p>
           <p>
-            Notice the red crosses. If the task needs your
-            conversation context, requires interactive back-and-forth,
-            or feeds directly into an immediate follow-up question,
-            keep it inline. A subagent cannot read your main
-            session&apos;s history.
+            The green checkmarks are delegate signals: exploratory
+            research, independent tasks, parallelizable work. The red
+            crosses mark tasks to keep inline: anything needing your
+            conversation history, interactive back-and-forth, or
+            immediate follow-up.
           </p>
           <p>
             The rule of thumb: if you would say &quot;go research
             this and come back with a summary,&quot; delegate. If
-            you would say &quot;help me think through this step by
-            step,&quot; keep it inline.
+            you would say &quot;help me think through this,&quot;
+            keep it on your own desk.
           </p>
         </>
       ),

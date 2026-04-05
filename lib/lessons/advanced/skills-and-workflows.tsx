@@ -100,21 +100,21 @@ Summarize this pull request concisely.`}
         <>
           <h1>Skills &amp; Workflows</h1>
           <p>
-            <strong>You&apos;ve explained the deploy process five
-            times this week.</strong> Look at the &quot;Before&quot;
-            panel on the canvas &mdash; from scratch, every time,
-            hoping the agent infers the right steps.
+            Your agent has cooking ability. It can chop, saut&eacute;,
+            plate. But without a recipe, it improvises &mdash; and
+            improvisation means different results every time.
           </p>
           <p>
-            Now look at the &quot;After&quot; panel. Type{' '}
-            <code>/deploy</code> and the agent follows your recipe.
-            Every step, every time, no reinterpretation. That&apos;s
-            a skill: a reusable workflow written once as a markdown
-            file.
+            <strong>Skills are the recipes.</strong> The
+            &quot;Before&quot; panel shows the cost of improvisation:
+            explaining the deploy process from scratch, again. The
+            &quot;After&quot; panel shows what a recipe changes:
+            type <code>/deploy</code> and every step runs the same
+            way, every time.
           </p>
           <p>
-            The next panel breaks down exactly how a skill maps rules
-            to behavior.
+            A skill is a markdown file. You write the recipe once.
+            The agent follows it forever.
           </p>
         </>
       ),
@@ -126,11 +126,10 @@ Summarize this pull request concisely.`}
         <>
           <h3>Anatomy of a skill</h3>
           <p>
-            <strong>Watch the arrows pulse on the canvas &mdash; each
-            rule on the left produces the behavior on the
-            right.</strong> See how &quot;Run tests after every
-            edit&quot; maps directly to the npm test output? That
-            one-to-one mapping is what makes skills predictable.
+            Each rule on the left produces the behavior on the right.
+            &quot;Run tests after every edit&quot; maps directly to
+            the npm test output. That one-to-one mapping is what makes
+            recipes predictable.
           </p>
           <p>
             A skill lives in <code>.claude/skills/</code> as a
@@ -141,11 +140,10 @@ Summarize this pull request concisely.`}
             issue 423.&quot;
           </p>
           <p>
-            Set <code>disable-model-invocation: true</code> in the
-            frontmatter to make the skill fully deterministic &mdash;
-            no AI improvisation, just your exact steps. But some
-            skills need live data, which is where dynamic context
-            injection comes in.
+            Set <code>disable-model-invocation: true</code> to make
+            the skill fully deterministic &mdash; no improvisation,
+            just your exact steps. But some recipes call for
+            ingredients that change daily.
           </p>
         </>
       ),
@@ -157,24 +155,23 @@ Summarize this pull request concisely.`}
         <>
           <h3>Dynamic context injection</h3>
           <p>
-            <strong>What if your skill needs data that changes every
-            time it runs?</strong> Read the skill file on the canvas.
-            See the <code>!`gh pr diff`</code> syntax? That shell
-            command executes at invocation time, and its output gets
-            injected into the prompt before the agent sees it.
+            What if the recipe calls for &quot;today&apos;s
+            produce&quot; &mdash; not yesterday&apos;s leftovers?
+            The <code>!`gh pr diff`</code> syntax executes a shell
+            command at invocation time. Its output gets injected into
+            the prompt before the agent sees it.
           </p>
           <p>
-            Try imagining what the agent receives when you
-            invoke <code>/pr-summary</code>. It gets the current PR
-            diff, the list of changed files, and the instruction to
-            summarize &mdash; all in one prompt, all live data.
+            When you invoke <code>/pr-summary</code>, the agent
+            receives the live PR diff, the list of changed files, and
+            the instruction to summarize &mdash; all fresh, all in
+            one prompt.
           </p>
           <p>
-            Notice <code>context: fork</code> in the frontmatter.
-            That runs the skill in an isolated context so the
-            injected data doesn&apos;t pollute your main session.
-            The same skill format works across multiple tools, as the
-            next panel compares.
+            <code>context: fork</code> in the frontmatter runs the
+            skill in an isolated session so the injected data
+            doesn&apos;t pollute your main conversation. Fresh
+            ingredients, clean kitchen.
           </p>
         </>
       ),
@@ -186,24 +183,22 @@ Summarize this pull request concisely.`}
         <>
           <h3>Skills across tools</h3>
           <p>
-            <strong>Write a skill once, run it in two tools with zero
-            changes.</strong> Compare the three rows on the canvas.
-            Claude Code and OpenCode share the same directory
+            Write a recipe once, serve it in two kitchens. Claude Code
+            and OpenCode share the same directory
             (<code>.claude/skills/</code>) and the same SKILL.md
-            format.
+            format &mdash; zero duplication needed.
           </p>
           <p>
-            Notice Copilot&apos;s different path:{' '}
-            <code>.github/copilot/prompts/*.md</code>. The concept is
-            identical, but the invocation style differs &mdash; you
-            reference prompts with <code>#prompt-name</code> in chat
-            instead of a slash command.
+            Copilot takes a different path:{' '}
+            <code>.github/copilot/prompts/*.md</code>. Same concept,
+            different invocation &mdash; you reference prompts
+            with <code>#prompt-name</code> in chat instead of a slash
+            command.
           </p>
           <p>
-            If your team is single-tool, pick one directory and move
-            on. If multiple tools coexist, duplicate only the skills
-            that matter most. The final panel helps you decide which
-            workflows deserve to become skills at all.
+            Single-tool team? Pick one directory and move on. Multi-tool
+            team? Duplicate only the recipes that matter most. Not
+            every workflow deserves to become a skill, though.
           </p>
         </>
       ),
@@ -215,23 +210,23 @@ Summarize this pull request concisely.`}
         <>
           <h3>When to create a skill</h3>
           <p>
-            <strong>Not everything deserves to be a skill.</strong>{' '}
-            Follow the four steps on the canvas top to bottom. The
-            first signal is repetition: if you&apos;ve given the same
-            instructions three or more times, that&apos;s your cue.
+            Not every dish needs a written recipe. The first signal
+            is repetition: if you&apos;ve given the same instructions
+            three or more times, write it down.
           </p>
           <p>
-            Notice step 3 &mdash; &quot;needs live data.&quot; If
-            the workflow requires pulling fresh context at runtime
-            (a PR diff, a log tail, a deploy status), a skill with
-            shell injection handles it cleanly. A prompt you retype
-            each time cannot.
+            The third signal matters most &mdash; &quot;needs live
+            data.&quot; If the workflow requires fresh context at
+            runtime (a PR diff, a log tail, a deploy status), a skill
+            with shell injection handles it cleanly. A prompt you
+            retype each time cannot.
           </p>
           <p>
-            Start with one skill this week. Your first skill might be
-            as simple as &quot;run tests and fix failures.&quot; As
-            you get comfortable, layer in dynamic context, forked
-            sessions, and team-shared recipes committed to the repo.
+            One last distinction: skills are individual dishes.
+            CLAUDE.md rules are the restaurant&apos;s house rules
+            &mdash; &quot;always wash hands, always plate on white
+            china.&quot; Start with one recipe this week. Layer in
+            dynamic context and team-shared skills as you go.
           </p>
         </>
       ),

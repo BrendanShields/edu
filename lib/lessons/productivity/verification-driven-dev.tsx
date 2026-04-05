@@ -60,15 +60,15 @@ const lesson: LessonDef = {
         <>
           <h1>Verification-Driven Development</h1>
           <p>
-            <strong>Would you trust a contractor who never checks their own
-            work?</strong> Without verification, every AI-generated change is
-            exactly that — 200 lines of code accepted on faith.
+            Reading 200 lines of AI-generated code on faith is like signing a
+            contract without reading it. Maybe it&apos;s fine. Maybe you just
+            agreed to give away your car.
           </p>
           <p>
-            Look at the canvas. That subtitle is the entire philosophy: give the
-            AI something to verify against. Define &quot;correct&quot; up front,
-            and the agent iterates until it gets there. Your job shifts from
-            reading code to reviewing test definitions.
+            Verification flips the entire relationship. Define &quot;correct&quot;
+            up front, and the agent iterates until it gets there. Your job shifts
+            from reading code line-by-line to reviewing a handful of test
+            definitions. The finish line exists before the race starts.
           </p>
         </>
       ),
@@ -78,12 +78,13 @@ const lesson: LessonDef = {
       visual: 'testFirstApproach',
       content: (
         <>
-          <h3>Review 20 lines of tests, not 200 lines of code</h3>
+          <h3>Define the finish line before you start running</h3>
           <p>
-            Look at the two states on the canvas. On the left: &quot;Review 200
-            lines&quot; — reading code on faith, hoping to catch edge cases by
-            eye. On the right: &quot;Review 20 lines of tests&quot; — assertions
-            that define correctness, with the agent iterating until green.
+            On the left: &quot;Review 200 lines&quot; — reading code on faith,
+            hoping to catch edge cases with tired eyes. On the right: &quot;Review
+            20 lines of tests&quot; — assertions that define correctness, with
+            the agent iterating until green. Which one would you bet on at 6 PM
+            on a Friday?
           </p>
           <p>
             Ask the agent to write tests before implementation. The tests become
@@ -93,8 +94,7 @@ const lesson: LessonDef = {
           </p>
           <p>
             This is the single biggest productivity lever in AI-assisted
-            development. But tests alone have a blind spot — watch the next
-            canvas to see it.
+            development. But tests alone have a blind spot.
           </p>
         </>
       ),
@@ -104,22 +104,24 @@ const lesson: LessonDef = {
       visual: 'verificationSpectrum',
       content: (
         <>
-          <h3>Tests pass. The type checker doesn&apos;t.</h3>
+          <h3>Airport security for your code</h3>
           <p>
-            Watch each verification layer run on the canvas. All green — tests
-            pass, linter passes, types pass. Every layer confirms the fix. Now
-            click <strong>&quot;What tests miss.&quot;</strong>
+            Think of verification layers as airport security. Tests are the metal
+            detector — they catch the obvious weapons. The linter is the bag
+            scanner — it catches things you didn&apos;t think to check. The type
+            checker is the passport control — it verifies your identity matches
+            your ticket. Remove any one layer and something slips through.
           </p>
           <p>
+            Click <strong>&quot;What tests miss&quot;</strong> on the right.
             Tests still pass. Linter still passes. But <code>tsc --noEmit</code>{' '}
             catches it: <code>src/auth.ts:12</code> returns a string where a
-            number is expected. Without that third layer, a type mismatch ships
-            to production with a green test suite.
+            number is expected. A green test suite almost shipped a type mismatch
+            to production.
           </p>
           <p>
-            Each layer catches a different class of error. Tests catch logic.
-            Linters catch style. Type checkers catch interface mismatches. Stack
-            them all to close every gap.
+            Each layer catches a different class of threat. Stack them all, and
+            nothing gets on the plane.
           </p>
         </>
       ),
@@ -131,21 +133,19 @@ const lesson: LessonDef = {
         <>
           <h3>Red, green, done</h3>
           <p>
-            Read the prompt on the canvas. It asks the agent to write tests for a{' '}
+            The prompt on the right asks the agent to write tests for a{' '}
             <code>RateLimiter</code> class — 10 requests per minute per user, 429
             after the limit, reset after the window. Then: run them (they should
             fail), and implement until they pass.
           </p>
           <p>
-            Notice what the prompt does <em>not</em> specify: data structures,
-            algorithms, or internal state. It defines behavior, not
-            implementation. The agent is free to choose any approach as long as
-            the assertions hold.
+            Notice what the prompt does <em>not</em> say: no data structures, no
+            algorithms, no internal state. It defines behavior, not blueprints.
+            The agent chooses its own approach as long as every assertion holds.
           </p>
           <p>
-            That&apos;s the pattern: you own the spec, the agent owns the code.
-            The final section shows you how to stack multiple verification layers
-            into a single prompt.
+            You own the spec. The agent owns the code. That division is the
+            whole philosophy in three words.
           </p>
         </>
       ),
@@ -155,22 +155,23 @@ const lesson: LessonDef = {
       visual: 'stackingLayers',
       content: (
         <>
-          <h3>Four gates, zero blind spots</h3>
+          <h3>Three checkpoints, one sentence</h3>
           <p>
-            Look at the four cards on the canvas. Tests catch logic errors.
-            Linters catch style issues. Type checkers catch interface mismatches.
-            Screenshots catch UI regressions. Each one is a gate the agent must
-            pass before you see the diff.
+            Metal detector, bag scanner, passport control, security camera. Tests
+            catch logic errors. Linters catch style drift. Type checkers catch
+            interface mismatches. Screenshots catch UI regressions. Four gates
+            the agent must clear before you ever see the diff.
           </p>
           <p>
             Add this to the end of any prompt: &quot;After editing, run{' '}
             <code>npm test</code>, then <code>eslint .</code>, then{' '}
-            <code>tsc --noEmit</code>.&quot; Three commands, one sentence.
-            The agent iterates through all three before it comes back to you.
+            <code>tsc --noEmit</code>.&quot; Three commands, one sentence. The
+            agent iterates through all three before it comes back to you.
           </p>
           <p>
-            With stacked verification, the agent stops being a code generator and
-            starts being a collaborator that proves its own output is correct.
+            With stacked verification, the agent stops being a code generator you
+            have to babysit and starts being a collaborator that proves its own
+            output is correct. No more signing contracts on faith.
           </p>
         </>
       ),

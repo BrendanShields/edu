@@ -37,6 +37,12 @@ export { SkillMapping } from './lesson/SkillMapping';
 export { SubagentFanOut } from './lesson/SubagentFanOut';
 export { TUILayout } from './lesson/TUILayout';
 export { VerificationLayers } from './lesson/VerificationLayers';
+export { ScrollSyncedTerminal } from './lesson/ScrollSyncedTerminal';
+
+// Media components
+export { LoopingVideo } from './media/LoopingVideo';
+export { IllustrationCanvas } from './media/IllustrationCanvas';
+export { AnnotatedImage } from './media/AnnotatedImage';
 
 // Tool Deep Dive visuals
 export { ClaudeCodeDeepDive } from './lesson/ClaudeCodeDeepDive';
