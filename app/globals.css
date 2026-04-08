@@ -59,6 +59,14 @@ body { min-height: 100dvh; margin: 0; }
   border-radius: 4px;
 }
 
+/* Buttons that are themselves accent-colored need a contrasting ring or
+   the orange outline disappears against the orange background. */
+.home__cta:focus-visible,
+.status-page__cta:focus-visible {
+  outline-color: #fff;
+  outline-offset: 4px;
+}
+
 /* ──────────────────────────────────────────────────────────────────────
    Devouring Details prose & section dimming
    ────────────────────────────────────────────────────────────────────── */
