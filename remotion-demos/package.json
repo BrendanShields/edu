@@ -1,0 +1,26 @@
+{
+  "name": "remotion-demos",
+  "version": "1.0.0",
+  "description": "Standalone Remotion project for building Delba-style explainer demos for the education site.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts",
+    "build": "remotion render src/index.ts",
+    "upgrade": "remotion upgrade",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.443",
+    "@remotion/google-fonts": "^4.0.443",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.443"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "typescript": "^5.6.3"
+  }
+}
