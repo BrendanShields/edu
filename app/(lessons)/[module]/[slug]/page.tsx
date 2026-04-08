@@ -65,7 +65,12 @@ export default async function LessonPage({ params }: LessonPageProps) {
       courseOutline={outline}
     >
       {lesson.sections.map((section) => (
-        <Section key={section.id} id={section.id} visual={section.visual}>
+        <Section
+          key={section.id}
+          id={section.id}
+          visual={section.visual}
+          visualNode={lesson.visuals[section.visual]}
+        >
           {section.content}
         </Section>
       ))}

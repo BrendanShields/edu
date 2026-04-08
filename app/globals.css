@@ -73,6 +73,10 @@ body { min-height: 100dvh; margin: 0; }
 .dd-section:last-child { border-bottom: none; }
 .dd-section.is-active { opacity: 1; }
 
+/* Inline mobile visual — only shown on narrow viewports where the
+   sticky right canvas is hidden. Lives at the bottom of each section. */
+.dd-section__inline-visual { display: none; }
+
 .dd-prose h1 {
   font-size: 2.25rem;
   font-weight: 700;
@@ -751,7 +755,8 @@ body { min-height: 100dvh; margin: 0; }
   .scroll-layout__spacer-bottom {
     height: 4vh;
   }
-  /* Hide the canvas on narrow viewports — visuals don't render well below ~720px */
+  /* Hide the sticky right canvas on narrow viewports — visuals are
+     instead rendered inline at the end of each section (see below). */
   .scroll-layout__right {
     display: none;
   }
@@ -765,6 +770,19 @@ body { min-height: 100dvh; margin: 0; }
     opacity: 1;
     padding: 1.75rem 0;
     min-height: auto;
+  }
+
+  .dd-section__inline-visual {
+    display: flex;
+    justify-content: center;
+    margin: 1.75rem 0 0.5rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+  .dd-section__inline-visual > * {
+    width: 100%;
   }
 
   .dd-prose h1 { font-size: 1.875rem; }
