@@ -103,12 +103,15 @@ export function WeightGrid() {
             const row = Math.floor(c.i / COLS);
             const x = padX + col * (cellW + gap);
             const y = padY + row * (cellH + gap);
-            const cellOpacity = 0.18 + c.intensity * 0.32; // 0.18..0.50
+            // Round to 3 decimals so the SSR/CSR string representations
+            // agree (full-precision floats can serialize at slightly
+            // different lengths and trip the hydration matcher).
+            const cellOpacity = Number((0.18 + c.intensity * 0.32).toFixed(3));
 
             return (
               <g
                 key={c.i}
-                style={{ animation: `fadeIn 0.4s ${(col * 0.012) + (row * 0.008)}s ease-out both` }}
+                style={{ animation: `fadeIn 0.4s ${((col * 0.012) + (row * 0.008)).toFixed(3)}s ease-out both` }}
               >
                 <rect
                   x={x}
