@@ -171,16 +171,45 @@ body { min-height: 100dvh; margin: 0; }
   color: var(--color-text-secondary);
 }
 
+.dd-prose table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.dd-prose thead {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dd-prose th {
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  padding: 0 1rem 0.75rem 0;
+}
+.dd-prose th:last-child { padding-right: 0; }
+
+.dd-prose tbody tr {
+  border-bottom: 1px solid var(--color-border);
+}
+.dd-prose tbody tr:last-child { border-bottom: none; }
+
+.dd-prose td {
+  padding: 0.875rem 1rem 0.875rem 0;
+  vertical-align: top;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+.dd-prose td:last-child { padding-right: 0; }
+.dd-prose td strong { color: var(--color-text-primary); }
+
 /* ──────────────────────────────────────────────────────────────────────
    ScrollLayout — two-column scroll-driven canvas
    ────────────────────────────────────────────────────────────────────── */
-
-.squircle-defs {
-  position: absolute;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
 
 .scroll-layout {
   display: flex;
@@ -243,16 +272,17 @@ body { min-height: 100dvh; margin: 0; }
   height: 100%;
   border-radius: 1rem;
   background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 30px 80px -30px rgba(0, 0, 0, 0.55);
   display: flex;
   flex-direction: column;
-  filter: url(#canvas-squircle);
 }
 
 .canvas__toolbar {
   display: flex;
-  justify-content: center;
-  gap: 4px;
-  padding: 16px 0 8px;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 14px 16px 6px;
 }
 
 .canvas__btn {
@@ -260,16 +290,24 @@ body { min-height: 100dvh; margin: 0; }
   height: 32px;
   border-radius: 8px;
   border: 1px solid var(--color-border);
-  background: var(--color-surface-hover);
+  background: rgba(255, 255, 255, 0.03);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   cursor: pointer;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 }
-.canvas__btn:hover { color: var(--color-text-primary); border-color: var(--color-border-hover); }
-.canvas__btn.is-active { color: var(--color-accent); border-color: var(--color-accent); }
+.canvas__btn:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-border-hover);
+  background: rgba(255, 255, 255, 0.06);
+}
+.canvas__btn.is-active {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: rgba(255, 107, 53, 0.08);
+}
 
 .canvas__stage {
   flex: 1;

@@ -5,13 +5,11 @@ import { useEffect, useRef, useState } from 'react';
 interface ScrollSectionState {
   activeSection: string | null;
   activeVisual: string | null;
-  isEdge: boolean;
 }
 
 const INITIAL: ScrollSectionState = {
   activeSection: null,
   activeVisual: null,
-  isEdge: true,
 };
 
 /**
@@ -38,7 +36,6 @@ export function useScrollSections() {
     );
     if (sections.length === 0) return;
 
-    const lastIndex = sections.length - 1;
     const visibility = new Map<HTMLElement, boolean>();
     sections.forEach((s) => visibility.set(s, false));
 
@@ -52,7 +49,6 @@ export function useScrollSections() {
 
       const id = active.dataset.section ?? null;
       const visual = active.dataset.visual || null;
-      const isEdge = active === sections[lastIndex];
 
       // Mirror an `is-active` class onto each section so CSS can drive the
       // dimming without forcing every section to subscribe to React state.
@@ -61,14 +57,10 @@ export function useScrollSections() {
       }
 
       setState((prev) => {
-        if (
-          prev.activeSection === id &&
-          prev.activeVisual === visual &&
-          prev.isEdge === isEdge
-        ) {
+        if (prev.activeSection === id && prev.activeVisual === visual) {
           return prev;
         }
-        return { activeSection: id, activeVisual: visual, isEdge };
+        return { activeSection: id, activeVisual: visual };
       });
 
       // Side effect: bridge to the legacy `sectionchange` window event.
@@ -76,7 +68,7 @@ export function useScrollSections() {
       if (id !== lastDispatchedId.current) {
         lastDispatchedId.current = id;
         window.dispatchEvent(
-          new CustomEvent('sectionchange', { detail: { id, visual, isEdge } }),
+          new CustomEvent('sectionchange', { detail: { id, visual } }),
         );
       }
     }

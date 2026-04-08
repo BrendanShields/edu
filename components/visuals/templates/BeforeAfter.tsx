@@ -54,26 +54,25 @@ export function BeforeAfter({ before, after, footer }: BeforeAfterProps) {
   const isAfter = phase === 'after' || phase === 'transitioning';
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 w-full max-w-[480px] mx-auto">
       {/* Before panel */}
       <div
-        className="p-5 rounded-xl border border-red-500/20 bg-red-500/5 transition-opacity duration-500 animate-[fadeUp_0.4s_ease-out_both]"
+        className="p-7 rounded-2xl border border-red-500/25 bg-red-500/[0.06] transition-opacity duration-500 animate-[fadeUp_0.4s_ease-out_both]"
         style={{ opacity: isAfter ? 0.5 : 1 }}
       >
-        <div className="text-[10px] uppercase tracking-wider text-red-400 mb-2">
-          {before.icon && <span className="mr-1">{before.icon}</span>}
+        <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-red-400 mb-3">
+          {before.icon && <span className="mr-1.5">{before.icon}</span>}
           {before.label}
         </div>
-        <div className="text-sm text-text-secondary leading-relaxed">{before.text}</div>
+        <div className="text-base text-text-secondary leading-relaxed">{before.text}</div>
       </div>
 
       {/* Arrow */}
       <div
-        className="flex justify-center text-text-muted text-lg animate-[fadeIn_0.3s_0.2s_ease-out_both]"
+        className="flex justify-center text-text-muted text-2xl animate-[fadeIn_0.3s_0.2s_ease-out_both]"
         style={{
           opacity: phase === 'transitioning' ? 1 : 0.5,
           transition: 'opacity 0.3s',
-          animation: phase === 'transitioning' ? 'pulse 0.6s ease-in-out 2' : undefined,
         }}
       >
         &darr;
@@ -81,20 +80,20 @@ export function BeforeAfter({ before, after, footer }: BeforeAfterProps) {
 
       {/* After panel */}
       <div
-        className="p-5 rounded-xl border border-green-500/20 bg-green-500/5 transition-opacity duration-500"
+        className="p-7 rounded-2xl border border-green-500/25 bg-green-500/[0.06] transition-opacity duration-500"
         style={{ opacity: isAfter ? 1 : 0 }}
       >
-        <div className="text-[10px] uppercase tracking-wider text-green-400 mb-2">
-          {after.icon && <span className="mr-1">{after.icon}</span>}
+        <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-green-400 mb-3">
+          {after.icon && <span className="mr-1.5">{after.icon}</span>}
           {after.label}
         </div>
-        <div className="text-sm text-text-secondary leading-relaxed">{after.text}</div>
+        <div className="text-base text-text-secondary leading-relaxed">{after.text}</div>
       </div>
 
       {/* Footer */}
       {footer && (
         <div
-          className="text-center text-xs text-text-muted mt-4 transition-opacity duration-500"
+          className="text-center text-xs text-text-muted mt-5 transition-opacity duration-500"
           style={{ opacity: showFooter ? 1 : 0 }}
         >
           {footer}
@@ -106,7 +105,7 @@ export function BeforeAfter({ before, after, footer }: BeforeAfterProps) {
         <div className="flex justify-center">
           <button
             onClick={handleReplay}
-            className="text-[10px] text-text-muted hover:text-text-secondary transition-colors duration-200 cursor-pointer"
+            className="text-[11px] text-text-muted hover:text-text-secondary transition-colors duration-200 cursor-pointer"
           >
             &#8635; Replay
           </button>

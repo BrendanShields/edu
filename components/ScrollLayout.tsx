@@ -30,29 +30,17 @@ export function ScrollLayout({
   nextTitle,
   courseOutline,
 }: ScrollLayoutProps) {
-  const { activeVisual, isEdge } = useScrollSections();
+  const { activeVisual } = useScrollSections();
   const [expanded, setExpanded] = useState(false);
   const cursor = useSpringFollow();
-  const showCanvas = expanded || (!isEdge && activeVisual !== null && visuals[activeVisual] !== undefined);
+  // Right canvas is always visible — every section is supposed to map to a
+  // visual. We default to the first visual until the IO has fired so the
+  // canvas never starts blank.
+  const visualKeys = Object.keys(visuals);
+  const resolvedVisual = activeVisual ?? visualKeys[0] ?? null;
 
   return (
     <>
-      {/* Squircle SVG filter — referenced by the canvas via filter: url(#canvas-squircle) */}
-      <svg aria-hidden className="squircle-defs">
-        <defs>
-          <filter id="canvas-squircle">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -7"
-              result="goo"
-            />
-            <feBlend in="SourceGraphic" in2="goo" />
-          </filter>
-        </defs>
-      </svg>
-
       <div className={`scroll-layout${expanded ? ' is-expanded' : ''}`}>
         {/* Left column: narrative */}
         <div className="scroll-layout__left">
@@ -69,11 +57,8 @@ export function ScrollLayout({
           </div>
         </div>
 
-        {/* Right column: canvas */}
-        <div
-          className={`scroll-layout__right${showCanvas ? ' is-visible' : ''}`}
-          aria-hidden={!showCanvas}
-        >
+        {/* Right column: canvas — always visible. */}
+        <div className="scroll-layout__right is-visible">
           <div className="scroll-layout__sticky">
             <div {...cursor.handlers} className="scroll-layout__cursor-host">
               <div className="canvas">
@@ -99,8 +84,8 @@ export function ScrollLayout({
                     {Object.entries(visuals).map(([key, visual]) => (
                       <div
                         key={key}
-                        className={`canvas__visual${activeVisual === key ? ' is-visible' : ''}`}
-                        aria-hidden={activeVisual !== key}
+                        className={`canvas__visual${resolvedVisual === key ? ' is-visible' : ''}`}
+                        aria-hidden={resolvedVisual !== key}
                       >
                         {visual}
                       </div>
