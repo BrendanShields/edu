@@ -41,7 +41,7 @@ export function ScrollLayout({
 
   return (
     <>
-      <main className={`scroll-layout${expanded ? ' is-expanded' : ''}`}>
+      <main id="main-content" className={`scroll-layout${expanded ? ' is-expanded' : ''}`}>
         {/* Left column: narrative */}
         <div className="scroll-layout__left">
           <div className="scroll-layout__prose-wrap">

@@ -24,7 +24,7 @@ export function ReferenceLayout({
 }: ReferenceLayoutProps) {
   return (
     <>
-      <main className="reference-layout">
+      <main id="main-content" className="reference-layout">
         <div className="reference-layout__inner">
           <article className="dd-prose">{children}</article>
           <PrevNextNav

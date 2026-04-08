@@ -33,7 +33,7 @@ export default function Home() {
   }
 
   return (
-    <main className="home">
+    <main id="main-content" className="home">
       <div className="home__inner">
         <div className="home__hero" style={{ viewTransitionName: 'intro-image' }}>
           <Image
