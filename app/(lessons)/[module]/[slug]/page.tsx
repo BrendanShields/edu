@@ -64,16 +64,26 @@ export default async function LessonPage({ params }: LessonPageProps) {
       nextTitle={nav.next?.title}
       courseOutline={outline}
     >
-      {lesson.sections.map((section) => (
-        <Section
-          key={section.id}
-          id={section.id}
-          visual={section.visual}
-          visualNode={lesson.visuals[section.visual]}
-        >
-          {section.content}
-        </Section>
-      ))}
+      {lesson.sections.map((section, i) => {
+        // On mobile we render the section's visual inline. When several
+        // adjacent sections share the same visual (e.g. the four agentic-loop
+        // phases all reusing one ScrollSyncedTerminal), only render it once
+        // for the first of the run so the mobile reader doesn't see the
+        // same thing four times in a row.
+        const prevVisual = i > 0 ? lesson.sections[i - 1].visual : null;
+        const inlineVisual =
+          section.visual !== prevVisual ? lesson.visuals[section.visual] : undefined;
+        return (
+          <Section
+            key={section.id}
+            id={section.id}
+            visual={section.visual}
+            visualNode={inlineVisual}
+          >
+            {section.content}
+          </Section>
+        );
+      })}
     </ScrollLayout>
   );
 }
