@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 export default function LessonError({
@@ -14,7 +15,7 @@ export default function LessonError({
   }, [error]);
 
   return (
-    <main className="status-page">
+    <main id="main-content" className="status-page">
       <div className="status-page__inner">
         <p className="status-page__eyebrow">Error</p>
         <h1 className="status-page__title">Something broke loading this lesson</h1>
@@ -25,9 +26,9 @@ export default function LessonError({
           <button type="button" onClick={reset} className="status-page__cta">
             Try again
           </button>
-          <a href="/" className="status-page__cta status-page__cta--ghost">
+          <Link href="/" className="status-page__cta status-page__cta--ghost">
             Workshop home
-          </a>
+          </Link>
         </div>
       </div>
     </main>

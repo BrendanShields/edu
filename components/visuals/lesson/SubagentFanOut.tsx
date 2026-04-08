@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 const subagents = [
   {
@@ -49,6 +49,13 @@ const CYCLE_STEPS: { status: Status; duration: number }[] = [
 
 const STAGGER_DELAYS = [0, 400, 800];
 
+// Per-agent box fill colours, indexed the same way as `subagents`.
+const AGENT_BOX_FILLS = [
+  'rgba(96,165,250,0.1)',
+  'rgba(74,222,128,0.1)',
+  'rgba(192,132,252,0.1)',
+] as const;
+
 export function SubagentFanOut() {
   const [phase, setPhase] = useState(0);
   // phase 0: main agent appears
@@ -58,9 +65,11 @@ export function SubagentFanOut() {
   // phase 4: merge box appears
 
   const [statuses, setStatuses] = useState<Status[]>(['reading', 'reading', 'reading']);
-  const [cyclingStarted, setCyclingStarted] = useState(false);
-  const [allDoneOnce, setAllDoneOnce] = useState(false);
   const [doneTracker, setDoneTracker] = useState<boolean[]>([false, false, false]);
+
+  // Derived state — no extra useState/useEffect needed.
+  const cyclingStarted = phase >= 4;
+  const allDoneOnce = doneTracker.every(Boolean);
 
   useEffect(() => {
     const timers = [
@@ -72,73 +81,58 @@ export function SubagentFanOut() {
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Start cycling once phase 4 is reached
-  useEffect(() => {
-    if (phase >= 4 && !cyclingStarted) {
-      setCyclingStarted(true);
-    }
-  }, [phase, cyclingStarted]);
-
-  // Individual agent cycling with staggered starts
+  // Individual agent cycling with staggered starts.
+  // We track only the *current* pending timer per agent (not all of them
+  // ever scheduled) so the array doesn't grow unbounded over a long session.
   useEffect(() => {
     if (!cyclingStarted) return;
 
-    const agentTimers: ReturnType<typeof setTimeout>[] = [];
+    const pending: (ReturnType<typeof setTimeout> | null)[] = subagents.map(() => null);
 
     subagents.forEach((_, agentIndex) => {
-      const startDelay = STAGGER_DELAYS[agentIndex];
+      let stepIndex = 0;
 
-      const startTimer = setTimeout(() => {
-        let stepIndex = 0;
+      const advanceStep = () => {
+        const currentStep = CYCLE_STEPS[stepIndex % CYCLE_STEPS.length];
 
-        const advanceStep = () => {
-          const currentStep = CYCLE_STEPS[stepIndex % CYCLE_STEPS.length];
+        setStatuses((prev) => {
+          const next = [...prev];
+          next[agentIndex] = currentStep.status;
+          return next;
+        });
 
-          setStatuses((prev) => {
+        // Track if this agent has reached done
+        if (currentStep.status === 'done') {
+          setDoneTracker((prev) => {
             const next = [...prev];
-            next[agentIndex] = currentStep.status;
+            next[agentIndex] = true;
             return next;
           });
+        }
 
-          // Track if this agent has reached done
-          if (currentStep.status === 'done') {
-            setDoneTracker((prev) => {
-              const next = [...prev];
-              next[agentIndex] = true;
-              return next;
-            });
-          }
+        stepIndex++;
+        pending[agentIndex] = setTimeout(advanceStep, currentStep.duration);
+      };
 
-          stepIndex++;
-          const timer = setTimeout(advanceStep, currentStep.duration);
-          agentTimers.push(timer);
-        };
-
-        advanceStep();
-      }, startDelay);
-
-      agentTimers.push(startTimer);
+      pending[agentIndex] = setTimeout(advanceStep, STAGGER_DELAYS[agentIndex]);
     });
 
-    return () => agentTimers.forEach(clearTimeout);
+    return () => {
+      for (const t of pending) {
+        if (t !== null) clearTimeout(t);
+      }
+    };
   }, [cyclingStarted]);
 
-  // Check if all agents have been done at least once
-  useEffect(() => {
-    if (doneTracker.every(Boolean) && !allDoneOnce) {
-      setAllDoneOnce(true);
-    }
-  }, [doneTracker, allDoneOnce]);
-
-  const getStatusDisplay = useCallback((agentIndex: number) => {
+  const getStatusDisplay = (agentIndex: number) => {
     if (!cyclingStarted) return null;
-    const status = statuses[agentIndex];
-    return STATUS_DISPLAY[status];
-  }, [cyclingStarted, statuses]);
+    return STATUS_DISPLAY[statuses[agentIndex]];
+  };
 
-  const isAgentDone = useCallback((agentIndex: number) => {
-    return statuses[agentIndex] === 'done' || statuses[agentIndex] === 'pause';
-  }, [statuses]);
+  const isAgentDone = (agentIndex: number) => {
+    const status = statuses[agentIndex];
+    return status === 'done' || status === 'pause';
+  };
 
   return (
     <div className="space-y-3">
@@ -267,12 +261,6 @@ export function SubagentFanOut() {
             const boxX = cx - boxW / 2;
             const boxY = 148;
 
-            const fills = [
-              'rgba(96,165,250,0.1)',
-              'rgba(74,222,128,0.1)',
-              'rgba(192,132,252,0.1)',
-            ];
-
             const statusDisplay = getStatusDisplay(i);
             const agentDone = isAgentDone(i);
 
@@ -289,7 +277,7 @@ export function SubagentFanOut() {
                   x={boxX} y={boxY}
                   width={boxW} height={boxH}
                   rx="6"
-                  fill={fills[i]}
+                  fill={AGENT_BOX_FILLS[i]}
                   stroke={agent.stroke}
                   strokeWidth={agentDone ? 2 : 1}
                   className={agentDone ? 'border-pulse' : ''}

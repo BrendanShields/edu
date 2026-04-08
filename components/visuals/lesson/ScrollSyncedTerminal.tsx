@@ -171,6 +171,27 @@ const PHASE_CONTENT: Record<PhaseId, React.ReactNode> = {
   'phase-verify': <VerifyContent />,
 };
 
+/* Theme custom-properties — hoisted so the style object isn't reallocated
+ * on every parent re-render. */
+const TERMINAL_THEME = {
+  '--sst-bg': '#0d0d0d',
+  '--sst-bar': '#1a1a1a',
+  '--sst-dot-red': '#ff5f56',
+  '--sst-dot-yellow': '#ffbd2e',
+  '--sst-dot-green': '#27c93f',
+  '--sst-text': '#d4d4d4',
+  '--sst-text-dim': '#6b6b6b',
+  '--sst-prompt': '#8b8b8b',
+  '--sst-green': '#4ade80',
+  '--sst-amber': '#fbbf24',
+  '--sst-diff-red': '#fca5a5',
+  '--sst-diff-red-bg': 'rgba(239, 68, 68, 0.15)',
+  '--sst-diff-green': '#86efac',
+  '--sst-diff-green-bg': 'rgba(34, 197, 94, 0.15)',
+  '--sst-indicator-inactive': '#333',
+  '--sst-indicator-active': '#e5e5e5',
+} as React.CSSProperties;
+
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
@@ -192,29 +213,7 @@ export function ScrollSyncedTerminal() {
   const currentPhase = isKnownPhase ? (activePhase as PhaseId) : null;
 
   return (
-    <div
-      style={
-        {
-          /* CSS custom properties */
-          '--sst-bg': '#0d0d0d',
-          '--sst-bar': '#1a1a1a',
-          '--sst-dot-red': '#ff5f56',
-          '--sst-dot-yellow': '#ffbd2e',
-          '--sst-dot-green': '#27c93f',
-          '--sst-text': '#d4d4d4',
-          '--sst-text-dim': '#6b6b6b',
-          '--sst-prompt': '#8b8b8b',
-          '--sst-green': '#4ade80',
-          '--sst-amber': '#fbbf24',
-          '--sst-diff-red': '#fca5a5',
-          '--sst-diff-red-bg': 'rgba(239, 68, 68, 0.15)',
-          '--sst-diff-green': '#86efac',
-          '--sst-diff-green-bg': 'rgba(34, 197, 94, 0.15)',
-          '--sst-indicator-inactive': '#333',
-          '--sst-indicator-active': '#e5e5e5',
-        } as React.CSSProperties
-      }
-    >
+    <div style={TERMINAL_THEME}>
       {/* Terminal chrome */}
       <div
         style={{

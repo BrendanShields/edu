@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 
 const levels = [
   {
@@ -44,11 +44,11 @@ const levels = [
 /* Color at each stop for the gradient track */
 const trackColors = ['#3b82f6', '#60a5fa', '#fbbf24', '#fb923c', '#ef4444'];
 
-function getTrackGradient() {
-  return trackColors
-    .map((c, i) => `${c} ${(i / (trackColors.length - 1)) * 100}%`)
-    .join(', ');
-}
+// Hoisted: this gradient string is identical on every render so we compute it
+// once at module load instead of in the render path.
+const TRACK_GRADIENT = trackColors
+  .map((c, i) => `${c} ${(i / (trackColors.length - 1)) * 100}%`)
+  .join(', ');
 
 function BlinkingCursor() {
   return (
@@ -195,22 +195,20 @@ function TerminalContent({ levelIndex }: { levelIndex: number }) {
   );
 }
 
+/* Unique ID so multiple instances of PermissionSpectrum don't collide. */
+const sliderId = 'perm-slider';
+
 export function PermissionSpectrum() {
   const [selected, setSelected] = useState(1);
   const [fadeKey, setFadeKey] = useState(1);
-  const handleSelect = useCallback(
-    (index: number) => {
-      if (index === selected) return;
-      setSelected(index);
-      setFadeKey(index);
-    },
-    [selected],
-  );
+
+  const handleSelect = (index: number) => {
+    if (index === selected) return;
+    setSelected(index);
+    setFadeKey(index);
+  };
 
   const activeLevel = levels[selected];
-
-  /* Unique ID so multiple instances don't collide */
-  const sliderId = 'perm-slider';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -249,14 +247,14 @@ export function PermissionSpectrum() {
         #${sliderId}::-webkit-slider-runnable-track {
           height: 6px;
           border-radius: 3px;
-          background: linear-gradient(to right, ${getTrackGradient()});
+          background: linear-gradient(to right, ${TRACK_GRADIENT});
         }
 
         /* Moz track */
         #${sliderId}::-moz-range-track {
           height: 6px;
           border-radius: 3px;
-          background: linear-gradient(to right, ${getTrackGradient()});
+          background: linear-gradient(to right, ${TRACK_GRADIENT});
         }
 
         /* Webkit thumb */

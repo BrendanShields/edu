@@ -2,16 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-interface ScrollSectionState {
-  activeSection: string | null;
-  activeVisual: string | null;
-}
-
-const INITIAL: ScrollSectionState = {
-  activeSection: null,
-  activeVisual: null,
-};
-
 /**
  * Tracks the section currently being read using a single IntersectionObserver
  * with a tracking line at 30% from the top of the viewport. Sections become
@@ -25,9 +15,13 @@ const INITIAL: ScrollSectionState = {
  * Side effect: dispatches a `sectionchange` window event on every transition
  * so a couple of legacy visual components (e.g. ScrollSyncedTerminal) can
  * sync their internal state without going through React context.
+ *
+ * Only `activeVisual` is exposed as React state; the active section id lives
+ * in a ref so consumers don't re-render when scrolling between sections that
+ * share the same visual (the common case for grouped phases).
  */
 export function useScrollSections() {
-  const [state, setState] = useState<ScrollSectionState>(INITIAL);
+  const [activeVisual, setActiveVisual] = useState<string | null>(null);
   const lastDispatchedId = useRef<string | null>(null);
 
   useEffect(() => {
@@ -39,6 +33,8 @@ export function useScrollSections() {
     const visibility = new Map<HTMLElement, boolean>();
     sections.forEach((s) => visibility.set(s, false));
 
+    let lastActive: HTMLElement | null = null;
+
     function recompute() {
       let active: HTMLElement | null = null;
       for (const s of sections) {
@@ -47,21 +43,21 @@ export function useScrollSections() {
       // Fallback: nothing intersecting (e.g. very top of page) → first section.
       if (!active) active = sections[0];
 
+      // Bail out early if nothing changed — avoids touching the DOM, the
+      // window event bus, and React state on every IO callback.
+      if (active === lastActive) return;
+
+      // Targeted class toggle: only the previous and the new active section
+      // need to change. Cheaper than iterating all sections each time.
+      if (lastActive) lastActive.classList.remove('is-active');
+      active.classList.add('is-active');
+      lastActive = active;
+
       const id = active.dataset.section ?? null;
       const visual = active.dataset.visual || null;
 
-      // Mirror an `is-active` class onto each section so CSS can drive the
-      // dimming without forcing every section to subscribe to React state.
-      for (const s of sections) {
-        s.classList.toggle('is-active', s === active);
-      }
-
-      setState((prev) => {
-        if (prev.activeSection === id && prev.activeVisual === visual) {
-          return prev;
-        }
-        return { activeSection: id, activeVisual: visual };
-      });
+      // Only triggers a re-render when the visual actually changes.
+      setActiveVisual((prev) => (prev === visual ? prev : visual));
 
       // Side effect: bridge to the legacy `sectionchange` window event.
       // Dedupe by id so listeners don't see noop transitions.
@@ -92,9 +88,9 @@ export function useScrollSections() {
     return () => {
       observer.disconnect();
       lastDispatchedId.current = null;
-      for (const s of sections) s.classList.remove('is-active');
+      if (lastActive) lastActive.classList.remove('is-active');
     };
   }, []);
 
-  return state;
+  return { activeVisual };
 }

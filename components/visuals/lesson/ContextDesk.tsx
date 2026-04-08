@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 interface ContextItem {
   icon: string;
@@ -66,7 +66,7 @@ export function ContextDesk() {
   const [isInteractive, setIsInteractive] = useState(false);
   const [addFileCount, setAddFileCount] = useState(0);
 
-  const resetAnimation = useCallback(() => {
+  const resetAnimation = () => {
     setVisibleCount(0);
     setAutoFadedItems(new Set());
     setShowControls(false);
@@ -74,7 +74,7 @@ export function ContextDesk() {
     setIsInteractive(false);
     setInteractiveItems([]);
     setAddFileCount(0);
-  }, []);
+  };
 
   // Auto-advancing animation
   useEffect(() => {
@@ -110,7 +110,7 @@ export function ContextDesk() {
   }, [visibleCount, isRunning]);
 
   // --- Interactive handlers ---
-  const handleAddFile = useCallback(() => {
+  const handleAddFile = () => {
     setAddFileCount((c) => c + 1);
     setInteractiveItems((prev) => [
       ...prev,
@@ -121,9 +121,9 @@ export function ContextDesk() {
         category: 'file' as const,
       },
     ]);
-  }, []);
+  };
 
-  const handleCompact = useCallback(() => {
+  const handleCompact = () => {
     setInteractiveItems((prev) => {
       const hasHistory = prev.some((item) => item.category === 'history');
       if (!hasHistory) return prev;
@@ -148,7 +148,7 @@ export function ContextDesk() {
       }
       return result;
     });
-  }, []);
+  };
 
   // --- Compute derived state for interactive mode ---
   const interactiveUsage = useMemo(
@@ -324,17 +324,18 @@ export function ContextDesk() {
               className="mt-3 flex flex-wrap justify-center gap-2"
               style={{ animation: 'fadeUp 0.4s ease-out' }}
             >
-              <button onClick={handleAddFile} className={buttonClass}>
+              <button type="button" onClick={handleAddFile} className={buttonClass}>
                 Add a 2,000-line file
               </button>
               <button
+                type="button"
                 onClick={handleCompact}
                 className={`${buttonClass} ${!hasHistoryItems ? 'opacity-40 cursor-not-allowed' : ''}`}
                 disabled={!hasHistoryItems}
               >
                 Compact conversation
               </button>
-              <button onClick={resetAnimation} className={buttonClass}>
+              <button type="button" onClick={resetAnimation} className={buttonClass}>
                 Reset
               </button>
             </div>

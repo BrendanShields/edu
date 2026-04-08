@@ -1,16 +1,30 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 const STAGE_DELAY_MS = 2000;
 const TOTAL_STAGES = 5;
 
+/* Hoisted theme — same object on every render. */
+const TERM_THEME = {
+  '--term-bg': '#0d0d0d',
+  '--term-chrome': '#1a1a1a',
+  '--term-dot-red': '#ff5f57',
+  '--term-dot-yellow': '#febc2e',
+  '--term-dot-green': '#28c840',
+  '--term-accent': 'var(--color-accent)',
+  '--term-text': '#e0e0e0',
+  '--term-muted': '#6a6a6a',
+  '--term-dim': '#888888',
+  '--term-red': '#f87171',
+  '--term-orange': '#fb923c',
+  '--term-amber': '#fbbf24',
+} as React.CSSProperties;
+
 export function MCPArchitecture() {
   const [visibleStages, setVisibleStages] = useState(0);
 
-  const replay = useCallback(() => {
-    setVisibleStages(0);
-  }, []);
+  const replay = () => setVisibleStages(0);
 
   useEffect(() => {
     if (visibleStages < TOTAL_STAGES) {
@@ -24,24 +38,7 @@ export function MCPArchitecture() {
   const show = (stage: number) => visibleStages >= stage;
 
   return (
-    <div
-      style={
-        {
-          '--term-bg': '#0d0d0d',
-          '--term-chrome': '#1a1a1a',
-          '--term-dot-red': '#ff5f57',
-          '--term-dot-yellow': '#febc2e',
-          '--term-dot-green': '#28c840',
-          '--term-accent': 'var(--color-accent)',
-          '--term-text': '#e0e0e0',
-          '--term-muted': '#6a6a6a',
-          '--term-dim': '#888888',
-          '--term-red': '#f87171',
-          '--term-orange': '#fb923c',
-          '--term-amber': '#fbbf24',
-        } as React.CSSProperties
-      }
-    >
+    <div style={TERM_THEME}>
       {/* Terminal window */}
       <div
         style={{

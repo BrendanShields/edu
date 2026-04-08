@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 interface PanelData {
   label: string;
@@ -15,41 +15,28 @@ interface BeforeAfterProps {
 }
 
 export function BeforeAfter({ before, after, footer }: BeforeAfterProps) {
+  // `runId` advances on each replay so the timer effect re-runs from scratch.
+  // Cleaner than the old "set key + remount + restart" dance.
+  const [runId, setRunId] = useState(0);
   const [phase, setPhase] = useState<'before' | 'transitioning' | 'after'>('before');
   const [showFooter, setShowFooter] = useState(false);
-  const [key, setKey] = useState(0);
 
-  const runSequence = useCallback(() => {
+  useEffect(() => {
     setPhase('before');
     setShowFooter(false);
 
-    const t1 = setTimeout(() => {
-      setPhase('transitioning');
-    }, 2000);
-
-    const t2 = setTimeout(() => {
-      setPhase('after');
-    }, 2500);
-
-    const t3 = setTimeout(() => {
-      setShowFooter(true);
-    }, 3000);
+    const t1 = setTimeout(() => setPhase('transitioning'), 2000);
+    const t2 = setTimeout(() => setPhase('after'), 2500);
+    const t3 = setTimeout(() => setShowFooter(true), 3000);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
     };
-  }, []);
+  }, [runId]);
 
-  useEffect(() => {
-    const cleanup = runSequence();
-    return cleanup;
-  }, [key, runSequence]);
-
-  const handleReplay = () => {
-    setKey((k) => k + 1);
-  };
+  const handleReplay = () => setRunId((n) => n + 1);
 
   const isAfter = phase === 'after' || phase === 'transitioning';
 
@@ -104,6 +91,7 @@ export function BeforeAfter({ before, after, footer }: BeforeAfterProps) {
       {phase === 'after' && (
         <div className="flex justify-center">
           <button
+            type="button"
             onClick={handleReplay}
             className="text-[11px] text-text-muted hover:text-text-secondary transition-colors duration-200 cursor-pointer"
           >

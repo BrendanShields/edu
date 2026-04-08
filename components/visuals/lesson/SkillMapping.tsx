@@ -2,6 +2,18 @@
 
 import { useState, useEffect } from 'react';
 
+// Hoisted glow styles — same shape on every render so we can hand back stable
+// references instead of allocating fresh objects per cell.
+const GLOW_STYLE_ACTIVE = {
+  boxShadow:
+    '0 0 12px 2px color-mix(in srgb, var(--color-accent) 25%, transparent)',
+  borderColor:
+    'color-mix(in srgb, var(--color-accent) 50%, var(--color-border))',
+};
+const GLOW_STYLE_INACTIVE = {};
+
+const ROW_TRANSITION = 'box-shadow 0.4s ease, border-color 0.4s ease';
+
 const pairs = [
   {
     rule: {
@@ -173,15 +185,18 @@ export function SkillMapping() {
   // Cycling highlight: starts after stagger animations complete (~0.8s),
   // then cycles every 3 seconds through pairs 0 -> 1 -> 2 -> 0 -> ...
   useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval> | null = null;
     const startDelay = setTimeout(() => {
       setHighlightIndex(0);
-      const interval = setInterval(() => {
+      intervalId = setInterval(() => {
         setHighlightIndex((prev) => ((prev ?? 0) + 1) % pairs.length);
       }, 3000);
-      return () => clearInterval(interval);
     }, 1200);
 
-    return () => clearTimeout(startDelay);
+    return () => {
+      clearTimeout(startDelay);
+      if (intervalId !== null) clearInterval(intervalId);
+    };
   }, []);
 
   // When hovering, pause the cycling highlight
@@ -206,14 +221,7 @@ export function SkillMapping() {
   }
 
   const glowStyle = (active: boolean) =>
-    active
-      ? {
-          boxShadow: '0 0 12px 2px color-mix(in srgb, var(--color-accent) 25%, transparent)',
-          borderColor: 'color-mix(in srgb, var(--color-accent) 50%, var(--color-border))',
-        }
-      : {};
-
-  const rowTransition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+    active ? GLOW_STYLE_ACTIVE : GLOW_STYLE_INACTIVE;
 
   return (
     <div className="space-y-3" style={{ animation: 'fadeUp 0.5s ease both' }}>
@@ -253,7 +261,7 @@ export function SkillMapping() {
                     borderColor: 'var(--color-border)',
                     animation: `fadeSlideIn 0.4s ease both`,
                     animationDelay: `${i * 0.12}s`,
-                    transition: rowTransition,
+                    transition: ROW_TRANSITION,
                     backgroundColor: isRuleHighlighted(i)
                       ? 'color-mix(in srgb, var(--color-accent) 6%, var(--color-surface))'
                       : 'transparent',
@@ -328,7 +336,7 @@ export function SkillMapping() {
                     borderColor: 'var(--color-border)',
                     animation: `fadeSlideIn 0.4s ease both`,
                     animationDelay: `${i * 0.12 + 0.1}s`,
-                    transition: rowTransition,
+                    transition: ROW_TRANSITION,
                     backgroundColor: isBehaviorHighlighted(i)
                       ? 'color-mix(in srgb, var(--color-accent) 6%, var(--color-surface))'
                       : 'transparent',
@@ -370,7 +378,7 @@ export function SkillMapping() {
                   backgroundColor: pairActive
                     ? 'color-mix(in srgb, var(--color-accent) 6%, var(--color-surface))'
                     : 'color-mix(in srgb, var(--color-surface) 100%, black 0%)',
-                  transition: rowTransition,
+                  transition: ROW_TRANSITION,
                   ...(pairActive
                     ? {
                         boxShadow:
@@ -413,7 +421,7 @@ export function SkillMapping() {
                   backgroundColor: pairActive
                     ? 'color-mix(in srgb, var(--color-accent) 6%, var(--color-surface))'
                     : 'var(--color-surface)',
-                  transition: rowTransition,
+                  transition: ROW_TRANSITION,
                   ...(pairActive
                     ? {
                         boxShadow:

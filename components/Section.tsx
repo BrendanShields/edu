@@ -7,6 +7,12 @@ interface SectionProps {
    * Resolved visual node for this section. Rendered inline on narrow
    * viewports (where the sticky right canvas is hidden) so the prose still
    * has its companion visual nearby. Hidden on desktop via CSS.
+   *
+   * Important: this is the *same* React node that's also rendered in the
+   * sticky right canvas. Rendering the same element twice can cause SVG
+   * <defs> id collisions and other duplication oddities, so the inline
+   * version is wrapped in a container that hides it from layout *and*
+   * the accessibility tree on desktop.
    */
   visualNode?: ReactNode;
   children: ReactNode;

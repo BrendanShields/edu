@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 /* ── Stage timing (ms from loop start) ── */
 const STAGE_TIMES = [0, 1500, 3500, 5500, 7500, 10000, 11500, 13000];
@@ -46,66 +46,93 @@ const STAGE_CONTENT: Record<number, Line[]> = {
 const PROMPT_LINE_1 = '~/myapp $ claude';
 const PROMPT_LINE_2 = '> fix the failing test in auth.test.ts';
 
-/* ── Component ── */
+/* ── CSS custom properties hoisted to module scope so the object isn't
+ *    re-allocated every render. The only thing that varies per render is
+ *    `opacity`, which we merge in at the call site. ── */
+const TERM_THEME: React.CSSProperties = {
+  ['--term-bg' as string]: '#0d0d0d',
+  ['--term-chrome' as string]: '#1a1a1a',
+  ['--term-text' as string]: '#d4d4d4',
+  ['--term-dim' as string]: '#808080',
+  ['--term-red' as string]: '#f87171',
+  ['--term-red-bg' as string]: 'rgba(248, 113, 113, 0.1)',
+  ['--term-green' as string]: '#4ade80',
+  ['--term-green-bg' as string]: 'rgba(74, 222, 128, 0.1)',
+  ['--term-cursor' as string]: 'rgba(212, 212, 212, 0.7)',
+  ['--term-dot-red' as string]: '#ff5f57',
+  ['--term-dot-yellow' as string]: '#febc2e',
+  ['--term-dot-green' as string]: '#28c840',
+  width: '100%',
+  maxWidth: '480px',
+  transition: 'opacity 0.7s ease',
+};
+
+/* ── Outer wrapper: bumps `loopKey` to force a clean remount of the inner
+ *    component every cycle. Gives us state reset for free without a manual
+ *    `resetLoop` that has to clear seven setters. ── */
 export function IntroVisual() {
+  const [loopKey, setLoopKey] = useState(0);
+  return (
+    <IntroVisualInner
+      key={loopKey}
+      onLoopComplete={() => setLoopKey((k) => k + 1)}
+    />
+  );
+}
+
+interface IntroVisualInnerProps {
+  onLoopComplete: () => void;
+}
+
+function IntroVisualInner({ onLoopComplete }: IntroVisualInnerProps) {
   const [stage, setStage] = useState(-1); // -1 = not started / fading in
   const [typedChars1, setTypedChars1] = useState(0);
   const [typedChars2, setTypedChars2] = useState(0);
   const [lineReveal, setLineReveal] = useState(0); // how many lines revealed in current stage body
   const [fading, setFading] = useState(false); // fade-out state
   const [taglineVisible, setTaglineVisible] = useState(false);
-  const [loopKey, setLoopKey] = useState(0); // forces re-mount on loop
-
-  /* ── Reset everything for a new loop ── */
-  const resetLoop = useCallback(() => {
-    setStage(-1);
-    setTypedChars1(0);
-    setTypedChars2(0);
-    setLineReveal(0);
-    setFading(false);
-    setTaglineVisible(false);
-    // Small delay then start
-    setTimeout(() => {
-      setStage(0);
-    }, 400);
-  }, []);
 
   /* ── Initial mount: start the first loop ── */
   useEffect(() => {
     const t = setTimeout(() => setStage(0), 300);
     return () => clearTimeout(t);
-  }, [loopKey]);
+  }, []);
 
-  /* ── Stage 0: typing animation for prompt ── */
+  /* ── Stage 0: typing animation for prompt ──
+   * Single setInterval driven by a counter, instead of queueing 80+
+   * setTimeouts up front. Lower scheduling overhead, easier to reason about,
+   * and the cleanup is one clearInterval call.
+   */
   useEffect(() => {
     if (stage !== 0) return;
     setTypedChars1(0);
     setTypedChars2(0);
 
-    const charDelay = 45;
-    const timers: ReturnType<typeof setTimeout>[] = [];
+    const CHAR_DELAY = 45;
+    const PAUSE_BETWEEN_LINES = 200; // ms gap before line 2 starts typing
 
-    // Type line 1
-    for (let i = 1; i <= PROMPT_LINE_1.length; i++) {
-      timers.push(setTimeout(() => setTypedChars1(i), i * charDelay));
-    }
+    // Tick budget: line1 chars + pause-as-ticks + line2 chars (+ 1 to land
+    // on the final char of line 2 cleanly).
+    const pauseTicks = Math.ceil(PAUSE_BETWEEN_LINES / CHAR_DELAY);
+    const totalTicks = PROMPT_LINE_1.length + pauseTicks + PROMPT_LINE_2.length;
 
-    // After line 1 finishes, small pause, then type line 2
-    const line2Start = (PROMPT_LINE_1.length + 1) * charDelay + 200;
-    for (let i = 1; i <= PROMPT_LINE_2.length; i++) {
-      timers.push(setTimeout(() => setTypedChars2(i), line2Start + i * charDelay));
-    }
+    let tick = 0;
+    const interval = setInterval(() => {
+      tick += 1;
+      if (tick <= PROMPT_LINE_1.length) {
+        setTypedChars1(tick);
+      } else if (tick > PROMPT_LINE_1.length + pauseTicks) {
+        setTypedChars2(tick - PROMPT_LINE_1.length - pauseTicks);
+      }
+      if (tick >= totalTicks) clearInterval(interval);
+    }, CHAR_DELAY);
 
-    return () => timers.forEach(clearTimeout);
-  }, [stage, loopKey]);
+    return () => clearInterval(interval);
+  }, [stage]);
 
-  /* ── Track when stage first hits 0 to schedule the full sequence ── */
-  const scheduledForLoop = useRef(-1);
-
+  /* ── Schedule the rest of the sequence once stage 0 begins ── */
   useEffect(() => {
     if (stage !== 0) return;
-    if (scheduledForLoop.current === loopKey) return; // already scheduled this loop
-    scheduledForLoop.current = loopKey;
 
     const timers: ReturnType<typeof setTimeout>[] = [];
 
@@ -127,36 +154,40 @@ export function IntroVisual() {
       }, STAGE_TIMES[6])
     );
 
-    // Stage 7: fade out and restart
+    // Stage 7: fade out
     timers.push(
       setTimeout(() => {
         setFading(true);
       }, STAGE_TIMES[7])
     );
 
-    // Restart loop after fade completes
-    timers.push(
-      setTimeout(() => {
-        setLoopKey((k) => k + 1);
-        resetLoop();
-      }, STAGE_TIMES[7] + 800)
-    );
+    // After fade completes, tell the wrapper to remount us with a fresh key.
+    timers.push(setTimeout(onLoopComplete, STAGE_TIMES[7] + 800));
 
     return () => timers.forEach(clearTimeout);
-  }, [stage, loopKey, resetLoop]);
+    // onLoopComplete is intentionally left out of deps: the wrapper guarantees
+    // a stable identity for the lifetime of this instance because each mount
+    // gets a new key.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage]);
 
-  /* ── Stagger line reveals within each stage ── */
+  /* ── Stagger line reveals within each stage ──
+   * Single setInterval ticks once per line reveal step instead of queuing
+   * one setTimeout per line. Same pattern as the stage-0 typing effect.
+   */
   useEffect(() => {
     if (stage < 1 || stage > 5) return;
     const lines = STAGE_CONTENT[stage];
     if (!lines) return;
 
     setLineReveal(0);
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    for (let i = 0; i < lines.length; i++) {
-      timers.push(setTimeout(() => setLineReveal(i + 1), (i + 1) * 100));
-    }
-    return () => timers.forEach(clearTimeout);
+    let revealed = 0;
+    const interval = setInterval(() => {
+      revealed += 1;
+      setLineReveal(revealed);
+      if (revealed >= lines.length) clearInterval(interval);
+    }, 100);
+    return () => clearInterval(interval);
   }, [stage]);
 
   /* ── Render a single terminal line ── */
@@ -243,29 +274,7 @@ export function IntroVisual() {
   );
 
   return (
-    <div
-      key={loopKey}
-      style={{
-        /* CSS custom properties */
-        ['--term-bg' as string]: '#0d0d0d',
-        ['--term-chrome' as string]: '#1a1a1a',
-        ['--term-text' as string]: '#d4d4d4',
-        ['--term-dim' as string]: '#808080',
-        ['--term-red' as string]: '#f87171',
-        ['--term-red-bg' as string]: 'rgba(248, 113, 113, 0.1)',
-        ['--term-green' as string]: '#4ade80',
-        ['--term-green-bg' as string]: 'rgba(74, 222, 128, 0.1)',
-        ['--term-cursor' as string]: 'rgba(212, 212, 212, 0.7)',
-        ['--term-dot-red' as string]: '#ff5f57',
-        ['--term-dot-yellow' as string]: '#febc2e',
-        ['--term-dot-green' as string]: '#28c840',
-
-        width: '100%',
-        maxWidth: '480px',
-        opacity: fading ? 0 : 1,
-        transition: 'opacity 0.7s ease',
-      }}
-    >
+    <div style={{ ...TERM_THEME, opacity: fading ? 0 : 1 }}>
       {/* Keyframe styles */}
       <style>{`
         @keyframes termBlink {

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 interface PrevNextNavProps {
   prevHref?: string;
   prevTitle?: string;
@@ -10,18 +12,18 @@ export function PrevNextNav({ prevHref, prevTitle, nextHref, nextTitle }: PrevNe
   return (
     <nav className="prev-next" aria-label="Lesson navigation">
       {prevHref ? (
-        <a href={prevHref} className="prev-next__link prev-next__link--prev">
+        <Link href={prevHref} className="prev-next__link prev-next__link--prev">
           <span className="prev-next__label">‹ Previous</span>
           <span className="prev-next__title">{prevTitle}</span>
-        </a>
+        </Link>
       ) : (
         <span />
       )}
       {nextHref ? (
-        <a href={nextHref} className="prev-next__link prev-next__link--next">
+        <Link href={nextHref} className="prev-next__link prev-next__link--next">
           <span className="prev-next__label">Next ›</span>
           <span className="prev-next__title">{nextTitle}</span>
-        </a>
+        </Link>
       ) : (
         <span />
       )}

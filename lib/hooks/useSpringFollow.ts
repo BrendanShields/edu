@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useMemo, useRef, type PointerEvent as ReactPointerEvent } from 'react';
 
 // Spring constants — matched to the framer-motion snippet
 // (mass: 0.1, damping: 10, stiffness: 131) for the same feel.
@@ -87,35 +87,38 @@ export function useSpringFollow() {
     };
   }, []);
 
-  function onPointerMove(e: ReactPointerEvent<HTMLDivElement>) {
-    const r = e.currentTarget.getBoundingClientRect();
-    targetRef.current.x = e.clientX - r.left;
-    targetRef.current.y = e.clientY - r.top;
-  }
+  // The handlers only ever read mutable refs — they don't depend on render
+  // state — so we can build the object once per instance and hand back the
+  // same reference forever.
+  const handlers = useMemo(
+    () => ({
+      onPointerMove(e: ReactPointerEvent<HTMLDivElement>) {
+        const r = e.currentTarget.getBoundingClientRect();
+        targetRef.current.x = e.clientX - r.left;
+        targetRef.current.y = e.clientY - r.top;
+      },
+      onPointerEnter(e: ReactPointerEvent<HTMLDivElement>) {
+        const r = e.currentTarget.getBoundingClientRect();
+        const cx = e.clientX - r.left;
+        const cy = e.clientY - r.top;
+        targetRef.current.x = cx;
+        targetRef.current.y = cy;
+        // If we were fully hidden, snap state to the cursor so the dot scales
+        // up *in place* instead of swooping in from (0, 0).
+        if (stateRef.current.vis < 0.05) {
+          stateRef.current.x = cx;
+          stateRef.current.y = cy;
+          stateRef.current.vx = 0;
+          stateRef.current.vy = 0;
+        }
+        targetRef.current.vis = 1;
+      },
+      onPointerLeave() {
+        targetRef.current.vis = 0;
+      },
+    }),
+    [],
+  );
 
-  function onPointerEnter(e: ReactPointerEvent<HTMLDivElement>) {
-    const r = e.currentTarget.getBoundingClientRect();
-    const cx = e.clientX - r.left;
-    const cy = e.clientY - r.top;
-    targetRef.current.x = cx;
-    targetRef.current.y = cy;
-    // If we were fully hidden, snap state to the cursor so the dot scales up
-    // *in place* instead of swooping in from (0, 0).
-    if (stateRef.current.vis < 0.05) {
-      stateRef.current.x = cx;
-      stateRef.current.y = cy;
-      stateRef.current.vx = 0;
-      stateRef.current.vy = 0;
-    }
-    targetRef.current.vis = 1;
-  }
-
-  function onPointerLeave() {
-    targetRef.current.vis = 0;
-  }
-
-  return {
-    dotRef,
-    handlers: { onPointerMove, onPointerEnter, onPointerLeave },
-  };
+  return { dotRef, handlers };
 }

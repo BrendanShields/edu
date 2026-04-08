@@ -34,6 +34,12 @@ const tactics = [
 
 const maxBarPercent = 30; // scale bars relative to this max
 
+/* Hoisted style — same object on every render. */
+const ROOT_STYLE = {
+  '--ct-transition': '0.5s ease',
+  animation: 'fadeIn 0.5s ease-out',
+} as React.CSSProperties;
+
 export function ContextTactics() {
   const [mode, setMode] = useState<Mode>('bloated');
 
@@ -42,15 +48,7 @@ export function ContextTactics() {
   const totalPercent = items.reduce((sum, item) => sum + item.percent, 0);
 
   return (
-    <div
-      className="space-y-3"
-      style={
-        {
-          '--ct-transition': '0.5s ease',
-          animation: 'fadeIn 0.5s ease-out',
-        } as React.CSSProperties
-      }
-    >
+    <div className="space-y-3" style={ROOT_STYLE}>
       <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
         Context Tactics
       </p>
@@ -58,6 +56,7 @@ export function ContextTactics() {
       {/* Segmented control */}
       <div className="flex rounded-lg border border-border bg-surface overflow-hidden">
         <button
+          type="button"
           onClick={() => setMode('bloated')}
           className="flex-1 px-3 py-2 text-xs font-semibold transition-all cursor-pointer"
           style={{
@@ -74,6 +73,7 @@ export function ContextTactics() {
           Bloated Context
         </button>
         <button
+          type="button"
           onClick={() => setMode('lean')}
           className="flex-1 px-3 py-2 text-xs font-semibold transition-all cursor-pointer"
           style={{

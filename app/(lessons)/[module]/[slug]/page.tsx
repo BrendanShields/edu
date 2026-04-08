@@ -1,9 +1,16 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Fragment } from 'react';
 import { ScrollLayout } from '@/components/ScrollLayout';
 import { ReferenceLayout } from '@/components/ReferenceLayout';
 import { Section } from '@/components/Section';
-import { getLesson, getNavigation, getAllParams, getCourseOutline } from '@/lib/lessons';
+import {
+  loadLesson,
+  getLessonMeta,
+  getNavigation,
+  getAllParams,
+  getCourseOutline,
+} from '@/lib/lessons';
 
 interface LessonPageProps {
   params: Promise<{ module: string; slug: string }>;
@@ -15,17 +22,19 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: LessonPageProps): Promise<Metadata> {
   const { module, slug } = await params;
-  const lesson = getLesson(module, slug);
-  if (!lesson) return { title: 'Not found' };
+  // Metadata only needs the title — pull it from the light registry instead
+  // of loading the lesson's visual chunk.
+  const meta = getLessonMeta(module, slug);
+  if (!meta) return { title: 'Not found' };
   return {
-    title: lesson.title,
-    description: `${lesson.title} — part of the AI Coding Tools Workshop.`,
+    title: meta.title,
+    description: `${meta.title} — part of the AI Coding Tools Workshop.`,
   };
 }
 
 export default async function LessonPage({ params }: LessonPageProps) {
   const { module, slug } = await params;
-  const lesson = getLesson(module, slug);
+  const lesson = await loadLesson(module, slug);
 
   if (!lesson) {
     notFound();
@@ -47,7 +56,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
         courseOutline={outline}
       >
         {lesson.sections.map((section) => (
-          <div key={section.id}>{section.content}</div>
+          <Fragment key={section.id}>{section.content}</Fragment>
         ))}
       </ReferenceLayout>
     );

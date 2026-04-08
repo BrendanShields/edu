@@ -204,6 +204,7 @@ export function PromptFramework() {
           return (
             <button
               key={element}
+              type="button"
               onClick={() => handleLegendClick(element)}
               onMouseEnter={() => setHoveredElement(element)}
               onMouseLeave={() => setHoveredElement(null)}

@@ -326,6 +326,7 @@ export function CopilotDeepDive() {
           return (
             <button
               key={tab.key}
+              type="button"
               onClick={() => setActiveTab(tab.key)}
               style={{
                 padding: '8px 14px',

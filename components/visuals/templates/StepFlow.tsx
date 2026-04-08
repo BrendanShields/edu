@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface Step {
   n: string;
@@ -22,7 +22,12 @@ export function StepFlow({ title, steps, loop }: StepFlowProps) {
 
   const totalSteps = steps.length;
 
-  const advance = useCallback(() => {
+  // `advance` reads `showLoop` from closure, so it has to be re-created when
+  // `showLoop` changes. We stash the latest copy in a ref so the auto-advance
+  // interval can call it WITHOUT being torn down and re-created on every
+  // `showLoop` flip.
+  const advanceRef = useRef<() => void>(() => {});
+  advanceRef.current = () => {
     setActiveIndex((prev) => {
       // If we're showing all steps (completed, non-loop), do nothing
       if (!loop && prev >= totalSteps - 1 && !showLoop) {
@@ -44,15 +49,14 @@ export function StepFlow({ title, steps, loop }: StepFlowProps) {
 
       return prev + 1;
     });
-  }, [totalSteps, loop, showLoop]);
+  };
 
-  // Auto-advance timer
+  // Auto-advance timer — only torn down when pause/completion actually change.
   useEffect(() => {
     if (paused || completed) return;
-
-    const timer = setInterval(advance, 1800);
+    const timer = setInterval(() => advanceRef.current(), 1800);
     return () => clearInterval(timer);
-  }, [advance, paused, completed]);
+  }, [paused, completed]);
 
   // Pause timeout - resume after 5s
   useEffect(() => {
@@ -97,14 +101,18 @@ export function StepFlow({ title, steps, loop }: StepFlowProps) {
             if (!isVisible) return null;
 
             return (
-              <div
+              <button
                 key={step.n}
-                className="animate-[fadeSlideIn_0.4s_ease-out_both] cursor-pointer"
+                type="button"
+                className="animate-[fadeSlideIn_0.4s_ease-out_both] cursor-pointer text-left bg-transparent border-none p-0 w-full block"
                 style={{
                   opacity: isActive || completed ? 1 : 0.5,
                   transition: 'opacity 0.3s ease-out',
+                  font: 'inherit',
                 }}
                 onClick={() => handleStepClick(i)}
+                aria-label={`Jump to step ${step.n}: ${step.label}`}
+                aria-pressed={isActive}
               >
                 <div className="flex items-center gap-3">
                   <span
@@ -133,7 +141,7 @@ export function StepFlow({ title, steps, loop }: StepFlowProps) {
                 {completed && i < steps.length - 1 && (
                   <div className="ml-4 border-l border-border h-4 mt-1" />
                 )}
-              </div>
+              </button>
             );
           })}
 

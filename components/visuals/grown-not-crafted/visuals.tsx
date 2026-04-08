@@ -1,25 +1,25 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 /* ============================================================
  * 1. TokenStrip — words mapping to numbers
  * ============================================================
  * (The former blueprint-vs-tree visual lives in BonsaiVisual.tsx now.)
  */
-export function TokenStrip() {
-  const tokens = ['Once', 'upon', 'a', 'time'];
-  const ids = [4023, 1817, 64, 892];
+const TOKEN_STRIP_TOKENS = ['Once', 'upon', 'a', 'time'] as const;
+const TOKEN_STRIP_IDS = [4023, 1817, 64, 892] as const;
 
+export function TokenStrip() {
   return (
     <div className="w-full max-w-[600px] space-y-6">
       <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
         Text becomes numbers
       </p>
       <div className="flex items-center justify-center gap-2">
-        {tokens.map((tok, i) => (
+        {TOKEN_STRIP_TOKENS.map((tok, i) => (
           <div
-            key={i}
+            key={tok}
             className="flex flex-col items-center gap-2"
             style={{ animation: `fadeSlideIn 0.45s ${i * 0.18}s ease-out both`, opacity: 0 }}
           >
@@ -28,7 +28,7 @@ export function TokenStrip() {
             </div>
             <div className="text-text-muted text-xs">&darr;</div>
             <div className="px-3 py-2 rounded-lg border border-accent/40 bg-accent/5 text-sm font-mono text-accent min-w-[64px] text-center">
-              {ids[i]}
+              {TOKEN_STRIP_IDS[i]}
             </div>
           </div>
         ))}
@@ -42,16 +42,34 @@ export function TokenStrip() {
 
 /* ============================================================
  * 3. WeightGrid — vast field of parameters
- * ============================================================ */
-export function WeightGrid() {
-  // Deterministic sample of weights pulled from a sin-based generator so the
-  // grid feels "data-y" without using random numbers (which would re-seed
-  // every render and look noisy in screenshots).
-  const COLS = 24;
-  const ROWS = 14;
-  const total = COLS * ROWS;
+ * ============================================================
+ *
+ * All of the layout/data computation is deterministic and constant, so it
+ * lives at module scope rather than re-running on every render of the
+ * component (which would otherwise rebuild a 336-element array of objects
+ * each time).
+ */
+const WG_COLS = 24;
+const WG_ROWS = 14;
+const WG_W = 480;
+const WG_H = 280;
+const WG_PAD_X = 8;
+const WG_PAD_Y = 10;
+const WG_GAP = 2;
+const WG_CELL_W = (WG_W - WG_PAD_X * 2 - WG_GAP * (WG_COLS - 1)) / WG_COLS;
+const WG_CELL_H = (WG_H - WG_PAD_Y * 2 - WG_GAP * (WG_ROWS - 1)) / WG_ROWS;
 
-  const cells = Array.from({ length: total }, (_, i) => {
+interface WeightGridCell {
+  i: number;
+  hasLabel: boolean;
+  isHot: boolean;
+  value: string;
+  intensity: number;
+}
+
+const WG_CELLS: WeightGridCell[] = Array.from(
+  { length: WG_COLS * WG_ROWS },
+  (_, i) => {
     // Pseudo-noise: stable across renders, varied enough to feel real.
     const v = Math.sin(i * 1.7) * Math.cos(i * 0.93);
     const intensity = (v + 1) / 2; // 0..1
@@ -64,20 +82,13 @@ export function WeightGrid() {
       value: (Math.sin(i * 0.31) * 1.6).toFixed(2),
       intensity,
     };
-  });
+  },
+);
 
-  // Two values that "pop out" of the grid into the centred zoom callout.
-  const sample = ['0.0042', '-1.37', '0.88', '0.21', '-0.04', '1.92', '-0.73', '0.55'];
+// Two values that "pop out" of the grid into the centred zoom callout.
+const WG_SAMPLE = ['0.0042', '-1.37', '0.88', '0.21', '-0.04', '1.92', '-0.73', '0.55'];
 
-  // Cell box size in user-units (viewBox is 480 × 280).
-  const W = 480;
-  const H = 280;
-  const padX = 8;
-  const padY = 10;
-  const gap = 2;
-  const cellW = (W - padX * 2 - gap * (COLS - 1)) / COLS;
-  const cellH = (H - padY * 2 - gap * (ROWS - 1)) / ROWS;
-
+export function WeightGrid() {
   return (
     <div className="w-full max-w-[600px] space-y-5">
       <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
@@ -88,7 +99,7 @@ export function WeightGrid() {
         className="relative rounded-xl border border-border bg-surface overflow-hidden"
         style={{ height: 300 }}
       >
-        <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full" aria-label="A field of weight parameters laid out as a grid, with a few values labelled and a zoomed callout in the centre">
+        <svg viewBox={`0 0 ${WG_W} ${WG_H}`} className="w-full h-full" aria-label="A field of weight parameters laid out as a grid, with a few values labelled and a zoomed callout in the centre">
           <defs>
             <radialGradient id="weight-grid-fade" cx="50%" cy="50%" r="55%">
               <stop offset="0%" stopColor="transparent" stopOpacity="0" />
@@ -98,11 +109,11 @@ export function WeightGrid() {
           </defs>
 
           {/* Cells */}
-          {cells.map((c) => {
-            const col = c.i % COLS;
-            const row = Math.floor(c.i / COLS);
-            const x = padX + col * (cellW + gap);
-            const y = padY + row * (cellH + gap);
+          {WG_CELLS.map((c) => {
+            const col = c.i % WG_COLS;
+            const row = Math.floor(c.i / WG_COLS);
+            const x = WG_PAD_X + col * (WG_CELL_W + WG_GAP);
+            const y = WG_PAD_Y + row * (WG_CELL_H + WG_GAP);
             // Round to 3 decimals so the SSR/CSR string representations
             // agree (full-precision floats can serialize at slightly
             // different lengths and trip the hydration matcher).
@@ -116,16 +127,16 @@ export function WeightGrid() {
                 <rect
                   x={x}
                   y={y}
-                  width={cellW}
-                  height={cellH}
+                  width={WG_CELL_W}
+                  height={WG_CELL_H}
                   rx={1.5}
                   fill={c.isHot ? 'var(--color-accent)' : '#a0a0a0'}
                   opacity={c.isHot ? 0.55 : cellOpacity}
                 />
                 {c.hasLabel && (
                   <text
-                    x={x + cellW / 2}
-                    y={y + cellH / 2 + 1.6}
+                    x={x + WG_CELL_W / 2}
+                    y={y + WG_CELL_H / 2 + 1.6}
                     fill="#9a9a9a"
                     fontSize="4.2"
                     fontFamily="ui-monospace, monospace"
@@ -140,7 +151,7 @@ export function WeightGrid() {
           })}
 
           {/* Vignette overlay so the grid feels infinite at the edges */}
-          <rect x="0" y="0" width={W} height={H} fill="url(#weight-grid-fade)" />
+          <rect x="0" y="0" width={WG_W} height={WG_H} fill="url(#weight-grid-fade)" />
 
           {/* Connector line — runs from a hot cell to the zoom callout. */}
           <g style={{ animation: 'fadeIn 0.4s 0.6s ease-out both', opacity: 0 }}>
@@ -170,7 +181,7 @@ export function WeightGrid() {
               strokeOpacity="0.5"
               strokeWidth="0.8"
             />
-            {sample.map((v, i) => {
+            {WG_SAMPLE.map((v, i) => {
               const cx = 192 + (i % 4) * 27;
               const cy = 124 + Math.floor(i / 4) * 26;
               return (
@@ -214,20 +225,20 @@ export function WeightGrid() {
 /* ============================================================
  * 4. TransformerStack — stacked layers with attention
  * ============================================================ */
+const TRANSFORMER_LAYERS = Array.from({ length: 8 });
+const TRANSFORMER_TOKEN_X = [60, 100, 140, 180, 220] as const;
+// Attention paths animate one at a time so the eye can follow each thread.
+// Each path has its own draw delay; together they imply continuous flow.
+const TRANSFORMER_ATTENTION = [
+  { d: 'M60 37 Q100 80 180 121', delay: 0.9 },
+  { d: 'M180 37 Q120 80 60 149', delay: 1.05 },
+  { d: 'M100 65 Q160 110 220 177', delay: 1.2 },
+  { d: 'M140 93 Q100 130 60 205', delay: 1.35 },
+  { d: 'M220 65 Q140 140 100 233', delay: 1.5 },
+  { d: 'M60 121 Q140 160 220 233', delay: 1.65 },
+] as const;
+
 export function TransformerStack() {
-  const layers = Array.from({ length: 8 });
-
-  // Attention paths animate one at a time so the eye can follow each thread.
-  // Each path has its own draw delay; together they imply continuous flow.
-  const attention = [
-    { d: 'M60 37 Q100 80 180 121', delay: 0.9 },
-    { d: 'M180 37 Q120 80 60 149', delay: 1.05 },
-    { d: 'M100 65 Q160 110 220 177', delay: 1.2 },
-    { d: 'M140 93 Q100 130 60 205', delay: 1.35 },
-    { d: 'M220 65 Q140 140 100 233', delay: 1.5 },
-    { d: 'M60 121 Q140 160 220 233', delay: 1.65 },
-  ];
-
   return (
     <div className="w-full max-w-[600px] space-y-5">
       <style>{`
@@ -259,7 +270,7 @@ export function TransformerStack() {
       <div className="relative rounded-xl border border-border bg-surface p-5">
         <svg viewBox="0 0 280 280" className="w-full h-auto">
           {/* Layers */}
-          {layers.map((_, i) => {
+          {TRANSFORMER_LAYERS.map((_, i) => {
             const y = 30 + i * 28;
             return (
               <g key={i} style={{ animation: `fadeUp 0.4s ${i * 0.07}s ease-out both`, opacity: 0 }}>
@@ -275,9 +286,9 @@ export function TransformerStack() {
                   strokeWidth="1"
                 />
                 {/* Token positions — pulse on a slow loop, staggered per layer */}
-                {[60, 100, 140, 180, 220].map((x, j) => (
+                {TRANSFORMER_TOKEN_X.map((x, j) => (
                   <circle
-                    key={j}
+                    key={x}
                     cx={x}
                     cy={y + 7}
                     r="2"
@@ -291,7 +302,7 @@ export function TransformerStack() {
           })}
 
           {/* Attention lines — each draws in on its own delay */}
-          {attention.map((a, i) => (
+          {TRANSFORMER_ATTENTION.map((a, i) => (
             <path
               key={i}
               d={a.d}
@@ -319,13 +330,39 @@ export function TransformerStack() {
 /* ============================================================
  * 5. LossLandscape — ball rolling down with steps slider
  * ============================================================ */
+const LL_W = 320;
+const LL_H = 180;
+const LL_PAD_X = 20;
+const LL_PAD_Y = 24;
+const LL_MAX_STEPS = 100;
+
+const llRound = (n: number) => Number(n.toFixed(2));
+
+// Loss curve: parabola-ish, smoothed bumpy bowl. Pure function of x ∈ [0,1].
+function llYCurve(x: number) {
+  const dx = x - 0.5;
+  return 0.1 + 1.2 * dx * dx + 0.06 * Math.sin(x * 16);
+}
+
+// The curve itself is constant — bake the SVG path string at module load.
+const LL_PATH = (() => {
+  const points: string[] = [];
+  for (let i = 0; i <= 60; i++) {
+    const x = i / 60;
+    const y = llYCurve(x);
+    points.push(
+      `${llRound(LL_PAD_X + x * (LL_W - LL_PAD_X * 2))},${llRound(LL_PAD_Y + y * (LL_H - LL_PAD_Y * 2))}`,
+    );
+  }
+  return 'M' + points.join(' L');
+})();
+
 export function LossLandscape() {
   const [step, setStep] = useState(0);
-  const maxSteps = 100;
 
   // Auto-advance training
   useEffect(() => {
-    if (step >= maxSteps) {
+    if (step >= LL_MAX_STEPS) {
       const reset = setTimeout(() => setStep(0), 2000);
       return () => clearTimeout(reset);
     }
@@ -333,35 +370,11 @@ export function LossLandscape() {
     return () => clearTimeout(t);
   }, [step]);
 
-  // Loss curve: parabola-ish, smoothed
-  const t = step / maxSteps;
-  // ball x along the curve from 0.05 to 0.5 (descent toward minimum at 0.5)
-  const xNorm = 0.08 + t * 0.42;
-  const yCurve = (x: number) => {
-    // landscape function: bumpy bowl
-    const center = 0.5;
-    const dx = x - center;
-    return 0.1 + 1.2 * dx * dx + 0.06 * Math.sin(x * 16);
-  };
-
-  // Build path. Round each coordinate so SSR and CSR serialize identical
-  // strings (full-precision floats can render at slightly different lengths
-  // and trip the hydration matcher).
-  const W = 320;
-  const H = 180;
-  const padX = 20;
-  const padY = 24;
-  const round = (n: number) => Number(n.toFixed(2));
-  const points: string[] = [];
-  for (let i = 0; i <= 60; i++) {
-    const x = i / 60;
-    const y = yCurve(x);
-    points.push(`${round(padX + x * (W - padX * 2))},${round(padY + y * (H - padY * 2))}`);
-  }
-  const path = 'M' + points.join(' L');
-
-  const ballX = round(padX + xNorm * (W - padX * 2));
-  const ballY = round(padY + yCurve(xNorm) * (H - padY * 2) - 6);
+  // Ball position is the only thing that depends on `step`.
+  const t = step / LL_MAX_STEPS;
+  const xNorm = 0.08 + t * 0.42; // descent toward minimum at 0.5
+  const ballX = llRound(LL_PAD_X + xNorm * (LL_W - LL_PAD_X * 2));
+  const ballY = llRound(LL_PAD_Y + llYCurve(xNorm) * (LL_H - LL_PAD_Y * 2) - 6);
 
   return (
     <div className="w-full max-w-[600px] space-y-5">
@@ -369,11 +382,11 @@ export function LossLandscape() {
         Gradient descent
       </p>
       <div className="rounded-xl border border-border bg-surface p-5">
-        <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
+        <svg viewBox={`0 0 ${LL_W} ${LL_H}`} className="w-full h-auto">
           {/* Y axis label */}
           <text x="6" y="30" fill="#666" fontSize="9" fontFamily="monospace">error</text>
           {/* Curve */}
-          <path d={path} stroke="#3a3a3a" strokeWidth="1.5" fill="none" />
+          <path d={LL_PATH} stroke="#3a3a3a" strokeWidth="1.5" fill="none" />
           {/* Ball */}
           <circle cx={ballX} cy={ballY} r="6" fill="#FF6B35" />
           <circle cx={ballX} cy={ballY} r="10" fill="#FF6B35" opacity="0.2" />
@@ -384,15 +397,17 @@ export function LossLandscape() {
           <input
             type="range"
             min={0}
-            max={maxSteps}
+            max={LL_MAX_STEPS}
             value={step}
             onChange={(e) => setStep(Number(e.target.value))}
             className="w-full accent-accent"
             style={{ accentColor: '#FF6B35' }}
+            aria-label="Training step"
+            aria-valuetext={`Step ${step} of ${LL_MAX_STEPS}`}
           />
           <div className="flex justify-between text-[10px] text-text-muted font-mono">
             <span>training step</span>
-            <span>{step} / {maxSteps}</span>
+            <span>{step} / {LL_MAX_STEPS}</span>
           </div>
         </div>
       </div>
@@ -406,12 +421,13 @@ export function LossLandscape() {
 /* ============================================================
  * 6. BaseModelDemo — input → LLM box → output, cycling
  * ============================================================ */
+const BASE_MODEL_EXAMPLES = [
+  { input: 'the capital of France is', output: 'Paris.' },
+  { input: 'Once upon a time, in a small village,', output: 'there lived a baker who...' },
+  { input: 'def fibonacci(n):', output: '\n    if n < 2: return n' },
+] as const;
+
 export function BaseModelDemo() {
-  const examples = [
-    { input: 'the capital of France is', output: 'Paris.' },
-    { input: 'Once upon a time, in a small village,', output: 'there lived a baker who...' },
-    { input: 'def fibonacci(n):', output: '\n    if n < 2: return n' },
-  ];
   const [idx, setIdx] = useState(0);
   const [phase, setPhase] = useState<'in' | 'out'>('in');
 
@@ -421,13 +437,13 @@ export function BaseModelDemo() {
       return () => clearTimeout(t);
     }
     const t = setTimeout(() => {
-      setIdx((i) => (i + 1) % examples.length);
+      setIdx((i) => (i + 1) % BASE_MODEL_EXAMPLES.length);
       setPhase('in');
     }, 2200);
     return () => clearTimeout(t);
-  }, [phase, idx, examples.length]);
+  }, [phase]);
 
-  const example = examples[idx];
+  const example = BASE_MODEL_EXAMPLES[idx];
 
   return (
     <div className="w-full max-w-[600px] space-y-5">{/* base-model */}
@@ -467,7 +483,7 @@ export function BaseModelDemo() {
         </div>
       </div>
       <div className="flex justify-center gap-1.5 mt-3">
-        {examples.map((_, i) => (
+        {BASE_MODEL_EXAMPLES.map((_, i) => (
           <div
             key={i}
             className="h-1 w-6 rounded-full"
@@ -529,24 +545,35 @@ export function FineTuneCompare() {
 /* ============================================================
  * 8. DNAComparison — scrolling DNA vs scrolling weights
  * ============================================================ */
-export function DNAComparison() {
-  // Generate stable strings
-  const dna = (() => {
-    const bases = ['A', 'C', 'G', 'T'];
-    let s = '';
-    for (let i = 0; i < 600; i++) s += bases[(i * 7 + 3) % 4];
-    return s;
-  })();
-  const weights = (() => {
-    const out: string[] = [];
-    for (let i = 0; i < 200; i++) {
-      const v = ((Math.sin(i * 1.7) + Math.cos(i * 2.3)) * 1.2).toFixed(3);
-      out.push(v);
-    }
-    return out.join('  ');
-  })();
 
-  const ScrollCol = ({ label, text, colorClass }: { label: string; text: string; colorClass: string }) => (
+// Both strings are deterministic and constant — bake at module load.
+const DNA_STRING = (() => {
+  const bases = ['A', 'C', 'G', 'T'];
+  let s = '';
+  for (let i = 0; i < 600; i++) s += bases[(i * 7 + 3) % 4];
+  return s;
+})();
+
+const WEIGHTS_STRING = (() => {
+  const out: string[] = [];
+  for (let i = 0; i < 200; i++) {
+    out.push(((Math.sin(i * 1.7) + Math.cos(i * 2.3)) * 1.2).toFixed(3));
+  }
+  return out.join('  ');
+})();
+
+// Hoisted out of DNAComparison so it's a stable component identity rather
+// than a fresh function on every render of the parent.
+function ScrollCol({
+  label,
+  text,
+  colorClass,
+}: {
+  label: string;
+  text: string;
+  colorClass: string;
+}) {
+  return (
     <div className="rounded-xl border border-border bg-surface overflow-hidden">
       <div className="px-3 py-2 border-b border-border text-[10px] uppercase tracking-wider text-text-muted">
         {label}
@@ -557,9 +584,7 @@ export function DNAComparison() {
       >
         <div
           className={`whitespace-pre-wrap break-all ${colorClass}`}
-          style={{
-            animation: 'dnaScroll 18s linear infinite',
-          }}
+          style={{ animation: 'dnaScroll 18s linear infinite' }}
         >
           {text}
           {text}
@@ -570,7 +595,9 @@ export function DNAComparison() {
       </div>
     </div>
   );
+}
 
+export function DNAComparison() {
   return (
     <div className="w-full max-w-[600px] space-y-5">
       <style>{`
@@ -583,8 +610,8 @@ export function DNAComparison() {
         Both transparent. Both opaque.
       </p>
       <div className="grid grid-cols-2 gap-3">
-        <ScrollCol label="Genome" text={dna} colorClass="text-text-secondary" />
-        <ScrollCol label="Weights" text={weights} colorClass="text-accent" />
+        <ScrollCol label="Genome" text={DNA_STRING} colorClass="text-text-secondary" />
+        <ScrollCol label="Weights" text={WEIGHTS_STRING} colorClass="text-accent" />
       </div>
       <p className="text-[11px] text-text-muted text-center">
         You can read every character. Neither tells you what the system will do.
@@ -596,6 +623,12 @@ export function DNAComparison() {
 /* ============================================================
  * 9. WorldModel — medical report → branching predictions → vitals
  * ============================================================ */
+const WORLD_MODEL_PREDICTIONS = [
+  { text: '… fell asleep.', wrong: true },
+  { text: '… heart rate rose, BP increased.', wrong: false },
+  { text: '… turned blue.', wrong: true },
+] as const;
+
 export function WorldModel() {
   return (
     <div className="w-full max-w-[600px] space-y-5">
@@ -640,13 +673,9 @@ export function WorldModel() {
 
       {/* Three branching predictions */}
       <div className="grid grid-cols-3 gap-2">
-        {[
-          { text: '… fell asleep.', wrong: true },
-          { text: '… heart rate rose, BP increased.', wrong: false },
-          { text: '… turned blue.', wrong: true },
-        ].map((p, i) => (
+        {WORLD_MODEL_PREDICTIONS.map((p, i) => (
           <div
-            key={i}
+            key={p.text}
             className={`rounded-lg border p-3 text-[11px] leading-relaxed font-mono animate-[fadeUp_0.4s_ease-out_both] ${
               p.wrong
                 ? 'border-border bg-surface text-text-muted line-through'
@@ -749,6 +778,13 @@ export function WorldModel() {
 /* ============================================================
  * 10. ChainOfThought — branching reasoning attempts
  * ============================================================ */
+const COT_ATTEMPTS = [
+  { text: 'guess: x = 4 → 3(4)+7 = 19. wrong.', ok: false },
+  { text: 'subtract 7: 3x = 15 → x = 5. ✓', ok: true },
+  { text: 'divide first: x + 7/3 = 22/3...', ok: false },
+  { text: 'try x = 6 → 25. nope.', ok: false },
+] as const;
+
 export function ChainOfThought() {
   return (
     <div className="w-full max-w-[600px] space-y-5">
@@ -761,14 +797,9 @@ export function ChainOfThought() {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        {[
-          { text: 'guess: x = 4 → 3(4)+7 = 19. wrong.', ok: false },
-          { text: 'subtract 7: 3x = 15 → x = 5. ✓', ok: true },
-          { text: 'divide first: x + 7/3 = 22/3...', ok: false },
-          { text: 'try x = 6 → 25. nope.', ok: false },
-        ].map((c, i) => (
+        {COT_ATTEMPTS.map((c, i) => (
           <div
-            key={i}
+            key={c.text}
             className={`rounded-lg border p-3 text-[11px] font-mono leading-relaxed animate-[fadeUp_0.4s_ease-out_both] ${
               c.ok
                 ? 'border-green-500/40 bg-green-500/5 text-green-400'
@@ -795,8 +826,9 @@ export function ChainOfThought() {
 /* ============================================================
  * 11. PeriodToken — token strip with glowing period collecting attention
  * ============================================================ */
+const PERIOD_TOKEN_TOKENS = ['The', 'cat', 'sat', 'on', 'the', 'mat', '.'] as const;
+
 export function PeriodToken() {
-  const tokens = ['The', 'cat', 'sat', 'on', 'the', 'mat', '.'];
   return (
     <div className="w-full max-w-[600px] space-y-5">{/* alien */}
       <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
@@ -806,7 +838,7 @@ export function PeriodToken() {
       <div className="rounded-xl border border-border bg-surface p-6">
         <svg viewBox="0 0 460 160" className="w-full h-auto">
           {/* Tokens */}
-          {tokens.map((tok, i) => {
+          {PERIOD_TOKEN_TOKENS.map((tok, i) => {
             const x = 30 + i * 60;
             const isPeriod = tok === '.';
             return (
@@ -844,9 +876,9 @@ export function PeriodToken() {
 
           {/* Convergence lines from each token to the period */}
           <g style={{ animation: 'fadeIn 0.6s 0.9s ease-out both', opacity: 0 }}>
-            {tokens.slice(0, -1).map((_, i) => {
+            {PERIOD_TOKEN_TOKENS.slice(0, -1).map((_, i) => {
               const fromX = 30 + i * 60;
-              const toX = 30 + (tokens.length - 1) * 60;
+              const toX = 30 + (PERIOD_TOKEN_TOKENS.length - 1) * 60;
               return (
                 <path
                   key={i}

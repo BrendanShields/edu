@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 type Mode = 'pass' | 'partial';
 
@@ -61,15 +61,27 @@ const footerText: Record<Mode, string> = {
   partial: 'Tests pass. Linter passes. Only the type checker catches it.',
 };
 
+/* Hoisted theme — same object on every render. */
+const VL_THEME = {
+  '--vl-green': '#4ade80',
+  '--vl-green-border': 'rgba(74, 222, 128, 0.45)',
+  '--vl-green-bg': 'rgba(74, 222, 128, 0.06)',
+  '--vl-red': '#f87171',
+  '--vl-red-border': 'rgba(248, 113, 113, 0.45)',
+  '--vl-red-bg': 'rgba(248, 113, 113, 0.06)',
+  '--vl-surface': 'var(--color-surface)',
+  '--vl-border': 'var(--color-border)',
+  '--vl-text-muted': 'var(--color-text-muted)',
+  '--vl-accent': 'var(--color-accent)',
+} as React.CSSProperties;
+
 export function VerificationLayers() {
   const [mode, setMode] = useState<Mode>('pass');
   const [visibleCount, setVisibleCount] = useState(0);
 
   const layers = mode === 'pass' ? passLayers : partialLayers;
 
-  const resetAnimation = useCallback(() => {
-    setVisibleCount(0);
-  }, []);
+  const resetAnimation = () => setVisibleCount(0);
 
   // Stagger reveal: increment visibleCount every 600ms
   useEffect(() => {
@@ -88,23 +100,7 @@ export function VerificationLayers() {
   };
 
   return (
-    <div
-      className="space-y-4"
-      style={
-        {
-          '--vl-green': '#4ade80',
-          '--vl-green-border': 'rgba(74, 222, 128, 0.45)',
-          '--vl-green-bg': 'rgba(74, 222, 128, 0.06)',
-          '--vl-red': '#f87171',
-          '--vl-red-border': 'rgba(248, 113, 113, 0.45)',
-          '--vl-red-bg': 'rgba(248, 113, 113, 0.06)',
-          '--vl-surface': 'var(--color-surface)',
-          '--vl-border': 'var(--color-border)',
-          '--vl-text-muted': 'var(--color-text-muted)',
-          '--vl-accent': 'var(--color-accent)',
-        } as React.CSSProperties
-      }
-    >
+    <div className="space-y-4" style={VL_THEME}>
       {/* Toggle */}
       <div
         className="inline-flex rounded-lg overflow-hidden"

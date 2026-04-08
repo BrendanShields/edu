@@ -12,13 +12,14 @@ const lesson: LessonDef = {
   title: 'The Tool Landscape',
   visuals: {
     intro: (
-      <div className="trail-figure trail-figure--hero" style={{ viewTransitionName: 'intro-image' }}>
+      <div className="trail-figure" style={{ viewTransitionName: 'intro-image' }}>
         <Image
           src="/intro-image.png"
           alt="Mountain trail map showing Copilot, OpenCode, and Claude Code as trails of increasing difficulty"
           fill
           sizes="(max-width: 1024px) 90vw, 720px"
           className="trail-figure__img"
+          priority
         />
       </div>
     ),

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 interface CodeExampleProps {
   title?: string;
@@ -9,7 +9,9 @@ interface CodeExampleProps {
 }
 
 export function CodeExample({ title, language, code }: CodeExampleProps) {
-  const lines = code.split('\n');
+  // Memoized so the line array isn't rebuilt — and the effect deps that
+  // depend on its length don't churn — on every parent re-render.
+  const lines = useMemo(() => code.split('\n'), [code]);
   const [revealedCount, setRevealedCount] = useState(0);
   const [finished, setFinished] = useState(false);
 

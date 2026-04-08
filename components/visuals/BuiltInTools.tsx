@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Tool {
   name: string;
@@ -95,6 +95,22 @@ function getLineColor(style?: ToolLine['style']): string {
   }
 }
 
+/* Hoisted theme — same object on every render so React can bail out of style
+ * diffs and we don't allocate per re-render. */
+const CAROUSEL_THEME = {
+  '--carousel-terminal-bg': '#0d0d0d',
+  '--carousel-chrome-bg': '#1a1a1a',
+  '--carousel-dot-red': '#ff5f57',
+  '--carousel-dot-yellow': '#febc2e',
+  '--carousel-dot-green': '#28c840',
+  '--carousel-added': '#4ade80',
+  '--carousel-added-bg': 'rgba(74, 222, 128, 0.08)',
+  '--carousel-removed': '#f87171',
+  '--carousel-removed-bg': 'rgba(248, 113, 113, 0.08)',
+  '--carousel-success': '#4ade80',
+  '--carousel-highlight': 'var(--color-accent)',
+} as React.CSSProperties;
+
 function getLineBg(style?: ToolLine['style']): string | undefined {
   switch (style) {
     case 'added':
@@ -110,38 +126,18 @@ export function BuiltInTools() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const advance = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % tools.length);
-  }, []);
-
   useEffect(() => {
     if (isPaused) return;
-
-    const interval = setInterval(advance, 4000);
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % tools.length);
+    }, 4000);
     return () => clearInterval(interval);
-  }, [isPaused, advance]);
+  }, [isPaused]);
 
   const activeTool = tools[activeIndex];
 
   return (
-    <div
-      className="space-y-4"
-      style={
-        {
-          '--carousel-terminal-bg': '#0d0d0d',
-          '--carousel-chrome-bg': '#1a1a1a',
-          '--carousel-dot-red': '#ff5f57',
-          '--carousel-dot-yellow': '#febc2e',
-          '--carousel-dot-green': '#28c840',
-          '--carousel-added': '#4ade80',
-          '--carousel-added-bg': 'rgba(74, 222, 128, 0.08)',
-          '--carousel-removed': '#f87171',
-          '--carousel-removed-bg': 'rgba(248, 113, 113, 0.08)',
-          '--carousel-success': '#4ade80',
-          '--carousel-highlight': 'var(--color-accent)',
-        } as React.CSSProperties
-      }
-    >
+    <div className="space-y-4" style={CAROUSEL_THEME}>
       {/* Tool label */}
       <div className="flex items-center gap-2">
         <span className="text-lg" aria-hidden="true">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 const PHASE_INTERVAL = 3000;
 
@@ -75,34 +75,31 @@ function ReadContent() {
   );
 }
 
-function ThinkContent() {
-  const text = `The test expects expired tokens to be rejected.
+const THINK_TEXT = `The test expects expired tokens to be rejected.
 The comparison uses >= which means tokens expiring
 at exactly this moment are accepted.
 
 Changing >= to > fixes the boundary condition.`;
 
+function ThinkContent() {
   const [visibleChars, setVisibleChars] = useState(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     setVisibleChars(0);
-    intervalRef.current = setInterval(() => {
+    const interval = setInterval(() => {
       setVisibleChars((prev) => {
-        if (prev >= text.length) {
-          if (intervalRef.current) clearInterval(intervalRef.current);
+        if (prev >= THINK_TEXT.length) {
+          clearInterval(interval);
           return prev;
         }
         return prev + 2;
       });
     }, 20);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [text]);
+    return () => clearInterval(interval);
+  }, []);
 
-  const displayed = text.slice(0, visibleChars);
-  const cursor = visibleChars < text.length;
+  const displayed = THINK_TEXT.slice(0, visibleChars);
+  const cursor = visibleChars < THINK_TEXT.length;
 
   return (
     <div
@@ -277,7 +274,7 @@ export function AgenticLoop() {
         <div
           style={{
             padding: '16px 16px 20px',
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: 'var(--font-mono)',
             fontSize: 11,
             lineHeight: 1.5,
             minHeight: 180,
@@ -318,17 +315,24 @@ export function AgenticLoop() {
         {phases.map((phase, i) => {
           const isActive = activePhase === i;
           return (
-            <div
+            <button
+              type="button"
               key={phase.label}
+              onClick={() => setActivePhase(i)}
+              aria-label={`Show ${phase.label} phase`}
+              aria-pressed={isActive}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: 6,
                 cursor: 'pointer',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                font: 'inherit',
               }}
-              onClick={() => setActivePhase(i)}
             >
-              <div
+              <span
                 style={{
                   width: 8,
                   height: 8,
@@ -341,7 +345,7 @@ export function AgenticLoop() {
               />
               <span
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: 'var(--font-mono)',
                   fontSize: 10,
                   color: isActive ? phase.color : 'transparent',
                   transition: 'color 0.3s ease',
@@ -350,7 +354,7 @@ export function AgenticLoop() {
               >
                 {phase.label}
               </span>
-            </div>
+            </button>
           );
         })}
       </div>

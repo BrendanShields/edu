@@ -1,16 +1,14 @@
 'use client';
 
-import { RemotionPlayer } from './RemotionPlayer';
-import { AgenticLoopAnimation, TOTAL_FRAMES } from './AgenticLoopAnimation';
+import dynamic from 'next/dynamic';
 
-export function AnimatedAgenticLoop() {
-  return (
-    <RemotionPlayer
-      component={AgenticLoopAnimation}
-      durationInFrames={TOTAL_FRAMES}
-      fps={30}
-      width={380}
-      height={420}
-    />
-  );
-}
+// Lazy-load the entire player chain (the `remotion` core, `@remotion/player`,
+// and the animation composition) so none of it ships in the main bundle. The
+// fallback keeps the visual slot from collapsing while the chunk loads.
+export const AnimatedAgenticLoop = dynamic(
+  () => import('./AgenticLoopPlayer.lazy'),
+  {
+    ssr: false,
+    loading: () => <div className="remotion-fallback" aria-hidden />,
+  },
+);

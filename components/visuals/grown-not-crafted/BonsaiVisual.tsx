@@ -1,5 +1,3 @@
-'use client';
-
 /**
  * BonsaiVisual — replaces the older blueprint-vs-tree comparison.
  *

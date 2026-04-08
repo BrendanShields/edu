@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
 import type { CourseOutlineModule } from '@/lib/lessons/types';
 
@@ -55,30 +56,35 @@ export function NavIsland({ title, courseOutline }: NavIslandProps) {
           aria-labelledby={buttonId}
           className="nav-island__menu"
         >
-          <a
+          <Link
             href="/"
             role="menuitem"
             onClick={() => setOpen(false)}
             className="nav-island__home"
+            prefetch={false}
           >
             <span className="nav-island__bullet" aria-hidden />
             <span>Workshop Home</span>
-          </a>
+          </Link>
           {courseOutline.map((mod) => (
             <div key={mod.slug} className="nav-island__group">
               <div className="nav-island__group-label">{mod.title}</div>
               {mod.lessons.map((lesson) => (
-                <a
+                <Link
                   key={lesson.slug}
                   href={lesson.href}
                   role="menuitem"
                   aria-current={lesson.active ? 'page' : undefined}
                   onClick={() => setOpen(false)}
                   className={`nav-island__item${lesson.active ? ' is-active' : ''}`}
+                  // Without this, opening the menu fires 22 prefetch requests
+                  // at once. With prefetch={false}, the route is still
+                  // prefetched on hover/focus but not on viewport entry.
+                  prefetch={false}
                 >
                   <span className="nav-island__bullet" aria-hidden />
                   <span className="nav-island__item-title">{lesson.title}</span>
-                </a>
+                </Link>
               ))}
             </div>
           ))}
