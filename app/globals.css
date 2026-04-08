@@ -83,7 +83,7 @@ body { min-height: 100dvh; margin: 0; }
 .card-grid__card {
   transition: transform 0.2s, border-color 0.2s, background-color 0.2s;
 }
-.card-grid__card.is-hovered {
+.card-grid__card:hover {
   transform: scale(1.04);
   border-color: var(--color-border-hover);
   background-color: var(--color-surface-hover);
@@ -94,7 +94,7 @@ body { min-height: 100dvh; margin: 0; }
   overflow: hidden;
   transition: max-height 0.2s ease, opacity 0.2s ease;
 }
-.card-grid__card.is-hovered .card-grid__desc {
+.card-grid__card:hover .card-grid__desc {
   max-height: 140px;
   opacity: 1;
 }
