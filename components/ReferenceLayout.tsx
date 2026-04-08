@@ -24,7 +24,7 @@ export function ReferenceLayout({
 }: ReferenceLayoutProps) {
   return (
     <>
-      <div className="reference-layout">
+      <main className="reference-layout">
         <div className="reference-layout__inner">
           <article className="dd-prose">{children}</article>
           <PrevNextNav
@@ -34,7 +34,7 @@ export function ReferenceLayout({
             nextTitle={nextTitle}
           />
         </div>
-      </div>
+      </main>
       <NavIsland title={title} courseOutline={courseOutline} />
     </>
   );

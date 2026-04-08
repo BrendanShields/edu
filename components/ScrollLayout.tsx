@@ -41,7 +41,7 @@ export function ScrollLayout({
 
   return (
     <>
-      <div className={`scroll-layout${expanded ? ' is-expanded' : ''}`}>
+      <main className={`scroll-layout${expanded ? ' is-expanded' : ''}`}>
         {/* Left column: narrative */}
         <div className="scroll-layout__left">
           <div className="scroll-layout__prose-wrap">
@@ -98,7 +98,7 @@ export function ScrollLayout({
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
       {!expanded && <NavIsland title={title} courseOutline={courseOutline} />}
     </>
