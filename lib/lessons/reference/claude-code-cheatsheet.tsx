@@ -1,6 +1,7 @@
 import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { CodeExample } from '@/components/visuals/templates/CodeExample';
 import { ComparisonTable } from '@/components/visuals/lesson/ComparisonTable';
+import { CodeAlong } from '@/components/visuals/CodeAlong';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -8,6 +9,21 @@ const lesson: LessonDef = {
   module: 'reference',
   title: 'Claude Code Cheatsheet',
   visuals: {
+    quickStart: (
+      <CodeAlong
+        title="Sixty-second sanity check"
+        time="~60 seconds"
+        needs="Node 18+, a terminal, an Anthropic account"
+        steps={[
+          { text: 'Install Claude Code globally with npm.', code: 'npm install -g @anthropic-ai/claude-code' },
+          { text: 'Open your project and start a session.', code: 'cd ~/your-project\nclaude' },
+          { text: 'Sign in when the browser opens.' },
+          { text: 'Ask one question about your codebase.', code: '> what does this project do?' },
+        ]}
+        checkpoint="Claude reads several files in your project and writes a project-specific summary — naming directories you actually have, not generic descriptions."
+        recovery="Auth fails: re-run the printed login command. Generic answer: try a more specific question that names a folder, e.g. 'how does src/auth/ work?'"
+      />
+    ),
     slashCommands: (
       <CardGrid
         title="Essential Commands"
@@ -92,15 +108,28 @@ claude -p "query"         # Print mode (non-interactive)
   },
   sections: [
     {
-      id: 'commands',
-      visual: 'slashCommands',
+      id: 'quickstart',
+      visual: 'quickStart',
       content: (
         <>
           <h1>Claude Code Cheatsheet</h1>
           <p>
             Quick reference for Claude Code&apos;s slash commands, shortcuts, and CLI flags.
-            Keep this open while you work.
+            Keep this open while you work — and if you just installed it for the first time,
+            run the sixty-second check on the right before you go any further.
           </p>
+          <p>
+            <strong>If anything below is unfamiliar</strong>, the rest of the workshop walks
+            through it in detail. This page is the lookup, not the explanation.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'commands',
+      visual: 'slashCommands',
+      content: (
+        <>
           <h2>Slash commands</h2>
           <table>
             <thead>

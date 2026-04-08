@@ -106,8 +106,10 @@ const lesson: LessonDef = {
             most important skill you can develop.
           </p>
           <p>
-            When the desk is organized, the AI is brilliant. When it overflows, the AI falls
-            apart — silently.
+            It&apos;s also the soil the bonsai from lesson 2 grows in. The model is fixed; the
+            context is the only thing about it that you actually control. What you put in
+            decides what grows out. When the desk is organized, the AI is brilliant. When it
+            overflows, the AI falls apart — silently.
           </p>
         </>
       ),

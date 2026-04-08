@@ -65,6 +65,13 @@ const lesson: LessonDef = {
             agreed to give away your car.
           </p>
           <p>
+            Remember: the model is grown, not crafted. You can&apos;t inspect its
+            reasoning. You can&apos;t prove it understood the spec. The only thing you can
+            inspect is the <em>output</em>, and the only honest way to inspect output at scale
+            is with executable checks. <strong>Tests are the only way to verify what a grown
+            system actually does.</strong>
+          </p>
+          <p>
             Verification flips the entire relationship. Define &quot;correct&quot;
             up front, and the agent iterates until it gets there. Your job shifts
             from reading code line-by-line to reviewing a handful of test

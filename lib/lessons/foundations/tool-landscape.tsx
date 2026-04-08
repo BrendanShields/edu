@@ -3,6 +3,7 @@ import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { BeforeAfter } from '@/components/visuals/templates/BeforeAfter';
 import { StepFlow } from '@/components/visuals/templates/StepFlow';
 import { ComparisonTable } from '@/components/visuals/lesson/ComparisonTable';
+import { CodeAlong } from '@/components/visuals/CodeAlong';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -117,6 +118,21 @@ const lesson: LessonDef = {
             desc: 'Most devs use 2+ tools together.',
           },
         ]}
+      />
+    ),
+    install: (
+      <CodeAlong
+        title="Install & first run"
+        time="~10 minutes"
+        needs="A terminal and a real project (anything with code)"
+        steps={[
+          { text: 'Install Claude Code globally with npm.', code: 'npm install -g @anthropic-ai/claude-code' },
+          { text: 'Open your project and start the agent.', code: 'cd ~/your-project\nclaude' },
+          { text: 'Sign in when prompted (browser opens to authenticate).' },
+          { text: 'Ask one open question — no pressure to be clever.', code: '> how does the auth flow work in this codebase?' },
+        ]}
+        checkpoint="Claude reads several real files in your project and writes a coherent paragraph about how auth actually works. Not a generic explanation — a project-specific one with file paths."
+        recovery="Auth fails: re-run the login command claude prints in the terminal. No files referenced: try a more specific question that names a folder, e.g. 'how does src/auth/ work?'"
       />
     ),
   },
@@ -269,6 +285,32 @@ const lesson: LessonDef = {
           </p>
           <p>
             You don&apos;t choose one forever. You choose where to start this week.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'install',
+      visual: 'install',
+      content: (
+        <>
+          <h2>Code-along: install and first run</h2>
+          <p>
+            Reading about a tool you haven&apos;t touched is a recipe for vague intuitions.
+            Stop here for ten minutes and run the exercise on the right in a real project. The
+            rest of the workshop will land much harder once you&apos;ve seen the agent
+            actually read your own files.
+          </p>
+          <p>
+            We&apos;re using Claude Code as the example because the install is a single
+            command, but the same shape works for OpenCode (<code>npm i -g opencode-ai</code>)
+            or Copilot (install the VS Code extension). Pick whichever one matches where you
+            already spend your time.
+          </p>
+          <p>
+            One rule: ask a question about <em>your</em> codebase, not a generic
+            &ldquo;hello.&rdquo; The whole point is to feel the moment when the agent reads a
+            file you wrote and tells you something true about it.
           </p>
         </>
       ),

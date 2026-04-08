@@ -3,114 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 
 /* ============================================================
- * 1. GrownNotCrafted — blueprint vs seed
- * ============================================================ */
-export function GrownNotCrafted() {
-  return (
-    <div className="w-full max-w-[600px]">
-      <div className="grid grid-cols-2 gap-6">
-        {/* LEFT: blueprint → building */}
-        <div className="rounded-xl border border-border bg-surface p-5 animate-[fadeUp_0.5s_ease-out_both]">
-          <div className="text-[10px] uppercase tracking-wider text-text-muted mb-3">
-            Traditional software
-          </div>
-          <svg viewBox="0 0 160 130" className="w-full h-auto">
-            {/* Blueprint grid */}
-            <defs>
-              <pattern id="grid1" width="10" height="10" patternUnits="userSpaceOnUse">
-                <path d="M10 0H0V10" fill="none" stroke="#1f2937" strokeWidth="0.5" />
-              </pattern>
-            </defs>
-            <rect x="0" y="0" width="160" height="130" fill="url(#grid1)" />
-            {/* Constructed building — beam by beam */}
-            {[
-              { x: 40, y: 90, w: 80, h: 6, d: 0 },
-              { x: 40, y: 70, w: 80, h: 6, d: 0.2 },
-              { x: 40, y: 50, w: 80, h: 6, d: 0.4 },
-              { x: 40, y: 30, w: 80, h: 6, d: 0.6 },
-              { x: 40, y: 30, w: 6, h: 66, d: 0.8 },
-              { x: 114, y: 30, w: 6, h: 66, d: 0.8 },
-              { x: 75, y: 30, w: 6, h: 66, d: 1.0 },
-            ].map((b, i) => (
-              <rect
-                key={i}
-                x={b.x}
-                y={b.y}
-                width={b.w}
-                height={b.h}
-                fill="#FF6B35"
-                opacity={0.9}
-                style={{
-                  animation: `fadeIn 0.4s ease-out ${b.d}s both`,
-                }}
-              />
-            ))}
-          </svg>
-          <div className="mt-3 text-xs text-text-secondary text-center">
-            Blueprint &rarr; Building
-          </div>
-          <div className="text-[10px] text-text-muted text-center">
-            each beam placed deliberately
-          </div>
-        </div>
-
-        {/* RIGHT: seed → tree */}
-        <div className="rounded-xl border border-border bg-surface p-5 animate-[fadeUp_0.5s_0.2s_ease-out_both]" style={{ opacity: 0 }}>
-          <div className="text-[10px] uppercase tracking-wider text-text-muted mb-3">
-            Modern AI
-          </div>
-          <svg viewBox="0 0 160 130" className="w-full h-auto">
-            {/* Ground */}
-            <line x1="10" y1="115" x2="150" y2="115" stroke="#2A2A2A" strokeWidth="1" />
-            {/* Trunk */}
-            <path
-              d="M80 115 Q78 90 80 70 Q82 55 80 40"
-              stroke="#FF6B35"
-              strokeWidth="3"
-              fill="none"
-              strokeLinecap="round"
-              style={{ animation: 'fadeIn 0.6s 0.4s ease-out both' }}
-            />
-            {/* Branches */}
-            <path d="M80 80 Q65 70 55 55" stroke="#FF6B35" strokeWidth="2" fill="none" strokeLinecap="round" style={{ animation: 'fadeIn 0.6s 0.7s ease-out both' }} />
-            <path d="M80 65 Q95 58 105 45" stroke="#FF6B35" strokeWidth="2" fill="none" strokeLinecap="round" style={{ animation: 'fadeIn 0.6s 0.8s ease-out both' }} />
-            <path d="M80 50 Q70 42 60 35" stroke="#FF6B35" strokeWidth="2" fill="none" strokeLinecap="round" style={{ animation: 'fadeIn 0.6s 0.9s ease-out both' }} />
-            {/* Leaves */}
-            {[
-              { cx: 80, cy: 35, r: 14 },
-              { cx: 55, cy: 50, r: 9 },
-              { cx: 105, cy: 42, r: 10 },
-              { cx: 60, cy: 32, r: 7 },
-            ].map((leaf, i) => (
-              <circle
-                key={i}
-                cx={leaf.cx}
-                cy={leaf.cy}
-                r={leaf.r}
-                fill="#FF6B35"
-                opacity={0.25}
-                style={{
-                  animation: `fadeScaleIn 0.5s ${1 + i * 0.1}s ease-out both`,
-                  transformOrigin: `${leaf.cx}px ${leaf.cy}px`,
-                }}
-              />
-            ))}
-          </svg>
-          <div className="mt-3 text-xs text-text-secondary text-center">
-            Seed &rarr; Tree
-          </div>
-          <div className="text-[10px] text-text-muted text-center">
-            shaped by environment, not by hand
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ============================================================
- * 2. TokenStrip — words mapping to numbers
- * ============================================================ */
+ * 1. TokenStrip — words mapping to numbers
+ * ============================================================
+ * (The former blueprint-vs-tree visual lives in BonsaiVisual.tsx now.)
+ */
 export function TokenStrip() {
   const tokens = ['Once', 'upon', 'a', 'time'];
   const ids = [4023, 1817, 64, 892];
@@ -148,8 +44,39 @@ export function TokenStrip() {
  * 3. WeightGrid — vast field of parameters
  * ============================================================ */
 export function WeightGrid() {
-  const cells = Array.from({ length: 16 * 9 });
+  // Deterministic sample of weights pulled from a sin-based generator so the
+  // grid feels "data-y" without using random numbers (which would re-seed
+  // every render and look noisy in screenshots).
+  const COLS = 24;
+  const ROWS = 14;
+  const total = COLS * ROWS;
+
+  const cells = Array.from({ length: total }, (_, i) => {
+    // Pseudo-noise: stable across renders, varied enough to feel real.
+    const v = Math.sin(i * 1.7) * Math.cos(i * 0.93);
+    const intensity = (v + 1) / 2; // 0..1
+    return {
+      i,
+      // A scattered handful of cells get visible decimal labels.
+      hasLabel: i % 31 === 5 || i % 41 === 12,
+      // A different scattered subset gets the accent halo.
+      isHot: i % 47 === 0 || i % 53 === 17,
+      value: (Math.sin(i * 0.31) * 1.6).toFixed(2),
+      intensity,
+    };
+  });
+
+  // Two values that "pop out" of the grid into the centred zoom callout.
   const sample = ['0.0042', '-1.37', '0.88', '0.21', '-0.04', '1.92', '-0.73', '0.55'];
+
+  // Cell box size in user-units (viewBox is 480 × 280).
+  const W = 480;
+  const H = 280;
+  const padX = 8;
+  const padY = 10;
+  const gap = 2;
+  const cellW = (W - padX * 2 - gap * (COLS - 1)) / COLS;
+  const cellH = (H - padY * 2 - gap * (ROWS - 1)) / ROWS;
 
   return (
     <div className="w-full max-w-[600px] space-y-5">
@@ -158,56 +85,120 @@ export function WeightGrid() {
       </p>
 
       <div
-        className="relative rounded-xl border border-border bg-surface p-4 overflow-hidden"
-        style={{ height: 280 }}
+        className="relative rounded-xl border border-border bg-surface overflow-hidden"
+        style={{ height: 300 }}
       >
-        {/* Background fade */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'radial-gradient(ellipse at center, transparent 30%, var(--color-surface) 80%)',
-          }}
-        />
+        <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full" aria-label="A field of weight parameters laid out as a grid, with a few values labelled and a zoomed callout in the centre">
+          <defs>
+            <radialGradient id="weight-grid-fade" cx="50%" cy="50%" r="55%">
+              <stop offset="0%" stopColor="transparent" stopOpacity="0" />
+              <stop offset="55%" stopColor="#141414" stopOpacity="0" />
+              <stop offset="100%" stopColor="#141414" stopOpacity="0.95" />
+            </radialGradient>
+          </defs>
 
-        {/* The grid */}
-        <div
-          className="grid gap-[3px]"
-          style={{
-            gridTemplateColumns: 'repeat(16, minmax(0, 1fr))',
-            opacity: 0.4,
-          }}
-        >
-          {cells.map((_, i) => (
-            <div
-              key={i}
-              className="aspect-square rounded-[2px] bg-text-muted/20"
-              style={{
-                animation: `fadeIn 0.4s ${(i % 16) * 0.02}s ease-out both`,
-              }}
-            />
-          ))}
-        </div>
+          {/* Cells */}
+          {cells.map((c) => {
+            const col = c.i % COLS;
+            const row = Math.floor(c.i / COLS);
+            const x = padX + col * (cellW + gap);
+            const y = padY + row * (cellH + gap);
+            const cellOpacity = 0.18 + c.intensity * 0.32; // 0.18..0.50
 
-        {/* Zoomed cluster overlay */}
-        <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg border border-accent/40 bg-background/95 p-3 backdrop-blur-sm"
-          style={{
-            animation: 'fadeScaleIn 0.5s 0.5s ease-out both',
-            opacity: 0,
-          }}
-        >
-          <div className="grid grid-cols-4 gap-2">
-            {sample.map((v, i) => (
-              <div
-                key={i}
-                className="px-2 py-1 rounded text-[11px] font-mono text-accent border border-accent/20 bg-accent/5 min-w-[52px] text-center"
+            return (
+              <g
+                key={c.i}
+                style={{ animation: `fadeIn 0.4s ${(col * 0.012) + (row * 0.008)}s ease-out both` }}
               >
-                {v}
-              </div>
-            ))}
-          </div>
-        </div>
+                <rect
+                  x={x}
+                  y={y}
+                  width={cellW}
+                  height={cellH}
+                  rx={1.5}
+                  fill={c.isHot ? 'var(--color-accent)' : '#a0a0a0'}
+                  opacity={c.isHot ? 0.55 : cellOpacity}
+                />
+                {c.hasLabel && (
+                  <text
+                    x={x + cellW / 2}
+                    y={y + cellH / 2 + 1.6}
+                    fill="#9a9a9a"
+                    fontSize="4.2"
+                    fontFamily="ui-monospace, monospace"
+                    textAnchor="middle"
+                    opacity="0.7"
+                  >
+                    {c.value}
+                  </text>
+                )}
+              </g>
+            );
+          })}
+
+          {/* Vignette overlay so the grid feels infinite at the edges */}
+          <rect x="0" y="0" width={W} height={H} fill="url(#weight-grid-fade)" />
+
+          {/* Connector line — runs from a hot cell to the zoom callout. */}
+          <g style={{ animation: 'fadeIn 0.4s 0.6s ease-out both', opacity: 0 }}>
+            <line
+              x1="120"
+              y1="80"
+              x2="190"
+              y2="118"
+              stroke="var(--color-accent)"
+              strokeWidth="0.9"
+              strokeDasharray="2 2"
+              opacity="0.6"
+            />
+            <circle cx="120" cy="80" r="3" fill="none" stroke="var(--color-accent)" strokeWidth="1" opacity="0.8" />
+          </g>
+
+          {/* Zoom callout — rendered inside the SVG so it scales with the grid */}
+          <g style={{ animation: 'fadeScaleIn 0.5s 0.55s ease-out both', opacity: 0, transformOrigin: '240px 140px' }}>
+            <rect
+              x="180"
+              y="106"
+              width="120"
+              height="70"
+              rx="6"
+              fill="#0a0a0a"
+              stroke="var(--color-accent)"
+              strokeOpacity="0.5"
+              strokeWidth="0.8"
+            />
+            {sample.map((v, i) => {
+              const cx = 192 + (i % 4) * 27;
+              const cy = 124 + Math.floor(i / 4) * 26;
+              return (
+                <g key={i}>
+                  <rect
+                    x={cx - 11}
+                    y={cy - 7}
+                    width="22"
+                    height="14"
+                    rx="2.5"
+                    fill="rgba(255,107,53,0.05)"
+                    stroke="var(--color-accent)"
+                    strokeOpacity="0.25"
+                    strokeWidth="0.6"
+                  />
+                  <text
+                    x={cx}
+                    y={cy + 2.6}
+                    fill="var(--color-accent)"
+                    fontSize="5.5"
+                    fontFamily="ui-monospace, monospace"
+                    textAnchor="middle"
+                    fontWeight="600"
+                  >
+                    {v}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
+        </svg>
       </div>
 
       <p className="text-[11px] text-text-muted text-center">
@@ -222,8 +213,43 @@ export function WeightGrid() {
  * ============================================================ */
 export function TransformerStack() {
   const layers = Array.from({ length: 8 });
+
+  // Attention paths animate one at a time so the eye can follow each thread.
+  // Each path has its own draw delay; together they imply continuous flow.
+  const attention = [
+    { d: 'M60 37 Q100 80 180 121', delay: 0.9 },
+    { d: 'M180 37 Q120 80 60 149', delay: 1.05 },
+    { d: 'M100 65 Q160 110 220 177', delay: 1.2 },
+    { d: 'M140 93 Q100 130 60 205', delay: 1.35 },
+    { d: 'M220 65 Q140 140 100 233', delay: 1.5 },
+    { d: 'M60 121 Q140 160 220 233', delay: 1.65 },
+  ];
+
   return (
     <div className="w-full max-w-[600px] space-y-5">
+      <style>{`
+        @keyframes transformer-draw {
+          from { stroke-dashoffset: 200; opacity: 0; }
+          15%  { opacity: 0.7; }
+          to   { stroke-dashoffset: 0; opacity: 0.55; }
+        }
+        @keyframes transformer-token {
+          0%, 100% { opacity: 0.4; r: 2; }
+          50%      { opacity: 1;   r: 2.6; }
+        }
+        .transformer-attn {
+          stroke-dasharray: 200;
+          stroke-dashoffset: 200;
+          animation: transformer-draw 1.6s ease-in-out both;
+        }
+        .transformer-token {
+          animation: transformer-token 3s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .transformer-attn { stroke-dasharray: 0; stroke-dashoffset: 0; opacity: 0.55; animation: none; }
+          .transformer-token { animation: none; opacity: 0.8; }
+        }
+      `}</style>
       <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
         The wiring diagram
       </p>
@@ -245,26 +271,39 @@ export function TransformerStack() {
                   strokeOpacity="0.4"
                   strokeWidth="1"
                 />
-                {/* Token positions */}
+                {/* Token positions — pulse on a slow loop, staggered per layer */}
                 {[60, 100, 140, 180, 220].map((x, j) => (
-                  <circle key={j} cx={x} cy={y + 7} r="2" fill="#FF6B35" opacity="0.8" />
+                  <circle
+                    key={j}
+                    cx={x}
+                    cy={y + 7}
+                    r="2"
+                    fill="#FF6B35"
+                    className="transformer-token"
+                    style={{ animationDelay: `${(i * 0.18) + (j * 0.12)}s` }}
+                  />
                 ))}
               </g>
             );
           })}
 
-          {/* Attention lines spanning between layers */}
-          <g style={{ animation: 'fadeIn 0.8s 0.7s ease-out both', opacity: 0 }}>
-            <path d="M60 37 Q100 80 180 121" stroke="#FF6B35" strokeWidth="0.6" fill="none" opacity="0.5" />
-            <path d="M180 37 Q120 80 60 149" stroke="#FF6B35" strokeWidth="0.6" fill="none" opacity="0.5" />
-            <path d="M100 65 Q160 110 220 177" stroke="#FF6B35" strokeWidth="0.6" fill="none" opacity="0.5" />
-            <path d="M140 93 Q100 130 60 205" stroke="#FF6B35" strokeWidth="0.6" fill="none" opacity="0.5" />
-            <path d="M220 65 Q140 140 100 233" stroke="#FF6B35" strokeWidth="0.6" fill="none" opacity="0.5" />
-          </g>
+          {/* Attention lines — each draws in on its own delay */}
+          {attention.map((a, i) => (
+            <path
+              key={i}
+              d={a.d}
+              stroke="#FF6B35"
+              strokeWidth="0.8"
+              fill="none"
+              strokeLinecap="round"
+              className="transformer-attn"
+              style={{ animationDelay: `${a.delay}s` }}
+            />
+          ))}
 
           {/* Labels */}
-          <text x="20" y="40" fill="#666" fontSize="9" fontFamily="monospace">in</text>
-          <text x="20" y="240" fill="#666" fontSize="9" fontFamily="monospace">out</text>
+          <text x="20" y="40" fill="#666" fontSize="9" fontFamily="ui-monospace, monospace">in</text>
+          <text x="20" y="240" fill="#666" fontSize="9" fontFamily="ui-monospace, monospace">out</text>
         </svg>
       </div>
       <p className="text-[11px] text-text-muted text-center">
@@ -549,11 +588,41 @@ export function DNAComparison() {
 }
 
 /* ============================================================
- * 9. WorldModel — medical report → branching predictions → body
+ * 9. WorldModel — medical report → branching predictions → vitals
  * ============================================================ */
 export function WorldModel() {
   return (
     <div className="w-full max-w-[600px] space-y-5">
+      <style>{`
+        @keyframes vital-pulse {
+          0%, 100% { opacity: 0.85; }
+          50%      { opacity: 1; }
+        }
+        @keyframes vital-bar-grow {
+          from { transform: scaleX(0); }
+          to   { transform: scaleX(var(--scale, 1)); }
+        }
+        .vital-bar {
+          transform-origin: left center;
+          animation: vital-bar-grow 0.9s 0.95s ease-out both;
+        }
+        .vital-pulse {
+          animation: vital-pulse 1.4s ease-in-out infinite;
+        }
+        .vital-trace {
+          stroke-dasharray: 220;
+          stroke-dashoffset: 220;
+          animation: trace-draw 1.6s 1.05s ease-out both, vital-pulse 2.4s 2.6s ease-in-out infinite;
+        }
+        @keyframes trace-draw {
+          to { stroke-dashoffset: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .vital-bar { animation: none; transform: scaleX(var(--scale, 1)); }
+          .vital-pulse { animation: none; opacity: 0.9; }
+          .vital-trace { animation: none; stroke-dashoffset: 0; opacity: 0.85; }
+        }
+      `}</style>
       <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
         Predicting forces understanding
       </p>
@@ -566,9 +635,9 @@ export function WorldModel() {
       {/* Three branching predictions */}
       <div className="grid grid-cols-3 gap-2">
         {[
-          { text: '&hellip; fell asleep.', wrong: true },
-          { text: '&hellip; heart rate rose, BP increased.', wrong: false },
-          { text: '&hellip; turned blue.', wrong: true },
+          { text: '… fell asleep.', wrong: true },
+          { text: '… heart rate rose, BP increased.', wrong: false },
+          { text: '… turned blue.', wrong: true },
         ].map((p, i) => (
           <div
             key={i}
@@ -578,38 +647,93 @@ export function WorldModel() {
                 : 'border-accent/40 bg-accent/5 text-accent'
             }`}
             style={{ animationDelay: `${0.2 + i * 0.15}s`, opacity: 0 }}
-            dangerouslySetInnerHTML={{ __html: p.text }}
-          />
+          >
+            {p.text}
+          </div>
         ))}
       </div>
 
-      {/* Internal world model: body diagram */}
+      {/* Internal world model: vital-signs panel */}
       <div
         className="rounded-xl border border-border bg-surface p-4 animate-[fadeUp_0.4s_0.8s_ease-out_both]"
         style={{ opacity: 0 }}
       >
-        <div className="text-[10px] uppercase tracking-wider text-text-muted mb-3">
-          Internal model of the world
+        <div className="flex items-center justify-between mb-3">
+          <div className="text-[10px] uppercase tracking-wider text-text-muted">
+            Internal model: predicted vitals
+          </div>
+          <div className="text-[9px] font-mono text-text-muted">
+            t = 0.3 mg epinephrine
+          </div>
         </div>
-        <svg viewBox="0 0 280 90" className="w-full h-auto">
-          {/* Simple body */}
-          <circle cx="40" cy="45" r="18" stroke="#3a3a3a" strokeWidth="1.5" fill="none" />
-          {/* Heart with pulse */}
+        <svg viewBox="0 0 280 110" className="w-full h-auto" aria-label="Vital signs panel showing predicted heart rate, blood pressure, and airway response to epinephrine">
+          {/* Heart rate row */}
           <g>
-            <circle cx="40" cy="45" r="6" fill="#FF6B35" opacity="0.8">
-              <animate attributeName="r" values="5;8;5" dur="1s" repeatCount="indefinite" />
-            </circle>
+            <text x="6" y="22" fill="#9a9a9a" fontSize="7.5" fontFamily="ui-monospace, monospace">HR</text>
+            <rect x="34" y="14" width="160" height="10" rx="2" fill="#1a1a1a" />
+            <rect
+              x="34"
+              y="14"
+              width="160"
+              height="10"
+              rx="2"
+              fill="#FF6B35"
+              opacity="0.8"
+              className="vital-bar"
+              style={{ ['--scale' as string]: '0.78' } as React.CSSProperties}
+            />
+            <text x="200" y="22" fill="#FF6B35" fontSize="8" fontFamily="ui-monospace, monospace" className="vital-pulse">128 bpm</text>
+            <text x="240" y="22" fill="#9a9a9a" fontSize="6.5" fontFamily="ui-monospace, monospace">↑ +52</text>
           </g>
-          {/* Arrow → effect */}
-          <line x1="68" y1="45" x2="120" y2="45" stroke="#FF6B35" strokeWidth="1" markerEnd="url(#arr)" />
-          <defs>
-            <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 z" fill="#FF6B35" />
-            </marker>
-          </defs>
-          {/* Label */}
-          <text x="130" y="42" fill="#FAFAFA" fontSize="10" fontFamily="monospace">+ heart rate</text>
-          <text x="130" y="55" fill="#FAFAFA" fontSize="10" fontFamily="monospace">+ blood pressure</text>
+          {/* Blood pressure row */}
+          <g>
+            <text x="6" y="48" fill="#9a9a9a" fontSize="7.5" fontFamily="ui-monospace, monospace">BP</text>
+            <rect x="34" y="40" width="160" height="10" rx="2" fill="#1a1a1a" />
+            <rect
+              x="34"
+              y="40"
+              width="160"
+              height="10"
+              rx="2"
+              fill="#FF6B35"
+              opacity="0.8"
+              className="vital-bar"
+              style={{ ['--scale' as string]: '0.62', animationDelay: '1.05s' } as React.CSSProperties}
+            />
+            <text x="200" y="48" fill="#FF6B35" fontSize="8" fontFamily="ui-monospace, monospace" className="vital-pulse" style={{ animationDelay: '0.4s' }}>156 / 94</text>
+            <text x="240" y="48" fill="#9a9a9a" fontSize="6.5" fontFamily="ui-monospace, monospace">↑ +28</text>
+          </g>
+          {/* Airway row */}
+          <g>
+            <text x="6" y="74" fill="#9a9a9a" fontSize="7.5" fontFamily="ui-monospace, monospace">AWY</text>
+            <rect x="34" y="66" width="160" height="10" rx="2" fill="#1a1a1a" />
+            <rect
+              x="34"
+              y="66"
+              width="160"
+              height="10"
+              rx="2"
+              fill="#FF6B35"
+              opacity="0.8"
+              className="vital-bar"
+              style={{ ['--scale' as string]: '0.92', animationDelay: '1.15s' } as React.CSSProperties}
+            />
+            <text x="200" y="74" fill="#FF6B35" fontSize="8" fontFamily="ui-monospace, monospace" className="vital-pulse" style={{ animationDelay: '0.8s' }}>dilated</text>
+            <text x="240" y="74" fill="#9a9a9a" fontSize="6.5" fontFamily="ui-monospace, monospace">↑ +180%</text>
+          </g>
+          {/* ECG trace at the bottom */}
+          <g>
+            <line x1="6" y1="96" x2="274" y2="96" stroke="#2a2a2a" strokeWidth="0.6" />
+            <path
+              d="M6 96 L40 96 L46 86 L52 106 L58 80 L64 96 L120 96 L126 86 L132 106 L138 80 L144 96 L200 96 L206 86 L212 106 L218 80 L224 96 L274 96"
+              stroke="#FF6B35"
+              strokeWidth="1"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="vital-trace"
+            />
+          </g>
         </svg>
       </div>
     </div>

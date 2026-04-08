@@ -2,6 +2,7 @@ import { BeforeAfter } from '@/components/visuals/templates/BeforeAfter';
 import { StepFlow } from '@/components/visuals/templates/StepFlow';
 import { CodeExample } from '@/components/visuals/templates/CodeExample';
 import { ExplorePlanBuild } from '@/components/visuals/lesson/ExplorePlanBuild';
+import { CodeAlong } from '@/components/visuals/CodeAlong';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -58,6 +59,22 @@ const lesson: LessonDef = {
           { n: '3', label: 'Build', desc: '— implement with reviewed plan' },
           { n: '4', label: 'Commit', desc: '— ship it' },
         ]}
+      />
+    ),
+    threePhase: (
+      <CodeAlong
+        title="The three-phase fix"
+        time="~15 minutes"
+        needs="Claude Code or OpenCode, a real bug or small feature in your project"
+        steps={[
+          { text: 'Pick a bug or feature that touches at least two files. Don\u2019t pick something trivial — the value of the workflow shows up at medium complexity.' },
+          { text: 'Switch to plan mode. The agent can read but not edit.', code: '> /plan' },
+          { text: 'Brief the explore phase — give it the symptom and the rough area, but no solution.', code: '> the cart total is wrong when an item is removed.\n> investigate src/orders/ and propose a fix' },
+          { text: 'Read the plan critically. Push back on anything that smells wrong. Ask for an alternative if needed.' },
+          { text: 'Once the plan is good, leave plan mode and tell the agent to build it.', code: '> /default\n> implement the plan you just proposed.\n> add a regression test and run npm test after.' },
+        ]}
+        checkpoint="The diff matches the plan you reviewed — no surprises, no extra files touched, tests green. You should feel that you reviewed five lines of plan instead of fifty lines of code."
+        recovery="Plan is too vague: ask the agent to list specific file paths and the exact changes. Plan is wrong: don\u2019t implement it — say \u201cthat would break X, propose a different approach\u201d and re-plan."
       />
     ),
   },
@@ -157,6 +174,31 @@ const lesson: LessonDef = {
           <p>
             No wrong library. No wrong directory. No surprises. When the
             contractor reads the plans, the building passes inspection.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'threePhase',
+      visual: 'threePhase',
+      content: (
+        <>
+          <h2>Code-along: the three-phase fix</h2>
+          <p>
+            Take fifteen minutes and run the workflow on a real bug in your project — the
+            exercise on the right walks you through it. The point isn&apos;t to learn three
+            commands; it&apos;s to feel the moment when reviewing a plan beats reviewing code.
+          </p>
+          <p>
+            Pick a task that touches <strong>at least two files</strong>. The value of plan
+            mode shows up at medium complexity. On a one-line typo it&apos;s overhead. On a
+            ten-file refactor it&apos;s the only thing that keeps you sane.
+          </p>
+          <p>
+            The hardest part of this exercise isn&apos;t running the commands. It&apos;s
+            being honest about the plan. If the plan is wrong, push back. If you&apos;re not
+            sure, ask the agent to walk you through its reasoning before you approve. Plans
+            are cheap to revise. Half-implemented features are not.
           </p>
         </>
       ),

@@ -6,6 +6,7 @@ import { AgenticLoop } from '@/components/visuals/AgenticLoop';
 import { BuiltInTools } from '@/components/visuals/BuiltInTools';
 import { ClaudeCodeCard, OpenCodeCard, CopilotCard } from '@/components/visuals/ToolCards';
 import { WhyMatters } from '@/components/visuals/WhyMatters';
+import { CodeAlong } from '@/components/visuals/CodeAlong';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -21,6 +22,22 @@ const lesson: LessonDef = {
     builtInTools: <BuiltInTools />,
     implementations: <div className="space-y-3"><ClaudeCodeCard /><OpenCodeCard /><CopilotCard /></div>,
     whyMatters: <WhyMatters />,
+    watchTheLoop: (
+      <CodeAlong
+        title="Watch the loop run"
+        time="~12 minutes"
+        needs="Claude Code (or OpenCode), a project with a failing test"
+        steps={[
+          { text: 'Pick a small failing test, or create one by breaking a single line in a passing test.' },
+          { text: 'Start the agent in plan mode so you can see the reasoning before any edits land.', code: '> /plan\n> the test in src/auth/auth.test.ts is failing — investigate and propose a fix' },
+          { text: 'Read the plan. Notice how it cites file paths and the actual error message — that\u2019s Phase 1 (Read) and Phase 2 (Think).' },
+          { text: 'Approve the plan and switch back to default mode. Watch Phase 3 (Act): the agent edits, runs the test, reports the result.' },
+          { text: 'If the test still fails, watch it loop back: Read → Think → Act → Verify, but with new information each pass.' },
+        ]}
+        checkpoint="The test goes green, and you can point to the moment in the transcript where each of the four phases happened. Bonus: count how many full loops it took."
+        recovery="Agent edits straight to the file without showing a plan: you\u2019re probably not in plan mode. Type /plan first. Agent can\u2019t find the test: name the file path explicitly in the prompt."
+      />
+    ),
   },
   sections: [
     {
@@ -82,6 +99,12 @@ const lesson: LessonDef = {
             That&apos;s what an <strong>agent</strong> is: software that perceives its environment,
             makes decisions, and takes action. Not generating text for you to paste. Actually
             doing things in your codebase, the way a pair programmer would.
+          </p>
+          <p>
+            The agentic loop runs <em>on top of</em> the LLM you met in &ldquo;Grown, Not
+            Crafted.&rdquo; The model is the brain; the loop is the body. The brain decides what
+            to do next; the body reads files, runs commands, sees the output. Without the loop,
+            the brain just talks. Without the brain, the body has no idea what to reach for.
           </p>
           <p>
             The next four sections break down exactly what happens inside that loop.
@@ -262,6 +285,31 @@ const lesson: LessonDef = {
           <p>
             The rest of this workshop teaches you to feed the loop better context, set the
             right permissions, and write prompts that let the agent do its best work.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'watchTheLoop',
+      visual: 'watchTheLoop',
+      content: (
+        <>
+          <h2>Code-along: watch the loop run</h2>
+          <p>
+            Reading about Read → Think → Act → Verify is one thing. Watching it happen in
+            your own terminal is another. The exercise on the right takes about twelve
+            minutes and uses a deliberately broken test as the seed.
+          </p>
+          <p>
+            The trick is to start in <strong>plan mode</strong>. Plan mode is read-only: the
+            agent can look at files and propose a fix, but cannot edit. You get to see Phase 1
+            (Read) and Phase 2 (Think) without any code changing. When you approve the plan,
+            you switch to default mode and watch Phase 3 (Act) and Phase 4 (Verify) play out.
+          </p>
+          <p>
+            If the first attempt fails, don&apos;t intervene. Watch the agent loop back to
+            Read with the new error. This is the moment where the loop becomes obvious — and
+            where most people stop being surprised by what these tools can do.
           </p>
         </>
       ),

@@ -1,5 +1,6 @@
 import { TitleCard } from '@/components/visuals/templates/TitleCard';
 import { BeforeAfter } from '@/components/visuals/templates/BeforeAfter';
+import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { ToolComparison } from '@/components/visuals/templates/ToolComparison';
 import { ContextTactics } from '@/components/visuals/lesson/ContextTactics';
 import type { LessonDef } from '../types';
@@ -68,6 +69,18 @@ const lesson: LessonDef = {
       />
     ),
     tactics: <ContextTactics />,
+    cost: (
+      <CardGrid
+        title="What context actually costs"
+        columns={2}
+        cards={[
+          { icon: '💸', label: 'Tokens are billed', desc: 'Both ways. Every file you load and every word the model writes lands on the invoice.' },
+          { icon: '📈', label: 'Long sessions compound', desc: 'A 40-turn chat re-sends the whole history each turn. Cost grows quadratically, not linearly.' },
+          { icon: '🪙', label: 'Cheap model for grunt work', desc: 'Use Haiku/Sonnet for refactors and lookups. Save Opus for the hard reasoning.' },
+          { icon: '🧹', label: '/compact early', desc: 'Compacting at 60% used costs less than letting the window fill to 100% and waste tokens on bloat.' },
+        ]}
+      />
+    ),
     storeConventions: (
       <ToolComparison
         tools={[
@@ -188,6 +201,33 @@ const lesson: LessonDef = {
           <p>
             The brief goes into your bag. The hundred source files don&apos;t.
             One last tactic makes every session smarter before it even starts.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'cost',
+      visual: 'cost',
+      content: (
+        <>
+          <h2>The luggage has a price tag</h2>
+          <p>
+            Every item you put in the suitcase costs money. Tokens are billed in both
+            directions: the prompt you send <em>and</em> the response that comes back. Most
+            people only feel this when the monthly bill arrives.
+          </p>
+          <p>
+            Two cost traps catch nearly everyone. First, <strong>long sessions compound
+            quadratically</strong>: the agent re-sends the entire conversation history on every
+            turn, so a 40-turn chat is dramatically more expensive than four 10-turn chats.
+            Second, <strong>using a frontier model for trivial work</strong>: if the task is
+            &ldquo;rename this variable across the file,&rdquo; reach for Haiku, not Opus.
+            Save the expensive model for tasks that actually need its reasoning.
+          </p>
+          <p>
+            <code>/compact</code> at 60% used isn&apos;t just about quality — it&apos;s
+            cheaper than carrying that extra weight on every subsequent turn. Treat token
+            spend like you treat AWS spend: keep an eye on it before the bill is the alarm.
           </p>
         </>
       ),

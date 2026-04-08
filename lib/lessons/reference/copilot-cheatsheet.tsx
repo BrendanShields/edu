@@ -1,6 +1,7 @@
 import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { CodeExample } from '@/components/visuals/templates/CodeExample';
 import { ComparisonTable } from '@/components/visuals/lesson/ComparisonTable';
+import { CodeAlong } from '@/components/visuals/CodeAlong';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -8,6 +9,22 @@ const lesson: LessonDef = {
   module: 'reference',
   title: 'GitHub Copilot Cheatsheet',
   visuals: {
+    quickStart: (
+      <CodeAlong
+        title="Sixty-second sanity check"
+        time="~60 seconds"
+        needs="VS Code, a GitHub account with Copilot access"
+        steps={[
+          { text: 'Install the GitHub Copilot extension from the VS Code marketplace.' },
+          { text: 'Sign in via the GitHub icon in the activity bar — confirms your subscription.' },
+          { text: 'Open any TypeScript file and start typing a function signature.', code: 'function calculateTax(' },
+          { text: 'Watch for the ghosted gray text — that\u2019s an inline suggestion. Press Tab to accept.' },
+          { text: 'Open the Chat panel (⌃⌘I on macOS) and ask a question about your project.', code: '@workspace what does this project do?' },
+        ]}
+        checkpoint="You see ghosted suggestions while typing AND get a project-specific answer in the Chat panel that mentions actual files from your workspace."
+        recovery="No suggestions appearing: check the Copilot status icon at the bottom-right of VS Code, sign in if needed. Generic Chat answer: prefix with @workspace so Copilot indexes your project first."
+      />
+    ),
     inlineShortcuts: (
       <CardGrid
         title="Inline Suggestion Shortcuts"
@@ -85,15 +102,29 @@ Next.js 14 app with TypeScript
   },
   sections: [
     {
-      id: 'inline',
-      visual: 'inlineShortcuts',
+      id: 'quickstart',
+      visual: 'quickStart',
       content: (
         <>
           <h1>GitHub Copilot Cheatsheet</h1>
           <p>
             Quick reference for Copilot&apos;s inline completions, chat features, and modes.
-            Covers VS Code shortcuts and commands.
+            If you&apos;ve never used Copilot before, run the sixty-second check on the right
+            before you read the rest.
           </p>
+          <p>
+            Copilot has three distinct modes — inline completions, Chat, and Agent. The
+            keyboard shortcuts and prompts that work in one don&apos;t always work in another;
+            this page covers all three.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'inline',
+      visual: 'inlineShortcuts',
+      content: (
+        <>
           <h2>Inline suggestions</h2>
           <table>
             <thead>

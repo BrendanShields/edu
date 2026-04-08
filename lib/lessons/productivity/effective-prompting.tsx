@@ -1,6 +1,8 @@
 import { BeforeAfter } from '@/components/visuals/templates/BeforeAfter';
+import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { CodeExample } from '@/components/visuals/templates/CodeExample';
 import { PromptFramework } from '@/components/visuals/lesson/PromptFramework';
+import { CodeAlong } from '@/components/visuals/CodeAlong';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -52,6 +54,49 @@ const lesson: LessonDef = {
         footer="Verification is the highest-leverage element"
       />
     ),
+    badVsGood: (
+      <CodeAlong
+        title="Bad prompt vs good prompt"
+        time="~10 minutes"
+        needs="Any AI coding tool, a project with at least one TypeScript or Python file"
+        steps={[
+          { text: 'Pick a real (small) bug or task in your project. Write down what success looks like in one sentence.' },
+          { text: 'Run the vague version first. Note the time and token count when it finishes.', code: '> fix the bug' },
+          { text: 'Reset the session, then run the work-order version of the same task.', code: '> /clear\n> In src/orders/cart.ts, the running total drops the\n> tax line when an item is removed. Fix the root cause,\n> add a regression test, and run npm test after.' },
+          { text: 'Compare: number of tool calls, files touched, whether the test passed, and how confident you feel about the diff.' },
+        ]}
+        checkpoint="The two transcripts feel different — not just at the answer, but at every step. The work-order version probably touched fewer files and got to a verified result first try."
+        recovery="Both transcripts look identical: your task may be too small for the difference to show. Try again with a multi-file task. Token counts not visible: most CLIs print them at session end with /cost or /usage."
+      />
+    ),
+    putItDown: (
+      <CardGrid
+        title="When to put the tool down"
+        columns={2}
+        cards={[
+          {
+            icon: '🔐',
+            label: 'Security-critical code',
+            desc: 'Auth, crypto, payment paths. Anywhere a subtle bug becomes a vulnerability. Humans review first; AI assists, never decides.',
+          },
+          {
+            icon: '🧪',
+            label: 'Truly novel algorithms',
+            desc: 'Research code or domain-specific logic the model has never seen. Without examples in training data, you get plausible-looking nonsense.',
+          },
+          {
+            icon: '⏱️',
+            label: 'Verification > writing time',
+            desc: 'A four-line bash script you could write in 30 seconds. Reading the AI version and confirming it carefully takes longer than just typing it.',
+          },
+          {
+            icon: '📋',
+            label: 'Regulated / audited code',
+            desc: 'Financial, healthcare, government code with traceability requirements. AI-generated code may need extra governance — check your team\u2019s policy first.',
+          },
+        ]}
+      />
+    ),
   },
   sections: [
     {
@@ -70,6 +115,12 @@ const lesson: LessonDef = {
             The vague prompt on the right gives the agent nothing — no file, no
             symptom, no way to know when the job is done. The specific one is a
             complete work order. Same task, wildly different outcomes.
+          </p>
+          <p>
+            Remember from &ldquo;Grown, Not Crafted&rdquo;: under the hood, the model is
+            predicting text. <strong>Your prompt is the first few words of the text it&apos;s
+            predicting.</strong> Make those words count, and the prediction has somewhere
+            specific to go. Make them vague, and you get vague continuations.
           </p>
           <p>
             Four elements separate the two. Master them and you stop filing
@@ -178,6 +229,77 @@ const lesson: LessonDef = {
           <p>
             Verification is the highest-leverage element on any work order. The
             next lesson builds an entire workflow around it: Explore, Plan, Build.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'badVsGood',
+      visual: 'badVsGood',
+      content: (
+        <>
+          <h2>Code-along: bad prompt vs good prompt</h2>
+          <p>
+            Reading about CICV is fine. Watching it work on a real bug in your own code is the
+            thing that converts &ldquo;makes sense&rdquo; into &ldquo;I am never writing a
+            vague prompt again.&rdquo; Take ten minutes and run the exercise on the right.
+          </p>
+          <p>
+            The two prompts are deliberately different in length, but length isn&apos;t the
+            point — specificity is. The vague version forces the agent to guess what file you
+            mean, what counts as a fix, and whether to verify. The work-order version
+            answers all three questions in advance.
+          </p>
+          <p>
+            Pay particular attention to the <em>first thing the agent does</em>. With the
+            vague prompt it usually starts by groping around your codebase trying to find
+            relevant files. With the work-order version it goes straight to the file you
+            named. That detour is the cost of a vague prompt, made visible.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'putItDown',
+      visual: 'putItDown',
+      content: (
+        <>
+          <h2>When to put the tool down</h2>
+          <p>
+            The flip side of every productivity guide is the part nobody likes to write: the
+            tool isn&apos;t always the right answer. A great work order is wasted on the wrong
+            job. Four cases where the right move is to close the chat and write it yourself.
+          </p>
+          <p>
+            <strong>Security-critical paths.</strong> Auth, crypto, payment, anything where a
+            subtle bug becomes a vulnerability. The AI is excellent at fluent code; fluent code
+            is exactly the kind of code that hides plausible-sounding bugs from a tired
+            reviewer. If a human wouldn&apos;t merge it without three other humans looking,
+            don&apos;t let an agent decide it on its own.
+          </p>
+          <p>
+            <strong>Novel algorithms with no training data.</strong> Research code, domain-
+            specific logic, hardware drivers — anywhere the model is guessing instead of
+            recalling. You&apos;ll get plausible-looking nonsense, which is harder to debug
+            than obvious nonsense.
+          </p>
+          <p>
+            <strong>When verification costs more than writing.</strong> If the task is a
+            four-line bash script, the round trip of prompting, reading the diff, and
+            convincing yourself it&apos;s correct takes longer than just typing the four
+            lines. Reach for the agent when the task has enough surface area to make the
+            handshake worthwhile.
+          </p>
+          <p>
+            <strong>Regulated or audited code.</strong> Finance, healthcare, government
+            workloads with traceability or governance requirements may have explicit policies
+            about AI-generated code. If you&apos;re shipping at a place like that, check the
+            policy <em>before</em> you ship the diff, not after.
+          </p>
+          <p>
+            None of these are &ldquo;AI is bad.&rdquo; They&apos;re all &ldquo;know which
+            jobs deserve a human first.&rdquo; The fluent users of these tools are the ones
+            who are quickest to walk away when the situation calls for it.
           </p>
         </>
       ),

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { TerminalChrome } from '@/components/visuals/shared/TerminalChrome';
 
 type Tab = 'modes' | 'github' | 'instructions';
 
@@ -9,49 +10,6 @@ const TABS: { key: Tab; label: string }[] = [
   { key: 'github', label: 'GitHub Integration' },
   { key: 'instructions', label: 'Custom Instructions' },
 ];
-
-/* ── Terminal chrome wrapper ─────────────────────────────── */
-
-function TerminalChrome({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      style={{
-        background: '#0d0d0d',
-        borderRadius: '10px',
-        border: '1px solid var(--color-border)',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Traffic-light dots */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '10px 14px 0',
-        }}
-      >
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f56' }} />
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ffbd2e' }} />
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#27c93f' }} />
-      </div>
-
-      {/* Body */}
-      <div
-        style={{
-          padding: '14px 16px 16px',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.8125rem',
-          lineHeight: 1.7,
-          color: 'var(--color-text-secondary)',
-          overflowX: 'auto',
-        }}
-      >
-        {children}
-      </div>
-    </div>
-  );
-}
 
 /* ── Tab content ─────────────────────────────────────────── */
 

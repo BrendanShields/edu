@@ -1,5 +1,4 @@
 import {
-  GrownNotCrafted,
   TokenStrip,
   WeightGrid,
   TransformerStack,
@@ -12,6 +11,7 @@ import {
   PeriodToken,
   TerrariumWorkbench,
 } from '@/components/visuals/grown-not-crafted/visuals';
+import { BonsaiVisual } from '@/components/visuals/grown-not-crafted/BonsaiVisual';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -19,7 +19,7 @@ const lesson: LessonDef = {
   module: 'preface',
   title: 'Grown, Not Crafted',
   visuals: {
-    grown: <GrownNotCrafted />,
+    grown: <BonsaiVisual />,
     numbers: <TokenStrip />,
     dials: <WeightGrid />,
     architecture: <TransformerStack />,
@@ -44,9 +44,14 @@ const lesson: LessonDef = {
             wrote the logic that makes it work. Unlike traditional software, where a developer
             writes explicit rules and control flow, an AI model is produced by a mathematical
             optimisation process. Engineers design the process and the structure, but the actual
-            intelligence emerges from trillions of automated adjustments. Think of it less like
-            building a bridge and more like selective breeding: you control the environment and
-            the pressures, but you don&apos;t dictate the outcome.
+            intelligence emerges from trillions of automated adjustments.
+          </p>
+          <p>
+            Think of a <strong>bonsai</strong>. A bonsai artist doesn&apos;t carve a tree from a
+            block of wood. They plant a seed, control the soil and the light, and prune the
+            branches that grow the wrong way. The final shape is theirs — but every cell of the
+            tree was grown by the tree itself. Hold this image in your head. We&apos;ll come
+            back to it.
           </p>
         </>
       ),
@@ -75,10 +80,11 @@ const lesson: LessonDef = {
           <h2>Billions of adjustable dials</h2>
           <p>
             The model itself is essentially a massive collection of numbers, called weights,
-            stored in slots called parameters. A frontier model in 2025 has a few trillion of
-            these. At the start of training, they&apos;re effectively random. Each one is like an
-            unlabelled dial on an impossibly large mixing desk: individually meaningless, but
-            collectively they&apos;ll determine everything the model can do.
+            stored in slots called parameters. A frontier model today has anywhere from
+            hundreds of billions to (depending on whose numbers you trust) low trillions of
+            them. At the start of training, they&apos;re effectively random. Each one is like
+            an unlabelled dial on an impossibly large mixing desk: individually meaningless,
+            but collectively they determine everything the model can do.
           </p>
         </>
       ),
@@ -117,6 +123,11 @@ const lesson: LessonDef = {
             that would have made the answer less wrong. This is gradient descent: billions of
             tiny corrections, repeated across trillions of words, over weeks or months of
             compute. No human ever looks at the numbers. The whole thing is automated.
+          </p>
+          <p>
+            Remember the bonsai? Gradient descent is the pruning shears. Billions of tiny snips,
+            each one guided by where the branch is growing wrong. No artist could place the
+            cuts by hand. The shape emerges from the rule that governs them.
           </p>
         </>
       ),
@@ -165,12 +176,15 @@ const lesson: LessonDef = {
           <p>
             Here&apos;s the uncomfortable part. After all that training, nobody understands why
             the resulting model works. The weights aren&apos;t secret. You could inspect every
-            single one. But staring at trillions of numbers tells you nothing, just like
-            sequencing a baby&apos;s entire genome gives you three billion letters of
-            &ldquo;CATTCA&rdquo; that don&apos;t reveal whether the child will be happy or kind.
-            Biologists have a far deeper understanding of how DNA becomes traits than AI
-            engineers have of how weights become behaviour. And biologists have had decades more
-            practice.
+            single one. Reading them is like opening a compiled binary in a hex editor: every
+            byte is right there, none of it tells you what the program does. Biologists know far
+            more about how DNA becomes a trait than AI researchers know about how a weight
+            becomes a behaviour, and biologists have had decades more practice.
+          </p>
+          <p>
+            This is also why you can&apos;t look at the bonsai and predict where the next
+            branch will grow. The shape so far is visible. The mechanism that produced it
+            isn&apos;t.
           </p>
         </>
       ),
@@ -183,13 +197,14 @@ const lesson: LessonDef = {
           <h2>Prediction forces world-modelling</h2>
           <p>
             You might assume that a model trained only to predict text can only parrot back what
-            it&apos;s seen. But that&apos;s wrong. Consider a medical report: &ldquo;Following
+            it&apos;s seen. That&apos;s wrong. Consider a medical report: &ldquo;Following
             injection of 0.3mg epinephrine, the patient&hellip;&rdquo; The doctor just wrote
-            what happened. To predict what the doctor wrote, the model needs to reason about
-            what epinephrine actually does to a human body. Prediction at scale forces the model
-            to build internal representations of reality, not just language patterns, but causal
-            dynamics. This is likely why LLMs sometimes outperform doctors at diagnosis:
-            they&apos;ve implicitly learned disease mechanics from millions of case descriptions.
+            what happened. To predict what the doctor wrote, the model has to learn how
+            epinephrine actually interacts with a human body — heart rate, blood pressure,
+            airway dilation, the works. Prediction at scale forces the model to build internal
+            representations of reality, not just language patterns. This is likely why LLMs
+            sometimes outperform doctors at diagnosis: they&apos;ve implicitly learned disease
+            mechanics from millions of case descriptions.
           </p>
         </>
       ),
@@ -201,13 +216,12 @@ const lesson: LessonDef = {
         <>
           <h2>Reasoning models: thinking out loud</h2>
           <p>
-            More recent training approaches go beyond pure prediction. In &ldquo;chain-of-thought&rdquo;
-            training, a model gets multiple attempts at a problem, say, a maths question,
-            thinking out loud in each attempt. Whichever attempt gets the right answer has its
-            reasoning reinforced by gradient descent. This pushes models to develop reasoning
-            strategies that no human taught them, and potentially to think thoughts no human has
-            thought. The model isn&apos;t reciting a textbook solution. It&apos;s finding its
-            own path.
+            Beyond pure prediction, modern training also uses &ldquo;chain-of-thought&rdquo;:
+            the model gets multiple attempts at a problem (say, a maths question), thinking out
+            loud in each one. Whichever attempt reaches the right answer has its reasoning
+            reinforced by gradient descent. This pushes models toward strategies no human ever
+            taught them, and potentially toward thoughts no human has had. The model isn&apos;t
+            reciting a textbook. It&apos;s finding its own path.
           </p>
         </>
       ),
@@ -225,9 +239,14 @@ const lesson: LessonDef = {
             found that in some models, the period at the end of a sentence does critical work.
             It&apos;s where the model &ldquo;collects its thoughts&rdquo; about the whole
             sentence. Remove the period, and comprehension measurably drops. Human brains
-            don&apos;t work like this at all. Training a model to produce human-sounding
-            language does not make its internal processing human-like, any more than an actor
-            who perfectly mimics a drunk person is actually drunk.
+            don&apos;t work like this at all.
+          </p>
+          <p>
+            The internal architecture of a model is as foreign to you as assembly is to a
+            JavaScript developer, even though both produce the same observable behaviour.
+            Training a model to produce human-sounding language doesn&apos;t make its internals
+            human-like, any more than an actor who perfectly mimics a drunk person is actually
+            drunk.
           </p>
         </>
       ),
@@ -240,14 +259,22 @@ const lesson: LessonDef = {
           <h2>The punchline</h2>
           <p>
             So what does all this mean for you as an engineer working with AI? These systems are
-            powerful, useful, and increasingly capable, but they are not designed artefacts whose
-            internals we understand. They&apos;re grown. Their behaviour emerges from an
+            powerful, useful, and increasingly capable, but they are not designed artefacts
+            whose internals we understand. They&apos;re grown. Their behaviour emerges from an
             optimisation process over trillions of data points. When they work well, we often
             can&apos;t explain exactly why. When they fail, we often can&apos;t predict exactly
-            how. That&apos;s the foundation you need before diving into tooling: you&apos;re
-            building on top of something that is more like a biological organism than a
-            traditional software system, and your engineering practices need to account for
-            that.
+            how.
+          </p>
+          <p>
+            <strong>You&apos;re a bonsai artist, not a mechanic.</strong> You shape the
+            environment — the prompt, the context, the tools available, the verification
+            steps — and the behaviour that emerges is yours to evaluate, not yours to dictate.
+            Your engineering practices need to account for that. Tests, reviews, guardrails,
+            and humility do most of the work. The rest of this workshop is about how to be a
+            good gardener.
+          </p>
+          <p>
+            With that out of the way: let&apos;s look at the tools you&apos;ll actually use.
           </p>
         </>
       ),

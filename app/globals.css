@@ -686,3 +686,97 @@ body { min-height: 100dvh; margin: 0; }
   .canvas { filter: none; }
   .cursor-dot { display: none; }
 }
+
+/* ──────────────────────────────────────────────────────────────────────
+   Responsive — narrow viewports (tablet & phone)
+   ──────────────────────────────────────────────────────────────────────
+   The two-column scroll-driven layout is desktop-first. On narrower
+   screens we collapse to a single column, hide the canvas (since most
+   visuals are designed for ~720px wide), and prioritise comfortable
+   prose reading.
+*/
+
+@media (max-width: 960px) {
+  .scroll-layout {
+    flex-direction: column;
+    min-height: auto;
+  }
+  .scroll-layout__left {
+    width: 100% !important;
+    padding: 1.5rem 1.25rem;
+  }
+  .scroll-layout__prose-wrap {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .scroll-layout__spacer-top,
+  .scroll-layout__spacer-bottom {
+    height: 4vh;
+  }
+  /* Hide the canvas on narrow viewports — visuals don't render well below ~720px */
+  .scroll-layout__right {
+    display: none;
+  }
+  .scroll-layout.is-expanded .scroll-layout__right {
+    display: block;
+    width: 100%;
+  }
+
+  .dd-section {
+    /* Always full opacity on mobile — section dimming requires both columns */
+    opacity: 1;
+    padding: 1.75rem 0;
+    min-height: auto;
+  }
+
+  .dd-prose h1 { font-size: 1.875rem; }
+  .dd-prose p,
+  .dd-prose li { font-size: 1rem; }
+
+  /* Nav island shrinks and rounds inward */
+  .nav-island { padding: 8px 12px; }
+  .nav-island__pill { padding: 8px 14px; }
+  .nav-island__title {
+    max-width: 50vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .nav-island__menu {
+    width: min(320px, calc(100vw - 32px));
+    right: 12px;
+  }
+
+  /* Reference layout — comfortable phone reading */
+  .reference-layout {
+    padding: 2.5rem 1.25rem;
+  }
+
+  /* Prev/next stacks instead of side-by-side */
+  .prev-next {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .prev-next__link--next { text-align: left; }
+
+  /* Home page shrinks */
+  .home__hero { width: 14rem; height: 14rem; }
+  .home__title { font-size: 2.25rem; }
+  .home__lede { font-size: 1.0625rem; }
+}
+
+/* Touch targets — anything under finger should be at least 44×44 */
+@media (pointer: coarse) {
+  .canvas__btn {
+    width: 44px;
+    height: 44px;
+  }
+  .nav-island__toggle {
+    min-height: 44px;
+  }
+  .nav-island__home,
+  .nav-island__item {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}

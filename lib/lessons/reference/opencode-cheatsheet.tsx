@@ -1,5 +1,6 @@
 import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { CodeExample } from '@/components/visuals/templates/CodeExample';
+import { CodeAlong } from '@/components/visuals/CodeAlong';
 import type { LessonDef } from '../types';
 
 const lesson: LessonDef = {
@@ -7,6 +8,21 @@ const lesson: LessonDef = {
   module: 'reference',
   title: 'OpenCode Cheatsheet',
   visuals: {
+    quickStart: (
+      <CodeAlong
+        title="Sixty-second sanity check"
+        time="~60 seconds"
+        needs="Node 18+, an API key for any supported provider"
+        steps={[
+          { text: 'Install OpenCode globally with npm.', code: 'npm install -g opencode-ai' },
+          { text: 'Open your project and start the TUI.', code: 'cd ~/your-project\nopencode' },
+          { text: 'Run /connect to wire up a provider, paste your API key when prompted.', code: '> /connect' },
+          { text: 'Ask one question about your codebase.', code: '> what does this project do?' },
+        ]}
+        checkpoint="OpenCode reads several files and writes a project-specific summary in the TUI. The bottom status bar shows your model and token usage."
+        recovery="Provider not connecting: double-check the env var name in opencode.json. Generic answer: name a specific folder in the question, e.g. 'how does src/auth/ work?'"
+      />
+    ),
     tuiCommands: (
       <CardGrid
         title="TUI Commands"
@@ -97,15 +113,29 @@ Suggest improvements with examples.`}
   },
   sections: [
     {
-      id: 'commands',
-      visual: 'tuiCommands',
+      id: 'quickstart',
+      visual: 'quickStart',
       content: (
         <>
           <h1>OpenCode Cheatsheet</h1>
           <p>
             Quick reference for OpenCode&apos;s TUI commands, keybinds, and configuration.
-            Everything you need at a glance.
+            If you just installed it for the first time, run the sixty-second check on the
+            right before you go any further.
           </p>
+          <p>
+            OpenCode supports 75+ providers — the only setup that matters is{' '}
+            <code>/connect</code>. After that, the TUI behaves the same regardless of which
+            model you picked.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'commands',
+      visual: 'tuiCommands',
+      content: (
+        <>
           <h2>TUI commands</h2>
           <table>
             <thead>
