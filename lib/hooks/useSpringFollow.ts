@@ -40,9 +40,12 @@ export function useSpringFollow() {
 
   useEffect(() => {
     // Respect the user's reduced-motion preference: skip the RAF spring loop
-    // entirely so the dot never appears or animates.
+    // entirely so the dot never appears or animates. Also skip on
+    // hover-less (touch) devices — the dot tracks the cursor and there
+    // is no cursor on touch, so the spring loop is pure CPU waste.
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) return;
+    const hoverless = window.matchMedia('(hover: none)').matches;
+    if (reduced || hoverless) return;
 
     function tick(now: number) {
       // Cap dt so a backgrounded tab doesn't catapult the spring on resume.
