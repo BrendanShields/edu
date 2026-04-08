@@ -344,21 +344,24 @@ export function LossLandscape() {
     return 0.1 + 1.2 * dx * dx + 0.06 * Math.sin(x * 16);
   };
 
-  // Build path
+  // Build path. Round each coordinate so SSR and CSR serialize identical
+  // strings (full-precision floats can render at slightly different lengths
+  // and trip the hydration matcher).
   const W = 320;
   const H = 180;
   const padX = 20;
   const padY = 24;
+  const round = (n: number) => Number(n.toFixed(2));
   const points: string[] = [];
   for (let i = 0; i <= 60; i++) {
     const x = i / 60;
     const y = yCurve(x);
-    points.push(`${padX + x * (W - padX * 2)},${padY + y * (H - padY * 2)}`);
+    points.push(`${round(padX + x * (W - padX * 2))},${round(padY + y * (H - padY * 2))}`);
   }
   const path = 'M' + points.join(' L');
 
-  const ballX = padX + xNorm * (W - padX * 2);
-  const ballY = padY + yCurve(xNorm) * (H - padY * 2) - 6;
+  const ballX = round(padX + xNorm * (W - padX * 2));
+  const ballY = round(padY + yCurve(xNorm) * (H - padY * 2) - 6);
 
   return (
     <div className="w-full max-w-[600px] space-y-5">
