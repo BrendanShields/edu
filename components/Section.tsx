@@ -1,5 +1,3 @@
-'use client';
-
 import type { ReactNode } from 'react';
 
 interface SectionProps {
@@ -10,12 +8,12 @@ interface SectionProps {
 
 export function Section({ id, visual, children }: SectionProps) {
   return (
-    <div
+    <section
       data-section={id}
       data-visual={visual || ''}
-      className="dd-section py-10 min-h-[25vh]"
+      className="dd-section"
     >
       {children}
-    </div>
+    </section>
   );
 }

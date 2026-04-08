@@ -106,7 +106,7 @@ Suggest improvements with examples.`}
             Quick reference for OpenCode&apos;s TUI commands, keybinds, and configuration.
             Everything you need at a glance.
           </p>
-          <h3>TUI commands</h3>
+          <h2>TUI commands</h2>
           <table>
             <thead>
               <tr><th>Command</th><th>What it does</th></tr>
@@ -130,7 +130,7 @@ Suggest improvements with examples.`}
       visual: 'keybinds',
       content: (
         <>
-          <h3>Keybinds</h3>
+          <h2>Keybinds</h2>
           <p>
             OpenCode uses a <strong>Leader key</strong> pattern (Ctrl+X by default).
             Press Leader, then the action key.
@@ -158,7 +158,7 @@ Suggest improvements with examples.`}
       visual: 'configuration',
       content: (
         <>
-          <h3>Configuration</h3>
+          <h2>Configuration</h2>
           <p>
             OpenCode uses <code>opencode.json</code> at the project root. It controls the
             provider, model, and instruction files.
@@ -179,7 +179,7 @@ Suggest improvements with examples.`}
       visual: 'permissionConfig',
       content: (
         <>
-          <h3>Permissions</h3>
+          <h2>Permissions</h2>
           <p>
             OpenCode uses pattern-based permission rules in <code>opencode.json</code>.
             Each tool type (bash, edit, read) has its own rules.
@@ -202,7 +202,7 @@ Suggest improvements with examples.`}
       visual: 'agentConfig',
       content: (
         <>
-          <h3>Custom agents</h3>
+          <h2>Custom agents</h2>
           <p>
             Define specialized agents as Markdown files with YAML frontmatter.
             Each agent gets its own model, tools, and system prompt.

@@ -109,7 +109,7 @@ Next.js 14 app with Prisma ORM
       visual: 'agenticLoop',
       content: (
         <>
-          <h3>The agentic loop</h3>
+          <h2>The agentic loop</h2>
           <p>
             Every Claude Code interaction follows the same cycle:{' '}
             <strong>Read &rarr; Think &rarr; Act &rarr; Verify</strong>. Then it loops back.
@@ -130,7 +130,7 @@ Next.js 14 app with Prisma ORM
       visual: 'permissionModes',
       content: (
         <>
-          <h3>Permission modes</h3>
+          <h2>Permission modes</h2>
           <p>
             Press <strong>Shift+Tab</strong> to cycle through six permission levels. Start in
             Default mode — the agent asks before every edit and command.
@@ -151,7 +151,7 @@ Next.js 14 app with Prisma ORM
       visual: 'claudeMd',
       content: (
         <>
-          <h3>CLAUDE.md — project memory</h3>
+          <h2>CLAUDE.md — project memory</h2>
           <p>
             CLAUDE.md is a Markdown file at your project root that Claude reads on every
             session. It&apos;s persistent memory — build commands, style rules, architectural
@@ -173,7 +173,7 @@ Next.js 14 app with Prisma ORM
       visual: 'subagentCards',
       content: (
         <>
-          <h3>Subagents for delegation</h3>
+          <h2>Subagents for delegation</h2>
           <p>
             Claude Code can spawn lightweight subagents for parallel work.{' '}
             <strong>Explore</strong> is fast and read-only — perfect for searching the codebase
@@ -195,7 +195,7 @@ Next.js 14 app with Prisma ORM
       visual: 'gitIntegration',
       content: (
         <>
-          <h3>Git integration</h3>
+          <h2>Git integration</h2>
           <p>
             Claude Code understands git natively. Ask it to commit and it writes semantic commit
             messages. Ask it to create a PR and it handles the branch, push, and description.

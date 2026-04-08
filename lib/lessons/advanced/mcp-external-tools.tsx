@@ -96,7 +96,7 @@ claude mcp list`}
       visual: 'mcpComparison',
       content: (
         <>
-          <h3>The copy-paste tax</h3>
+          <h2>The copy-paste tax</h2>
           <p>
             Without MCP, you are the middleware. Open Sentry, copy
             the stack trace, paste it into the agent. Open the DB
@@ -123,7 +123,7 @@ claude mcp list`}
       visual: 'mcpSetup',
       content: (
         <>
-          <h3>Setting up MCP servers</h3>
+          <h2>Setting up MCP servers</h2>
           <p>
             Two flavors, one command. The first example adds a remote
             HTTP server (Notion). The second adds a local stdio server
@@ -148,7 +148,7 @@ claude mcp list`}
       visual: 'popularServers',
       content: (
         <>
-          <h3>Popular servers</h3>
+          <h2>Popular servers</h2>
           <p>
             Which copy-paste pain do you want to kill first? Context7
             gives the agent up-to-date library docs. Sentry lets it
@@ -173,7 +173,7 @@ claude mcp list`}
       visual: 'mcpSecurity',
       content: (
         <>
-          <h3>Scoping and security</h3>
+          <h2>Scoping and security</h2>
           <p>
             You wouldn&apos;t install a random npm package without
             reading it. MCP servers deserve the same scrutiny &mdash;

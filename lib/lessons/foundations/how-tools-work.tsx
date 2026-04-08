@@ -50,7 +50,7 @@ const lesson: LessonDef = {
       visual: 'mentalShift',
       content: (
         <>
-          <h3>The mental shift</h3>
+          <h2>The mental shift</h2>
           <p>
             Imagine two ways of getting help. In the first, you text an expert: &quot;How do I
             fix this auth bug?&quot; They text back advice. You do the typing. In the second, you
@@ -72,7 +72,7 @@ const lesson: LessonDef = {
       visual: 'agentAppears',
       content: (
         <>
-          <h3>The agentic loop</h3>
+          <h2>The agentic loop</h2>
           <p>
             Every AI coding tool — Claude Code, OpenCode, Copilot — runs the same pattern
             under the hood. You wouldn&apos;t dictate keystrokes to a senior developer. You&apos;d
@@ -94,7 +94,7 @@ const lesson: LessonDef = {
       visual: 'scrollTerminal',
       content: (
         <>
-          <h3>Phase 1: Read</h3>
+          <h2>Phase 1: Read</h2>
           <p>
             Think of this as the agent&apos;s <strong>eyes</strong>. Before touching anything,
             it reads <code>src/auth.ts</code>, greps for related imports,
@@ -117,7 +117,7 @@ const lesson: LessonDef = {
       visual: 'scrollTerminal',
       content: (
         <>
-          <h3>Phase 2: Think</h3>
+          <h2>Phase 2: Think</h2>
           <p>
             What needs to change? What&apos;s the safest path? Are there edge cases the tests
             don&apos;t cover?
@@ -138,7 +138,7 @@ const lesson: LessonDef = {
       visual: 'scrollTerminal',
       content: (
         <>
-          <h3>Phase 3: Act</h3>
+          <h2>Phase 3: Act</h2>
           <p>
             <strong>This is the step that separates an agent from a chatbot.</strong>
           </p>
@@ -159,7 +159,7 @@ const lesson: LessonDef = {
       visual: 'scrollTerminal',
       content: (
         <>
-          <h3>Phase 4: Verify</h3>
+          <h2>Phase 4: Verify</h2>
           <p>
             Did the fix actually work? The agent doesn&apos;t assume — it checks.
           </p>
@@ -180,7 +180,7 @@ const lesson: LessonDef = {
       visual: 'cycleDiagram',
       content: (
         <>
-          <h3>The full cycle</h3>
+          <h2>The full cycle</h2>
           <p>
             Read, Think, Act, Verify — then repeat. Sound familiar?
           </p>
@@ -201,7 +201,7 @@ const lesson: LessonDef = {
       visual: 'builtInTools',
       content: (
         <>
-          <h3>Built-in tools: the five senses</h3>
+          <h2>Built-in tools: the five senses</h2>
           <p>
             An agent without tools is a brain in a jar. These five built-in tools are its
             senses: <strong>Read</strong> (eyes on your files), <strong>Search</strong>{' '}
@@ -225,7 +225,7 @@ const lesson: LessonDef = {
       visual: 'implementations',
       content: (
         <>
-          <h3>Same loop, three interfaces</h3>
+          <h2>Same loop, three interfaces</h2>
           <p>
             Three cards, three homes, one engine.
           </p>
@@ -248,7 +248,7 @@ const lesson: LessonDef = {
       visual: 'whyMatters',
       content: (
         <>
-          <h3>Why this changes your prompts</h3>
+          <h2>Why this changes your prompts</h2>
           <p>
             Here&apos;s the payoff. Stop asking &quot;write me a function.&quot; Start
             asking &quot;fix the failing test in <code>auth.test.ts</code>.&quot;

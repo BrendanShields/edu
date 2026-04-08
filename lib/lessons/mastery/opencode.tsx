@@ -97,7 +97,7 @@ const lesson: LessonDef = {
       visual: 'tuiLayout',
       content: (
         <>
-          <h3>The terminal UI</h3>
+          <h2>The terminal UI</h2>
           <p>
             OpenCode&apos;s TUI is designed for developers who want a richer interface than a
             raw prompt but don&apos;t want to leave the terminal.
@@ -118,7 +118,7 @@ const lesson: LessonDef = {
       visual: 'providerGrid',
       content: (
         <>
-          <h3>Provider flexibility</h3>
+          <h2>Provider flexibility</h2>
           <p>
             OpenCode supports any provider compatible with the AI SDK. Anthropic, OpenAI,
             Google, Groq, Mistral, local models — switch between them with a config change.
@@ -139,7 +139,7 @@ const lesson: LessonDef = {
       visual: 'agentSystem',
       content: (
         <>
-          <h3>Agent system</h3>
+          <h2>Agent system</h2>
           <p>
             OpenCode has four built-in agents. <strong>Build</strong> is the default — full tool
             access for making changes. <strong>Plan</strong> is read-only for analysis without
@@ -162,7 +162,7 @@ const lesson: LessonDef = {
       visual: 'zenMode',
       content: (
         <>
-          <h3>Zen mode</h3>
+          <h2>Zen mode</h2>
           <p>
             The hardest part of any multi-provider tool is setup. Zen mode eliminates that
             friction entirely.
@@ -182,7 +182,7 @@ const lesson: LessonDef = {
       visual: 'whenToChoose',
       content: (
         <>
-          <h3>When to choose OpenCode</h3>
+          <h2>When to choose OpenCode</h2>
           <p>
             Choose OpenCode when vendor independence matters. When you want to own your tools,
             switch models freely, and never worry about a provider pulling the rug.

@@ -127,7 +127,7 @@ const lesson: LessonDef = {
       visual: 'claudeMdSetup',
       content: (
         <>
-          <h3>CLAUDE.md: the employee handbook</h3>
+          <h2>CLAUDE.md: the employee handbook</h2>
           <p>
             Every new hire reads the handbook on day one. Always
             current, always read first. The handbook doesn&apos;t
@@ -153,7 +153,7 @@ const lesson: LessonDef = {
       visual: 'otherConfigs',
       content: (
         <>
-          <h3>Configuration across tools</h3>
+          <h2>Configuration across tools</h2>
           <p>
             Three tools, three config files &mdash; but the concept is
             identical. Claude Code reads CLAUDE.md. OpenCode reads
@@ -180,7 +180,7 @@ const lesson: LessonDef = {
       visual: 'hierarchy',
       content: (
         <>
-          <h3>The config hierarchy</h3>
+          <h2>The config hierarchy</h2>
           <p>
             Think of Russian nesting dolls. The outermost doll is your
             system config &mdash; the broadest defaults. Inside that
@@ -207,7 +207,7 @@ const lesson: LessonDef = {
       visual: 'configStrategy',
       content: (
         <>
-          <h3>Strategy: less is more</h3>
+          <h2>Strategy: less is more</h2>
           <p>
             The best CLAUDE.md files are under 200 lines. Step 1:
             run <code>/init</code> to generate a starting point.

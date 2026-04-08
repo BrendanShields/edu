@@ -119,7 +119,7 @@ const lesson: LessonDef = {
       visual: 'stories',
       content: (
         <>
-          <h3>Real damage, real fast</h3>
+          <h2>Real damage, real fast</h2>
           <p>
             A team shipped a fix on Friday. The agent ran <code>git push --force</code> to
             main because no one had configured permission gates. They spent Saturday restoring
@@ -142,7 +142,7 @@ const lesson: LessonDef = {
       visual: 'spectrum',
       content: (
         <>
-          <h3>The permission spectrum</h3>
+          <h2>The permission spectrum</h2>
           <p>
             Click each permission level. The spectrum isn&apos;t good-to-bad — it&apos;s a trust
             dial. Plan Mode is read-only: the AI explains what it <em>would</em> do but touches
@@ -165,7 +165,7 @@ const lesson: LessonDef = {
       visual: 'findingLevel',
       content: (
         <>
-          <h3>Building trust gradually</h3>
+          <h2>Building trust gradually</h2>
           <p>
             Would you give a new hire <code>sudo</code> access on day one?
           </p>
@@ -188,7 +188,7 @@ const lesson: LessonDef = {
       visual: 'tools',
       content: (
         <>
-          <h3>How each tool handles it</h3>
+          <h2>How each tool handles it</h2>
           <p>
             Same concept, very different controls across the three panels.
           </p>
@@ -211,7 +211,7 @@ const lesson: LessonDef = {
       visual: 'notes',
       content: (
         <>
-          <h3>Rules to code by</h3>
+          <h2>Rules to code by</h2>
           <p>
             Four non-negotiables.
           </p>

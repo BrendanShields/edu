@@ -104,7 +104,7 @@ const lesson: LessonDef = {
       visual: 'hookEvents',
       content: (
         <>
-          <h3>The hook lifecycle</h3>
+          <h2>The hook lifecycle</h2>
           <p>
             Four stations on the assembly line, four moments where
             your code can intervene. PreToolUse fires before the
@@ -130,7 +130,7 @@ const lesson: LessonDef = {
       visual: 'formatHook',
       content: (
         <>
-          <h3>Auto-formatting: the essential hook</h3>
+          <h2>Auto-formatting: the essential hook</h2>
           <p>
             Three lines of JSON. Every file the agent edits gets
             auto-formatted. The matcher targets Edit and Write;
@@ -157,7 +157,7 @@ const lesson: LessonDef = {
       visual: 'blockingHook',
       content: (
         <>
-          <h3>Blocking dangerous actions</h3>
+          <h2>Blocking dangerous actions</h2>
           <p>
             What if the agent tries to edit your{' '}
             <code>.env</code> file? Think of this hook as a bouncer
@@ -186,7 +186,7 @@ const lesson: LessonDef = {
       visual: 'headlessMode',
       content: (
         <>
-          <h3>Headless mode: AI in CI</h3>
+          <h2>Headless mode: AI in CI</h2>
           <p>
             The factory running the night shift. Same quality gates,
             no foreman on the floor. The command{' '}

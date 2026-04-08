@@ -1,5 +1,9 @@
 import type { ModuleDef, LessonDef, Navigation, CourseOutlineModule } from './types';
 
+// Lesson imports — preface
+import welcome from './preface/welcome';
+import whatIsAnLlm from './preface/what-is-an-llm';
+
 // Lesson imports — foundations
 import howToolsWork from './foundations/how-tools-work';
 import toolLandscape from './foundations/tool-landscape';
@@ -32,6 +36,11 @@ import toolComparison from './reference/tool-comparison';
 
 export const COURSE_ORDER: ModuleDef[] = [
   {
+    slug: 'preface',
+    title: 'Before You Start',
+    lessons: ['welcome', 'what-is-an-llm'],
+  },
+  {
     slug: 'foundations',
     title: 'Foundations',
     lessons: ['tool-landscape', 'how-tools-work', 'understanding-context', 'permissions-and-safety'],
@@ -59,6 +68,8 @@ export const COURSE_ORDER: ModuleDef[] = [
 ];
 
 const ALL_LESSONS: Record<string, LessonDef> = {
+  'welcome': welcome,
+  'what-is-an-llm': whatIsAnLlm,
   'how-tools-work': howToolsWork,
   'tool-landscape': toolLandscape,
   'permissions-and-safety': permissionsAndSafety,

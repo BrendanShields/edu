@@ -93,7 +93,7 @@ const lesson: LessonDef = {
       visual: 'workflow',
       content: (
         <>
-          <h3>Read the soil report</h3>
+          <h2>Read the soil report</h2>
           <p>
             Click <strong>Explore</strong>. The terminal runs{' '}
             <code>grep -r &quot;authenticate&quot; src/</code> — three hits
@@ -118,7 +118,7 @@ const lesson: LessonDef = {
       visual: 'planPhase',
       content: (
         <>
-          <h3>Blueprints are cheap. Demolition is not.</h3>
+          <h2>Blueprints are cheap. Demolition is not.</h2>
           <p>
             The prompt on the right asks the agent to propose a plan before
             writing code — which files change, what the approach is, whether
@@ -142,7 +142,7 @@ const lesson: LessonDef = {
       visual: 'buildPhase',
       content: (
         <>
-          <h3>Build to spec, not from scratch</h3>
+          <h2>Build to spec, not from scratch</h2>
           <p>
             Three instructions, one sentence each: implement, write tests, run
             the suite. The agent already surveyed the site and has approved
@@ -166,7 +166,7 @@ const lesson: LessonDef = {
       visual: 'fullCycle',
       content: (
         <>
-          <h3>One rhythm, every project</h3>
+          <h2>One rhythm, every project</h2>
           <p>
             Explore, Plan, Build, Commit. The four-step cycle on the right ends
             with a commit that is clean, tested, and consistent with the rest of

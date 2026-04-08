@@ -94,7 +94,7 @@ Next.js 14 app with TypeScript
             Quick reference for Copilot&apos;s inline completions, chat features, and modes.
             Covers VS Code shortcuts and commands.
           </p>
-          <h3>Inline suggestions</h3>
+          <h2>Inline suggestions</h2>
           <table>
             <thead>
               <tr><th>Shortcut</th><th>Action</th></tr>
@@ -120,7 +120,7 @@ Next.js 14 app with TypeScript
       visual: 'chatCommands',
       content: (
         <>
-          <h3>Chat commands &amp; participants</h3>
+          <h2>Chat commands &amp; participants</h2>
           <p>
             Type these in the Copilot Chat panel. Commands start with <code>/</code>,
             participants with <code>@</code>, and variables with <code>#</code>.
@@ -148,7 +148,7 @@ Next.js 14 app with TypeScript
       visual: 'copilotModes',
       content: (
         <>
-          <h3>Edit, Agent, and Coding Agent</h3>
+          <h2>Edit, Agent, and Coding Agent</h2>
           <p>
             Copilot has three distinct modes, each with different levels of autonomy:
           </p>
@@ -178,7 +178,7 @@ Next.js 14 app with TypeScript
       visual: 'customInstructions',
       content: (
         <>
-          <h3>Custom instructions</h3>
+          <h2>Custom instructions</h2>
           <p>
             Create <code>.github/copilot-instructions.md</code> in your repo. Copilot reads it
             on every interaction — like CLAUDE.md or AGENTS.md but for Copilot.
@@ -200,7 +200,7 @@ Next.js 14 app with TypeScript
       visual: 'pricingOverview',
       content: (
         <>
-          <h3>Plans &amp; pricing</h3>
+          <h2>Plans &amp; pricing</h2>
           <p>
             Copilot&apos;s free tier gives limited completions and chat. Paid tiers unlock
             full features:

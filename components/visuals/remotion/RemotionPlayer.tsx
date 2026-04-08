@@ -1,6 +1,6 @@
 'use client';
 
-import { Player } from '@remotion/player';
+import dynamic from 'next/dynamic';
 import type { ComponentType } from 'react';
 
 interface RemotionPlayerProps {
@@ -13,6 +13,17 @@ interface RemotionPlayerProps {
   autoPlay?: boolean;
   inputProps?: Record<string, unknown>;
 }
+
+// Dynamically load @remotion/player only on the client. The Player package is
+// large (~200KB+) and only needed when a Remotion-backed visual is rendered,
+// so we keep it out of the initial route bundle.
+const Player = dynamic(
+  () => import('@remotion/player').then((mod) => mod.Player),
+  {
+    ssr: false,
+    loading: () => <div className="remotion-fallback" aria-hidden />,
+  },
+);
 
 export function RemotionPlayer({
   component,

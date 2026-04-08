@@ -1,6 +1,6 @@
 export function AgentAppears() {
   return (
-    <div className="flex flex-col items-center justify-center text-center h-full min-h-[320px]">
+    <div className="flex flex-col items-center justify-center text-center h-full min-h-80">
       {/* Glow */}
       <div className="absolute w-44 h-44 rounded-full bg-accent/10 blur-2xl" />
 
@@ -12,7 +12,7 @@ export function AgentAppears() {
       <div className="mt-6 text-base font-semibold text-text-primary animate-[fadeUp_0.5s_0.3s_ease-out_both]">
         AI Coding Agent
       </div>
-      <div className="mt-2 text-sm text-text-muted max-w-[260px] animate-[fadeUp_0.5s_0.5s_ease-out_both]">
+      <div className="mt-2 text-sm text-text-muted max-w-65 animate-[fadeUp_0.5s_0.5s_ease-out_both]">
         Not a chatbot — an agent that takes action in your codebase
       </div>
     </div>

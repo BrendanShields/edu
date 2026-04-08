@@ -101,7 +101,7 @@ claude -p "query"         # Print mode (non-interactive)
             Quick reference for Claude Code&apos;s slash commands, shortcuts, and CLI flags.
             Keep this open while you work.
           </p>
-          <h3>Slash commands</h3>
+          <h2>Slash commands</h2>
           <table>
             <thead>
               <tr><th>Command</th><th>What it does</th></tr>
@@ -125,7 +125,7 @@ claude -p "query"         # Print mode (non-interactive)
       visual: 'keyboardShortcuts',
       content: (
         <>
-          <h3>Keyboard shortcuts</h3>
+          <h2>Keyboard shortcuts</h2>
           <p>
             These work in the interactive REPL. Learn the top three and you&apos;ll
             navigate sessions twice as fast.
@@ -151,7 +151,7 @@ claude -p "query"         # Print mode (non-interactive)
       visual: 'permissionModes',
       content: (
         <>
-          <h3>Permission modes</h3>
+          <h2>Permission modes</h2>
           <p>
             Six levels from read-only to fully autonomous. Press <strong>Shift+Tab</strong> to
             cycle, or start with <code>--permission-mode</code>.
@@ -176,7 +176,7 @@ claude -p "query"         # Print mode (non-interactive)
       visual: 'cliFlags',
       content: (
         <>
-          <h3>CLI flags</h3>
+          <h2>CLI flags</h2>
           <p>
             Claude Code&apos;s CLI accepts flags for scripting and automation.
           </p>
@@ -204,7 +204,7 @@ claude -p "query"         # Print mode (non-interactive)
       visual: 'promptPatterns',
       content: (
         <>
-          <h3>Prompt patterns</h3>
+          <h2>Prompt patterns</h2>
           <p>
             Effective prompts follow a pattern. Here are the six you&apos;ll use most:
           </p>

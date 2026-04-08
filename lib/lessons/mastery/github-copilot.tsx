@@ -98,7 +98,7 @@ const lesson: LessonDef = {
       visual: 'inlineCompletion',
       content: (
         <>
-          <h3>Inline completions</h3>
+          <h2>Inline completions</h2>
           <p>
             The foundation of Copilot: gray ghost text that appears as you type. Press{' '}
             <strong>Tab</strong> to accept, <strong>Esc</strong> to dismiss, or keep typing to
@@ -120,7 +120,7 @@ const lesson: LessonDef = {
       visual: 'chatMode',
       content: (
         <>
-          <h3>Chat mode</h3>
+          <h2>Chat mode</h2>
           <p>
             Open the Chat panel with <strong>Cmd+Shift+I</strong> for longer conversations.
             Ask questions about code, brainstorm approaches, or get explanations.
@@ -140,7 +140,7 @@ const lesson: LessonDef = {
       visual: 'agentMode',
       content: (
         <>
-          <h3>Agent mode</h3>
+          <h2>Agent mode</h2>
           <p>
             Agent mode gives Copilot the full agentic loop inside VS Code. Describe a goal in
             natural language and it selects files, makes edits, runs terminal commands, and
@@ -161,7 +161,7 @@ const lesson: LessonDef = {
       visual: 'asyncAgent',
       content: (
         <>
-          <h3>The coding agent</h3>
+          <h2>The coding agent</h2>
           <p>
             The coding agent runs asynchronously on GitHub&apos;s infrastructure. Assign an
             issue to <strong>@copilot</strong> and it creates a branch, implements the change,
@@ -183,7 +183,7 @@ const lesson: LessonDef = {
       visual: 'spacesReview',
       content: (
         <>
-          <h3>Spaces and code review</h3>
+          <h2>Spaces and code review</h2>
           <p>
             <strong>Spaces</strong> let you curate bundles of context — docs, specs, design
             files — so Copilot&apos;s answers are grounded in your team&apos;s actual knowledge,

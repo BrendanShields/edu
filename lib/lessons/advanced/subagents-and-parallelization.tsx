@@ -122,7 +122,7 @@ Rate each finding by severity.`}
       visual: 'builtInSubagents',
       content: (
         <>
-          <h3>Built-in subagents</h3>
+          <h2>Built-in subagents</h2>
           <p>
             Three engineer types ship out of the box. Explore uses a
             fast, cheap model for read-only search &mdash; the intern
@@ -150,7 +150,7 @@ Rate each finding by severity.`}
       visual: 'customSubagent',
       content: (
         <>
-          <h3>Custom subagents</h3>
+          <h2>Custom subagents</h2>
           <p>
             Constraints are what make delegation safe. This security
             reviewer only gets Read, Grep, and Glob &mdash; it
@@ -176,7 +176,7 @@ Rate each finding by severity.`}
       visual: 'fanOut',
       content: (
         <>
-          <h3>Parallel work with worktrees</h3>
+          <h2>Parallel work with worktrees</h2>
           <p>
             Each engineer gets their own desk. They can&apos;t rifle
             through each other&apos;s papers. In practice, that means
@@ -202,7 +202,7 @@ Rate each finding by severity.`}
       visual: 'delegationGuide',
       content: (
         <>
-          <h3>When to delegate</h3>
+          <h2>When to delegate</h2>
           <p>
             You wouldn&apos;t delegate a two-minute task to someone
             who needs a five-minute briefing. Delegation has real

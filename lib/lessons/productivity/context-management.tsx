@@ -120,7 +120,7 @@ const lesson: LessonDef = {
       visual: 'tactics',
       content: (
         <>
-          <h3>Your entire wardrobe vs. three outfits</h3>
+          <h2>Your entire wardrobe vs. three outfits</h2>
           <p>
             Toggle to <strong>Bloated Context</strong>. Six items stacked in
             red — full file dumps, redundant re-reads, a 40-turn conversation.
@@ -146,7 +146,7 @@ const lesson: LessonDef = {
       visual: 'clearCommands',
       content: (
         <>
-          <h3>Vacuum-seal or start with a fresh bag</h3>
+          <h2>Vacuum-seal or start with a fresh bag</h2>
           <p>
             <code>/compact</code> is vacuum-sealing: it summarizes everything so
             far and frees space without losing progress. Claude Code gives you
@@ -172,7 +172,7 @@ const lesson: LessonDef = {
       visual: 'offloadResearch',
       content: (
         <>
-          <h3>Send a research assistant to the library</h3>
+          <h2>Send a research assistant to the library</h2>
           <p>
             &quot;Research inline&quot; means dumping 50 files into your suitcase
             and wondering why the agent can&apos;t find your socks anymore.
@@ -197,7 +197,7 @@ const lesson: LessonDef = {
       visual: 'storeConventions',
       content: (
         <>
-          <h3>The employee handbook</h3>
+          <h2>The employee handbook</h2>
           <p>
             Every company has one. Every new hire reads it on day one. It
             doesn&apos;t matter who the hire is or when they start — the

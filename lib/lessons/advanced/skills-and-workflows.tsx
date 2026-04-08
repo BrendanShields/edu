@@ -124,7 +124,7 @@ Summarize this pull request concisely.`}
       visual: 'mapping',
       content: (
         <>
-          <h3>Anatomy of a skill</h3>
+          <h2>Anatomy of a skill</h2>
           <p>
             Each rule on the left produces the behavior on the right.
             &quot;Run tests after every edit&quot; maps directly to
@@ -153,7 +153,7 @@ Summarize this pull request concisely.`}
       visual: 'dynamicContext',
       content: (
         <>
-          <h3>Dynamic context injection</h3>
+          <h2>Dynamic context injection</h2>
           <p>
             What if the recipe calls for &quot;today&apos;s
             produce&quot; &mdash; not yesterday&apos;s leftovers?
@@ -181,7 +181,7 @@ Summarize this pull request concisely.`}
       visual: 'crossToolSkills',
       content: (
         <>
-          <h3>Skills across tools</h3>
+          <h2>Skills across tools</h2>
           <p>
             Write a recipe once, serve it in two kitchens. Claude Code
             and OpenCode share the same directory
@@ -208,7 +208,7 @@ Summarize this pull request concisely.`}
       visual: 'whenToCreate',
       content: (
         <>
-          <h3>When to create a skill</h3>
+          <h2>When to create a skill</h2>
           <p>
             Not every dish needs a written recipe. The first signal
             is repetition: if you&apos;ve given the same instructions

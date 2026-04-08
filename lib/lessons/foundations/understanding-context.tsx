@@ -117,7 +117,7 @@ const lesson: LessonDef = {
       visual: 'desk',
       content: (
         <>
-          <h3>The desk in action</h3>
+          <h2>The desk in action</h2>
           <p>
             Click &quot;Add a large file.&quot; The percentage climbs. Files, conversation history,
             tool definitions, system instructions — all of it sits on the same surface. The desk
@@ -141,7 +141,7 @@ const lesson: LessonDef = {
       visual: 'fillsUp',
       content: (
         <>
-          <h3>What fills the desk</h3>
+          <h2>What fills the desk</h2>
           <p>
             Not everything costs the same. Small configs and short prompts are cheap. A 2,000-line
             source file is expensive. But the sneakiest cost? <strong>Conversation length.</strong>
@@ -163,7 +163,7 @@ const lesson: LessonDef = {
       visual: 'breaks',
       content: (
         <>
-          <h3>When context breaks</h3>
+          <h2>When context breaks</h2>
           <p>
             What happens when the agent can&apos;t see your original instructions anymore?
           </p>
@@ -187,7 +187,7 @@ const lesson: LessonDef = {
       visual: 'manage',
       content: (
         <>
-          <h3>Four strategies</h3>
+          <h2>Four strategies</h2>
           <p>
             This is the playbook that separates productive users from frustrated ones.
           </p>
@@ -211,7 +211,7 @@ const lesson: LessonDef = {
       visual: 'notes',
       content: (
         <>
-          <h3>The rules</h3>
+          <h2>The rules</h2>
           <p>
             Four cards, four non-negotiables.
           </p>

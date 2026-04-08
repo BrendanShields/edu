@@ -78,7 +78,7 @@ const lesson: LessonDef = {
       visual: 'testFirstApproach',
       content: (
         <>
-          <h3>Define the finish line before you start running</h3>
+          <h2>Define the finish line before you start running</h2>
           <p>
             On the left: &quot;Review 200 lines&quot; — reading code on faith,
             hoping to catch edge cases with tired eyes. On the right: &quot;Review
@@ -104,7 +104,7 @@ const lesson: LessonDef = {
       visual: 'verificationSpectrum',
       content: (
         <>
-          <h3>Airport security for your code</h3>
+          <h2>Airport security for your code</h2>
           <p>
             Think of verification layers as airport security. Tests are the metal
             detector — they catch the obvious weapons. The linter is the bag
@@ -131,7 +131,7 @@ const lesson: LessonDef = {
       visual: 'testExample',
       content: (
         <>
-          <h3>Red, green, done</h3>
+          <h2>Red, green, done</h2>
           <p>
             The prompt on the right asks the agent to write tests for a{' '}
             <code>RateLimiter</code> class — 10 requests per minute per user, 429
@@ -155,7 +155,7 @@ const lesson: LessonDef = {
       visual: 'stackingLayers',
       content: (
         <>
-          <h3>Three checkpoints, one sentence</h3>
+          <h2>Three checkpoints, one sentence</h2>
           <p>
             Metal detector, bag scanner, passport control, security camera. Tests
             catch logic errors. Linters catch style drift. Type checkers catch

@@ -96,7 +96,7 @@ const lesson: LessonDef = {
             Side-by-side reference for Claude Code, OpenCode, and GitHub Copilot.
             Use this to pick the right tool — or the right combination.
           </p>
-          <h3>At a glance</h3>
+          <h2>At a glance</h2>
           <table>
             <thead>
               <tr><th>Tool</th><th>Type</th><th>Strength</th></tr>
@@ -115,7 +115,7 @@ const lesson: LessonDef = {
       visual: 'interfaceMatrix',
       content: (
         <>
-          <h3>Interface support</h3>
+          <h2>Interface support</h2>
           <p>
             Each tool lives in a different part of your workflow:
           </p>
@@ -145,7 +145,7 @@ const lesson: LessonDef = {
       visual: 'agenticMatrix',
       content: (
         <>
-          <h3>Agentic capabilities</h3>
+          <h2>Agentic capabilities</h2>
           <p>
             All three can read files, edit code, and run commands. The differences
             are in the advanced features:
@@ -176,7 +176,7 @@ const lesson: LessonDef = {
       visual: 'choosingGuide',
       content: (
         <>
-          <h3>Choosing a tool</h3>
+          <h2>Choosing a tool</h2>
           <p>
             There&apos;s no single &quot;best&quot; tool. Match the tool to your need:
           </p>
@@ -196,7 +196,7 @@ const lesson: LessonDef = {
       visual: 'combiningTools',
       content: (
         <>
-          <h3>Combining tools</h3>
+          <h2>Combining tools</h2>
           <p>
             The best setup is often a combination. These tools don&apos;t conflict —
             they complement each other:

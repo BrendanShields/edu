@@ -83,7 +83,7 @@ const lesson: LessonDef = {
       visual: 'promptFramework',
       content: (
         <>
-          <h3>The CICV work order</h3>
+          <h2>The CICV work order</h2>
           <p>
             Hover over the blue underline — that&apos;s <strong>Context</strong>,
             the &quot;where&quot; on the work order. Green is <strong>Intent</strong>,
@@ -109,7 +109,7 @@ const lesson: LessonDef = {
       visual: 'contextElement',
       content: (
         <>
-          <h3>A flashlight in a dark warehouse</h3>
+          <h2>A flashlight in a dark warehouse</h2>
           <p>
             Without context, the agent walks into your codebase like a dark
             warehouse — groping along every shelf, reading labels it
@@ -137,7 +137,7 @@ const lesson: LessonDef = {
       visual: 'intentElement',
       content: (
         <>
-          <h3>Guardrails, not a cage</h3>
+          <h2>Guardrails, not a cage</h2>
           <p>
             Think of constraints as guardrails on a mountain road. They
             don&apos;t slow you down — they keep you from going over the edge.
@@ -163,8 +163,8 @@ const lesson: LessonDef = {
       visual: 'verificationElement',
       content: (
         <>
-          <h3>The difference between &quot;I think I fixed it&quot; and
-            &quot;here&apos;s proof&quot;</h3>
+          <h2>The difference between &quot;I think I fixed it&quot; and
+            &quot;here&apos;s proof&quot;</h2>
           <p>
             Without verification, you are the only feedback loop. Every line
             reviewed by eye. Every edge case caught by gut feeling. That&apos;s

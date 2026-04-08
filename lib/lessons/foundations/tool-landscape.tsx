@@ -1,9 +1,7 @@
-import { TitleCard } from '@/components/visuals/templates/TitleCard';
-import { ToolComparison } from '@/components/visuals/templates/ToolComparison';
+import Image from 'next/image';
 import { CardGrid } from '@/components/visuals/templates/CardGrid';
 import { BeforeAfter } from '@/components/visuals/templates/BeforeAfter';
 import { StepFlow } from '@/components/visuals/templates/StepFlow';
-import { ClaudeCodeCard, OpenCodeCard, CopilotCard } from '@/components/visuals/ToolCards';
 import { ComparisonTable } from '@/components/visuals/lesson/ComparisonTable';
 import type { LessonDef } from '../types';
 
@@ -13,15 +11,49 @@ const lesson: LessonDef = {
   title: 'The Tool Landscape',
   visuals: {
     intro: (
-      <TitleCard
-        icon="🔧"
-        title="The Right Tool for the Shape"
-        subtitle="Matching tools to how you actually work"
-      />
+      <div className="trail-figure trail-figure--hero" style={{ viewTransitionName: 'intro-image' }}>
+        <Image
+          src="/intro-image.png"
+          alt="Mountain trail map showing Copilot, OpenCode, and Claude Code as trails of increasing difficulty"
+          fill
+          sizes="(max-width: 1024px) 90vw, 720px"
+          className="trail-figure__img"
+        />
+      </div>
     ),
-    terminal: <ClaudeCodeCard />,
-    freedom: <OpenCodeCard />,
-    embedded: <CopilotCard />,
+    terminal: (
+      <div className="trail-figure">
+        <Image
+          src="/intro-image-claude-highlight.png"
+          alt="Claude Code trail highlighted on the mountain map"
+          fill
+          sizes="(max-width: 1024px) 90vw, 720px"
+          className="trail-figure__img"
+        />
+      </div>
+    ),
+    freedom: (
+      <div className="trail-figure">
+        <Image
+          src="/intro-image-opencode-highlight.png"
+          alt="OpenCode trail highlighted on the mountain map"
+          fill
+          sizes="(max-width: 1024px) 90vw, 720px"
+          className="trail-figure__img"
+        />
+      </div>
+    ),
+    embedded: (
+      <div className="trail-figure">
+        <Image
+          src="/intro-image-copilot-highlight.png"
+          alt="GitHub Copilot trail highlighted on the mountain map"
+          fill
+          sizes="(max-width: 1024px) 90vw, 720px"
+          className="trail-figure__img"
+        />
+      </div>
+    ),
     comparison: (
       <ComparisonTable
         title="Side-by-Side"
@@ -96,17 +128,17 @@ const lesson: LessonDef = {
         <>
           <h1>The Tool Landscape</h1>
           <p>
-            You wouldn&apos;t hire a roofer to fix your plumbing. Both are contractors, both are
-            skilled — but the job demands the right fit, not the &quot;best&quot; one.
+            You wouldn&apos;t hire a roofer to fix your plumbing. Both are contractors and both are
+            skilled, but the requirements of the job demand the right tools and knowledge.
           </p>
           <p>
-            <strong>AI coding tools work the same way.</strong> Three dominate the space, and
+            <strong>AI coding tools work in a similar way.</strong> Three dominate the space, and
             they share an engine under the hood. The difference isn&apos;t capability. It&apos;s where
             you already spend your time — terminal, IDE, or somewhere in between.
           </p>
           <p>
-            Think of this lesson as three paths up the same mountain. Each gets you to the top.
-            Only one matches your boots.
+            Think of this lesson as three overlapping paths up the same mountain. Each path gets you to the top.
+            You just need to understand enough to choose the right path for you.
           </p>
         </>
       ),
@@ -116,7 +148,7 @@ const lesson: LessonDef = {
       visual: 'terminal',
       content: (
         <>
-          <h3>Claude Code: The terminal purist</h3>
+          <h2>Claude Code</h2>
           <p>
             That interface on the right? That&apos;s <em>everything</em>. No GUI. No editor plugin.
             You type <code>claude</code> in any project directory and start talking. It
@@ -136,7 +168,7 @@ const lesson: LessonDef = {
       visual: 'freedom',
       content: (
         <>
-          <h3>OpenCode: The open alternative</h3>
+          <h2>OpenCode: The open alternative</h2>
           <p>
             What if you want the agentic loop but refuse to be locked to one provider?
           </p>
@@ -158,7 +190,7 @@ const lesson: LessonDef = {
       visual: 'embedded',
       content: (
         <>
-          <h3>GitHub Copilot: The IDE native</h3>
+          <h2>GitHub Copilot: The IDE native</h2>
           <p>
             <strong>Copilot doesn&apos;t ask you to leave your editor. It moves in.</strong>
           </p>
@@ -180,7 +212,7 @@ const lesson: LessonDef = {
       visual: 'comparison',
       content: (
         <>
-          <h3>Where they converge</h3>
+          <h2>Where they converge</h2>
           <p>
             Scan the comparison table. The checkmarks are nearly identical — MCP servers, agentic
             mode, custom instructions. All three tools have them. The overlap is large and growing
@@ -203,7 +235,7 @@ const lesson: LessonDef = {
       visual: 'tradeoffs',
       content: (
         <>
-          <h3>The real tradeoff</h3>
+          <h2>The real tradeoff</h2>
           <p>
             A terminal developer forced into an IDE is a plumber handed a roofing nail gun.
             They&apos;ll figure it out — but the friction compounds. Not in minutes. In weeks of
@@ -224,7 +256,7 @@ const lesson: LessonDef = {
       visual: 'notes',
       content: (
         <>
-          <h3>Choosing your stack</h3>
+          <h2>Choosing your stack</h2>
           <p>
             Start with one question: where do you already spend your time — terminal or IDE?
             That single answer narrows the field to two tools or one.

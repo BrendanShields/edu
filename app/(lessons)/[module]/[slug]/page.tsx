@@ -1,14 +1,29 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ScrollLayout } from '@/components/ScrollLayout';
 import { ReferenceLayout } from '@/components/ReferenceLayout';
 import { Section } from '@/components/Section';
 import { getLesson, getNavigation, getAllParams, getCourseOutline } from '@/lib/lessons';
 
+interface LessonPageProps {
+  params: Promise<{ module: string; slug: string }>;
+}
+
 export function generateStaticParams() {
   return getAllParams();
 }
 
-export default async function LessonPage({ params }: { params: Promise<{ module: string; slug: string }> }) {
+export async function generateMetadata({ params }: LessonPageProps): Promise<Metadata> {
+  const { module, slug } = await params;
+  const lesson = getLesson(module, slug);
+  if (!lesson) return { title: 'Not found' };
+  return {
+    title: lesson.title,
+    description: `${lesson.title} — part of the AI Coding Tools Workshop.`,
+  };
+}
+
+export default async function LessonPage({ params }: LessonPageProps) {
   const { module, slug } = await params;
   const lesson = getLesson(module, slug);
 
@@ -19,7 +34,7 @@ export default async function LessonPage({ params }: { params: Promise<{ module:
   const nav = getNavigation(module, slug);
   const outline = getCourseOutline(module, slug);
 
-  // Reference pages use single-column centered layout (no canvas)
+  // Reference pages use a single-column centered layout (no canvas).
   if (module === 'reference') {
     return (
       <ReferenceLayout
@@ -32,9 +47,7 @@ export default async function LessonPage({ params }: { params: Promise<{ module:
         courseOutline={outline}
       >
         {lesson.sections.map((section) => (
-          <div key={section.id}>
-            {section.content}
-          </div>
+          <div key={section.id}>{section.content}</div>
         ))}
       </ReferenceLayout>
     );
